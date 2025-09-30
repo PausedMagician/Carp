@@ -3,7 +3,7 @@ enum CarTypes {
     Van
 }
 
-interface Car {
+export interface Car {
     id: number
     make: string
     model: string
@@ -27,7 +27,7 @@ interface Car {
     }
 }
 
-interface User {
+export interface User {
     id: number
     username: string
     password: string
@@ -41,7 +41,7 @@ interface User {
     updated_at: Date
 }
 
-interface Booking {
+export interface Booking {
     id: number
     user_id: number
     car_id: number
@@ -54,7 +54,7 @@ interface Booking {
     updated_at: Date
 }
 
-interface Maintenance {
+export interface Maintenance {
     id: number
     car_id: number
     user_id: number
@@ -122,4 +122,9 @@ export function getMaintenances(): Maintenance[] {
 export function getMaintenance(id: number): Maintenance | undefined {
     loadFiles();
     return maintenances.find(maintenance => maintenance.id === id);
+}
+
+export function getBookingsForCar(carId: number): Booking[] {
+    loadFiles();
+    return bookings.filter(booking => booking.car_id === carId);
 }
