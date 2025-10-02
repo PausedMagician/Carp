@@ -1,5 +1,5 @@
 import { styles } from "@/App";
-import { Booking, Vehicle, getBookingsForCar, getVehicles } from "@/backend/Server";
+import { Booking, Vehicle, getBookingsForVehicle, getVehicles } from "@/backend/Server";
 import CarListItem from "@/components/CarListItem";
 // import { Car, getAll } from "@/types/Car";
 import { StatusBar } from "expo-status-bar";
@@ -21,7 +21,7 @@ export default function VehiclesScreen() {
     const map: {car: Vehicle, bookings: Booking[], isAvailable: boolean}[] = [];
     const cars = getVehicles();
     cars.forEach(car => {
-      const bookings = getBookingsForCar(car.id);
+      const bookings = getBookingsForVehicle(car.id);
       const now = new Date();
       const isAvailable = bookings.every(booking => {
           const start = new Date(booking.start_date);

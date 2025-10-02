@@ -1,16 +1,16 @@
-enum CarTypes {
+enum VehicleTypes {
     Car,
     Van
 }
 
-export interface Car {
+export interface Vehicle {
     id: number
     make: string
     model: string
     variant: string
     year: string
     color: string
-    type: CarTypes
+    type: VehicleTypes
     registration: {
         license: string
         serial: string
@@ -68,7 +68,7 @@ export interface Maintenance {
     }
 }
 
-var cars: Car[];
+var vehicles: Vehicle[];
 var users: User[];
 var bookings: Booking[];
 var maintenances: Maintenance[];
@@ -77,21 +77,21 @@ var isLoaded = false;
 export function loadFiles() {
     if (isLoaded) return;
     // Load json into cars
-    cars = require('./Data/Cars.json');
+    vehicles = require('./Data/Vehicles.json');
     users = require('./Data/Users.json');
     bookings = require('./Data/Bookings.json');
     maintenances = require('./Data/Maintenances.json');
     isLoaded = true;
 }
 
-export function getCars(): Car[] {
+export function getVehicles(): Vehicle[] {
     loadFiles();
-    return cars;
+    return vehicles;
 }
 
-export function getCar(id: number): Car | undefined {
+export function getVehicle(id: number): Vehicle | undefined {
     loadFiles();
-    return cars.find(car => car.id === id);
+    return vehicles.find(vehicle => vehicle.id === id);
 }
 
 export function getUsers(): User[] {
@@ -124,7 +124,7 @@ export function getMaintenance(id: number): Maintenance | undefined {
     return maintenances.find(maintenance => maintenance.id === id);
 }
 
-export function getBookingsForCar(carId: number): Booking[] {
+export function getBookingsForVehicle(carId: number): Booking[] {
     loadFiles();
     return bookings.filter(booking => booking.car_id === carId);
 }
