@@ -1,11 +1,15 @@
 import { AppDataSource } from '@/AppDataSource';
 import { Employee } from '@/entities/Employee';
+import { PersonalDetails } from '@/entities/PersonalDetails';
 import { Request, Response } from 'express';
 
 const employeeRepository = AppDataSource.getRepository(Employee);
+const personalDetailsRepository = AppDataSource.getRepository(PersonalDetails);
 
 export const createEmployee = async (req: Request, res: Response) => {
     const obj = employeeRepository.create(req.body);
+    //@ts-expect-error
+    await personalDetailsRepository.insert(obj.personal_details);
     await employeeRepository.insert(obj);
     res.status(201).json(obj);
 };

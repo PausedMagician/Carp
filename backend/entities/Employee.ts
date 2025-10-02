@@ -19,7 +19,7 @@ export class Employee {
     @Column({ type: "varchar" })
     department: string
     
-    @OneToOne(() => PersonalDetails)
+    @OneToOne(() => PersonalDetails, {eager: true})
     @JoinColumn()
     personal_details: PersonalDetails
 
