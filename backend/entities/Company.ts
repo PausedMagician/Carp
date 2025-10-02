@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Employee } from "./Employee";
+import { Vehicle } from "./Vehicle";
 
 @Entity()
 export class Company {
@@ -10,4 +12,10 @@ export class Company {
     
     @Column({ type: "varchar" })
     address!: string
+
+    @OneToMany(() => Employee, employee => employee.company)
+    employees: Employee[];
+
+    @OneToMany(() => Vehicle, vehicle => vehicle.company)
+    vehicles: Vehicle[];
 }

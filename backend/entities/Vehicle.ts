@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne
 import { VehicleRegistration } from "./VehicleRegistration";
 import { VehicleSpec } from "./VehicleSpec";
 import { Booking } from "./Booking";
+import { Company } from "./Company";
 
 @Entity()
 export class Vehicle {
@@ -32,8 +33,11 @@ export class Vehicle {
 
     @ManyToOne(() => VehicleSpec)
     @JoinColumn()
-    spec: VehicleSpec
+    spec: VehicleSpec;
 
     @OneToMany(() => Booking, booking => booking.vehicle)
     bookings: Booking[];
+    
+    @ManyToOne(() => Company, company => company.vehicles)
+    company: Company;
 }
