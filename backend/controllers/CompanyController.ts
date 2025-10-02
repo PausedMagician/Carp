@@ -1,26 +1,25 @@
+import { AppDataSource } from '@/AppDataSource';
+import { Company } from '@/entities/Company';
 import { Request, Response } from 'express';
 
+const companyRepository = AppDataSource.getRepository(Company);
+
 export const createCompany = (req: Request, res: Response) => {
-    // create
-    res.send('Created');
+    return companyRepository.save(req.body);
 };
 
-export const getCompanys = (req: Request, res: Response) => {
-    // read
-    res.send('Read many');
+export const getCompanys = async (req: Request, res: Response): Promise<Company[]> => {
+    return await companyRepository.find();
 };
 
 export const getCompany = (req: Request, res: Response) => {
-    // read
-    res.send('Read one');
+    return companyRepository.findOneBy({id: parseInt(req.params.id)});
 };
 
 export const updateCompany = (req: Request, res: Response) => {
-    // update
-    res.send('Update');
+    return companyRepository.save(req.body);
 };
 
 export const deleteCompany = (req: Request, res: Response) => {
-    // delete
-    res.send('Delete');
+    companyRepository.delete(req.body);
 };
