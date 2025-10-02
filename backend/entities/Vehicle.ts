@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { VehicleRegistration } from "./VehicleRegistration";
 import { VehicleSpec } from "./VehicleSpec";
+import { Booking } from "./Booking";
 
 @Entity()
 export class Vehicle {
@@ -32,4 +33,7 @@ export class Vehicle {
     @ManyToOne(() => VehicleSpec)
     @JoinColumn()
     spec: VehicleSpec
+
+    @OneToMany(() => Booking, booking => booking.vehicle)
+    bookings: Booking[];
 }

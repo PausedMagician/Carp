@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { PersonalDetails } from "./PersonalDetails";
 import { Company } from "./Company";
+import { Booking } from "./Booking";
+import { LogEntry } from "./LogEntry";
 
 @Entity()
 export class Employee {
@@ -25,4 +27,10 @@ export class Employee {
 
     @ManyToOne(() => Company)
     company: Company
+
+    @OneToMany(() => Booking, bookings => bookings.employee)
+    bookings: Booking[];
+
+    @OneToMany(() => LogEntry, logEntries => logEntries.employee)
+    logEntries: LogEntry[];
 }
