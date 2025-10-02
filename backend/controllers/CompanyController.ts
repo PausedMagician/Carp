@@ -8,8 +8,8 @@ export const createCompany = (req: Request, res: Response) => {
     return companyRepository.save(req.body);
 };
 
-export const getCompanys = async (req: Request, res: Response): Promise<Company[]> => {
-    return await companyRepository.find();
+export const getCompanys = async (req: Request, res: Response) => {
+    res.json(await companyRepository.find());
 };
 
 export const getCompany = (req: Request, res: Response) => {
