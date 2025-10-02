@@ -7,14 +7,17 @@ import { createLog, getLog, getLogs, updateLog, deleteLog } from "./controllers/
 import { createMaintenance, getMaintenance, getMaintenances, updateMaintenance, deleteMaintenance } from "./controllers/MaintenanceController";
 import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle } from "./controllers/VehicleController";
 import { AppDataSource } from "./AppDataSource";
+import { MockData } from "./Data/MockData";
 
 // Create a new express application instance
 const app = express();
 
 try {
-    AppDataSource.initialize()
+    AppDataSource.initialize().then(() => {
+        MockData.create();
+    });
 } catch (error) {
-    console.log(error)
+    console.log(error);
 }
 
 // Set the network port

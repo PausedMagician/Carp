@@ -22,9 +22,9 @@ export class Maintenance {
     @Column({ type: "datetime" })
     planned_for: Date
     
-    @Column({ type: "datetime" })
-    done_at: Date
-    
+    @Column({ type: "datetime", nullable: true })
+    done_at: Date | null
+
     @ManyToOne(() => Vehicle, vehicle => vehicle.maintenanceRecords)
     vehicle: Vehicle
 
