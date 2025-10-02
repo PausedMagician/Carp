@@ -24,6 +24,8 @@ export const getEmployee = async (req: Request, res: Response) => {
 
 export const updateEmployee = async (req: Request, res: Response) => {
     const obj = employeeRepository.create(req.body);
+    //@ts-expect-error
+    await personalDetailsRepository.save(obj.personal_details);
     await employeeRepository.save(obj);
     res.status(200).json(obj);
 };
