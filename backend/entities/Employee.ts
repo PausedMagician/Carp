@@ -25,7 +25,7 @@ export class Employee {
     @JoinColumn()
     personal_details: PersonalDetails
 
-    @ManyToOne(() => Company)
+    @ManyToOne(() => Company, company => company.employees)
     company: Company
 
     @OneToMany(() => Booking, bookings => bookings.employee)

@@ -35,7 +35,7 @@ export class Vehicle {
     @JoinColumn()
     spec: VehicleSpec;
 
-    @OneToMany(() => Booking, booking => booking.vehicle)
+    @OneToMany(() => Booking, booking => booking.vehicle, { nullable: true })
     bookings: Booking[];
     
     @ManyToOne(() => Company, company => company.vehicles)
