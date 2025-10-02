@@ -24,6 +24,6 @@ export class VehicleSpec {
     @Column({ type: "varchar" })
     tyres: string
 
-    @ManyToOne(() => VehicleTransmission)
+    @ManyToOne(() => VehicleTransmission, {eager: true})
     transmission: VehicleTransmission
 }
