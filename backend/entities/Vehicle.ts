@@ -3,6 +3,7 @@ import { VehicleRegistration } from "./VehicleRegistration";
 import { VehicleSpec } from "./VehicleSpec";
 import { Booking } from "./Booking";
 import { Company } from "./Company";
+import { Maintenance } from "./Maintenance";
 
 @Entity()
 export class Vehicle {
@@ -27,11 +28,11 @@ export class Vehicle {
     @Column({ type: "int" })
     year: number
 
-    @OneToOne(() => VehicleRegistration)
+    @OneToOne(() => VehicleRegistration, registration => registration.vehicle, { eager: true, cascade: true })
     @JoinColumn()
     registration: VehicleRegistration
 
-    @ManyToOne(() => VehicleSpec)
+    @ManyToOne(() => VehicleSpec, spec => spec.vehicles, { eager: true, cascade: true })
     @JoinColumn()
     spec: VehicleSpec;
 
@@ -40,4 +41,7 @@ export class Vehicle {
     
     @ManyToOne(() => Company, company => company.vehicles)
     company: Company;
+
+    @OneToMany(() => Maintenance, maintenance => maintenance.vehicle, { nullable: true })
+    maintenanceRecords: Maintenance[];
 }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Vehicle } from "./Vehicle";
 
 @Entity()
 export class VehicleRegistration {
@@ -10,4 +11,7 @@ export class VehicleRegistration {
     
     @Column({ type: "varchar" })
     serial!: string
+
+    @OneToOne(() => Vehicle, vehicle => vehicle.registration)
+    vehicle: Vehicle;
 }
