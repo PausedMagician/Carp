@@ -14,8 +14,8 @@ export const getCompanys = async (req: Request, res: Response) => {
     res.json(await companyRepository.find());
 };
 
-export const getCompany = (req: Request, res: Response) => {
-    res.json(companyRepository.findOneBy({id: parseInt(req.params.id)}));
+export const getCompany = async (req: Request, res: Response) => {
+    res.json(await companyRepository.findOneBy({id: parseInt(req.params.id)}));
 };
 
 export const updateCompany = async (req: Request, res: Response) => {

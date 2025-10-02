@@ -18,8 +18,8 @@ export const getEmployees = async (req: Request, res: Response) => {
     res.json(await employeeRepository.find());
 };
 
-export const getEmployee = (req: Request, res: Response) => {
-    res.json(employeeRepository.findOneBy({id: parseInt(req.params.id)}));
+export const getEmployee = async (req: Request, res: Response) => {
+    res.json(await employeeRepository.findOne({where: {id: parseInt(req.params.id)} }));
 };
 
 export const updateEmployee = async (req: Request, res: Response) => {
