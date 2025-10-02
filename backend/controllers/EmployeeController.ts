@@ -1,26 +1,30 @@
+import { AppDataSource } from '@/AppDataSource';
+import { Employee } from '@/entities/Employee';
 import { Request, Response } from 'express';
 
-export const createEmployee = (req: Request, res: Response) => {
-    // create
-    res.send('Created');
+const employeeRepository = AppDataSource.getRepository(Employee);
+
+export const createEmployee = async (req: Request, res: Response) => {
+    const obj = employeeRepository.create(req.body);
+    await employeeRepository.insert(obj);
+    res.status(201).json(obj);
 };
 
-export const getEmployees = (req: Request, res: Response) => {
-    // read
-    res.send('Read many');
+export const getEmployees = async (req: Request, res: Response) => {
+    res.json(await employeeRepository.find());
 };
 
 export const getEmployee = (req: Request, res: Response) => {
-    // read
-    res.send('Read one');
+    res.json(employeeRepository.findOneBy({id: parseInt(req.params.id)}));
 };
 
-export const updateEmployee = (req: Request, res: Response) => {
-    // update
-    res.send('Update');
+export const updateEmployee = async (req: Request, res: Response) => {
+    const obj = employeeRepository.create(req.body);
+    await employeeRepository.save(obj);
+    res.status(200).json(obj);
 };
 
 export const deleteEmployee = (req: Request, res: Response) => {
-    // delete
-    res.send('Delete');
+    employeeRepository.delete(req.body);
+    res.status(200).json();
 };
