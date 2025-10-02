@@ -3,6 +3,7 @@ import { PersonalDetails } from "./PersonalDetails";
 import { Company } from "./Company";
 import { Booking } from "./Booking";
 import { LogEntry } from "./LogEntry";
+import { Maintenance } from "./Maintenance";
 
 @Entity()
 export class Employee {
@@ -33,4 +34,7 @@ export class Employee {
 
     @OneToMany(() => LogEntry, logEntries => logEntries.employee)
     logEntries: LogEntry[];
+    
+    @OneToMany(() => Maintenance, maintenance => maintenance.reportee, { nullable: true })
+    maintenanceRecords: Maintenance[];
 }

@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
 import { VehicleTransmission } from "./VehicleTransmission";
+import { Vehicle } from "./Vehicle";
 
 @Entity()
 export class VehicleSpec {
@@ -24,6 +25,9 @@ export class VehicleSpec {
     @Column({ type: "varchar" })
     tyres: string
 
-    @ManyToOne(() => VehicleTransmission)
-    transmission: VehicleTransmission
+    @ManyToOne(() => VehicleTransmission, transmission => transmission.specs)
+    transmission: VehicleTransmission;
+
+    @OneToMany(() => Vehicle, vehicle => vehicle.spec)
+    vehicles: Vehicle[];
 }

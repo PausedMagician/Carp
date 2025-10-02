@@ -25,9 +25,9 @@ export class Maintenance {
     @Column({ type: "datetime" })
     done_at: Date
     
-    @ManyToOne(() => Vehicle)
+    @ManyToOne(() => Vehicle, vehicle => vehicle.maintenanceRecords)
     vehicle: Vehicle
-    
-    @ManyToOne(() => Employee, { nullable: true })
+
+    @ManyToOne(() => Employee, employee => employee.maintenanceRecords, { nullable: true })
     reportee: Employee | null;
 }

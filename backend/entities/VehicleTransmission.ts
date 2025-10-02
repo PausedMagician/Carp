@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { VehicleSpec } from "./VehicleSpec";
 
 @Entity()
 export class VehicleTransmission {
@@ -10,4 +11,7 @@ export class VehicleTransmission {
     
     @Column({ type: "varchar" })
     drive: string
+    
+    @OneToMany(() => VehicleSpec, spec => spec.transmission)
+    specs: VehicleSpec[];
 }
