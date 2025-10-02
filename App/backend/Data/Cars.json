@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "make": "Renault",
+        "model": "Captur",
+        "variant": "Dci 90",
+        "year": "2013",
+        "color": "Black",
+        "type": "Car",
+        "registration": {
+            "license": "AB12345",
+            "serial": "vf12rfl1h49621453"
+        },
+        "specs": {
+            "horsepower": 90,
+            "top_speed": 171,
+            "mileage": 27.8,
+            "fuel_type": "Diesel",
+            "tyres": "Summer",
+            "trailer_hitch": true,
+            "transmission": {
+                "type": "manual",
+                "drive": "front"
+            }
+        }
+    },
+    {
+        "id": 2,
+        "make": "Daihatsu",
+        "model": "Cuore",
+        "variant": "L201",
+        "year": "1999",
+        "color": "Red",
+        "type": "Car",
+        "registration": {
+            "license": "AB11111",
+            "serial": "jdal701s001011911"
+        },
+        "specs": {
+            "horsepower": 41,
+            "top_speed": 120,
+            "mileage": 20.0,
+            "fuel_type": "Petrol",
+            "tyres": "Summer",
+            "trailer_hitch": false,
+            "transmission": {
+                "type": "manual",
+                "drive": "front"
+            }
+        }
+    }
+]
