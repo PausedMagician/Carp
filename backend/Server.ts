@@ -20,6 +20,9 @@ try {
 // Set the network port
 const port = process.env.PORT || 3000;
 
+// JSON Middleware
+app.use(express.json());
+
 // Define the root path with a greeting message
 app.get("/", (req: Request, res: Response) => {
     res.json({ message: "Welcome to the Express + TypeScript Server!" });
@@ -58,6 +61,14 @@ app.post('/maintenances', createMaintenance);
 app.get('/maintenances', getMaintenances);
 app.get('/maintenances/:id', getMaintenance);
 app.put('/maintenances', updateMaintenance);
+app.delete('/maintenances', deleteMaintenance);
+
+// Vehicle
+app.post('/vehicles', createVehicle);
+app.get('/vehicles', getVehicles);
+app.get('/vehicles/:id', getVehicle);
+app.put('/vehicles', updateVehicle);
+app.delete('/vehicles', deleteVehicle);
 
 
 
