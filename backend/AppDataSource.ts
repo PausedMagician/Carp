@@ -6,13 +6,14 @@ import { Vehicle } from "./entities/Vehicle";
 import { VehicleRegistration } from "./entities/VehicleRegistration";
 import { VehicleSpec } from "./entities/VehicleSpec";
 import { VehicleTransmission } from "./entities/VehicleTransmission";
+import { Maintenance } from "./entities/Maintenance";
 
 export const AppDataSource = new DataSource({
     type: "better-sqlite3",
     database: "database.sqlite",
     synchronize: true,
     logging: true,
-    entities: [Company, Employee, PersonalDetails, Vehicle, VehicleRegistration, VehicleSpec, VehicleTransmission],
+    entities: [Company, Employee, PersonalDetails, Vehicle, VehicleRegistration, VehicleSpec, VehicleTransmission, Maintenance],
     subscribers: [],
     migrations: [],
 })
