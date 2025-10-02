@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import express, { Request, Response } from "express";
 import { createCompany, getCompany, getCompanys, updateCompany, deleteCompany } from "./controllers/CompanyController";
 import { createBooking, getBooking, getBookings, updateBooking, deleteBooking } from "./controllers/BookingController";

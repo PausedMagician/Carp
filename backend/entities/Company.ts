@@ -5,9 +5,9 @@ export class Company {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({ type: "varchar" })
     name!: string
     
-    @Column()
+    @Column({ type: "varchar" })
     address!: string
 }

@@ -1,11 +1,12 @@
 import { DataSource } from "typeorm";
+import { Company } from "./entities/Company";
 
 export const AppDataSource = new DataSource({
-    type: "sqlite",
+    type: "better-sqlite3",
     database: "database.sqlite",
     synchronize: true,
     logging: true,
-    entities: [],
+    entities: [Company],
     subscribers: [],
     migrations: [],
 })
