@@ -1,16 +1,27 @@
-enum CarTypes {
+enum VehicleTypes {
     Car,
     Van
 }
+enum FuelTypes {
+    Petrol,
+    Diesel,
+    Electric,
+    Hybrid
+}
+enum TyreTypes {
+    Summer,
+    Winter,
+    AllSeason
+}
 
-export interface Car {
+export interface Vehicle {
     id: number
     make: string
     model: string
     variant: string
     year: string
     color: string
-    type: CarTypes
+    type: VehicleTypes
     registration: {
         license: string
         serial: string
@@ -19,7 +30,9 @@ export interface Car {
         horsepower: number
         top_speed: number
         mileage: number
-        trailer_hitch: string
+        fuel_type: FuelTypes
+        tyres: TyreTypes
+        trailer_hitch: boolean
         transmission: {
             type: string;
             drive: string;
@@ -48,10 +61,22 @@ export interface Booking {
     purpose: string
     start_date: Date
     end_date: Date
-    start_odometer: number
-    end_odometer: number
+    status: string
+    destination: string | null
     created_at: Date
     updated_at: Date
+}
+
+export interface Log {
+    id: number
+    user_id: number
+    booking_id: number
+    start_date: Date
+    end_date: Date | null
+    start_odometer: number
+    end_odometer: number | null
+    from_location: string
+    to_location: string | null
 }
 
 export interface Maintenance {
@@ -68,7 +93,7 @@ export interface Maintenance {
     }
 }
 
-var cars: Car[];
+var cars: Vehicle[];
 var users: User[];
 var bookings: Booking[];
 var maintenances: Maintenance[];
@@ -77,21 +102,21 @@ var isLoaded = false;
 export function loadFiles() {
     if (isLoaded) return;
     // Load json into cars
-    cars = require('./Data/Cars.json');
+    cars = require('./Data/Vehicles.json');
     users = require('./Data/Users.json');
     bookings = require('./Data/Bookings.json');
     maintenances = require('./Data/Maintenances.json');
     isLoaded = true;
 }
 
-export function getCars(): Car[] {
+export function getVehicles(): Vehicle[] {
     loadFiles();
     return cars;
 }
 
-export function getCar(id: number): Car | undefined {
+export function getVehicle(id: number): Vehicle | undefined {
     loadFiles();
-    return cars.find(car => car.id === id);
+    return cars.find(vehicle => vehicle.id === id);
 }
 
 export function getUsers(): User[] {

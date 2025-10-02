@@ -1,5 +1,5 @@
 import { styles } from "@/App";
-import { Booking, Car, getBookingsForCar, getCars } from "@/backend/Server";
+import { Booking, Vehicle, getBookingsForCar, getVehicles } from "@/backend/Server";
 import CarListItem from "@/components/CarListItem";
 // import { Car, getAll } from "@/types/Car";
 import { StatusBar } from "expo-status-bar";
@@ -8,7 +8,7 @@ import { View, Text, FlatList } from "react-native";
 
 
 export default function VehiclesScreen() {
-  const [cars, setCars] = useState<{car: Car, bookings: Booking[], isAvailable: boolean}[]>();
+  const [cars, setCars] = useState<{car: Vehicle, bookings: Booking[], isAvailable: boolean}[]>();
 
   // const loadCars = useCallback(async () => {
   //   try {
@@ -18,8 +18,8 @@ export default function VehiclesScreen() {
 
 
   useEffect(() => {
-    const map: {car: Car, bookings: Booking[], isAvailable: boolean}[] = [];
-    const cars = getCars();
+    const map: {car: Vehicle, bookings: Booking[], isAvailable: boolean}[] = [];
+    const cars = getVehicles();
     cars.forEach(car => {
       const bookings = getBookingsForCar(car.id);
       const now = new Date();
