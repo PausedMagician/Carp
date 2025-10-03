@@ -5,7 +5,7 @@
   "scripts": {
     "start": "expo start",
     "setup:typegen": "npx openapicmd@2.7.0",
-    "start:typegen": "npx openapicmd typegen http://localhost:3000/v1.json > types/openapi.d.ts",
+    "typegen": "npx openapicmd typegen http://localhost:3000/v1.json > types/openapi.d.ts",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"

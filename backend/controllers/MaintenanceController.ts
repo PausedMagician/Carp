@@ -1,26 +1,39 @@
+import { AppDataSource } from '@/AppDataSource';
+import { Maintenance } from '@/entities/Maintenance';
 import { Request, Response } from 'express';
 
-export const createMaintenance = (req: Request, res: Response) => {
-    // create
-    res.send('Created');
+const maintenanceRepository = AppDataSource.getRepository(Maintenance);
+
+export const createMaintenance = async (req: Request, res: Response) => {
+    const maintenance = maintenanceRepository.create(req.body);
+    await maintenanceRepository.insert(maintenance); // only persist maintenance as employee and vehicle should exists
+    res.status(201).json(maintenance);
 };
 
-export const getMaintenances = (req: Request, res: Response) => {
-    // read
-    res.send('Read many');
+
+export const getMaintenances = async (req: Request, res: Response) => {
+    res.json(await maintenanceRepository.find({relations: {
+        vehicle: true,
+        reportee: true
+    }}));
 };
 
-export const getMaintenance = (req: Request, res: Response) => {
-    // read
-    res.send('Read one');
+
+export const getMaintenance = async (req: Request, res: Response) => {
+    res.json(await maintenanceRepository.findOne({where: {id: parseInt(req.params.id)}, relations: {
+        vehicle: true,
+        reportee: true
+    }}));
 };
 
-export const updateMaintenance = (req: Request, res: Response) => {
-    // update
-    res.send('Update');
+
+export const updateMaintenance = async (req: Request, res: Response) => {
+    const maintenance = maintenanceRepository.create(req.body);
+    await maintenanceRepository.save(maintenance);
+    res.status(200).json(maintenance);
 };
 
 export const deleteMaintenance = (req: Request, res: Response) => {
-    // delete
-    res.send('Delete');
+    maintenanceRepository.delete(req.body);
+    res.status(200).json();
 };

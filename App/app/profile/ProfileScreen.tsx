@@ -1,4 +1,4 @@
-import { styles } from "@/App";
+import { styles } from "@/constants/Stylings";
 import { StatusBar } from "expo-status-bar";
 import { View, Text } from "react-native";
 
