@@ -51,6 +51,7 @@ const VehicleTransmissionRepository = AppDataSource.getRepository(VehicleTransmi
  * @swagger
  * /vehicles:
  *   post:
+ *     operationId: createVehicle
  *     summary: Create a new vehicle
  *     tags: [Vehicles]
  *     requestBody:
@@ -136,6 +137,7 @@ export const getVehicle = (req: Request, res: Response) => {
  * @swagger
  * /vehicles:
  *   put:
+ *     operationId: updateVehicle
  *     summary: Update a vehicle
  *     tags: [Vehicles]
  *     requestBody:
@@ -168,6 +170,7 @@ export const updateVehicle = async (req: Request, res: Response) => {
  * @swagger
  * /vehicles:
  *   delete:
+ *     operationId: deleteVehicle
  *     summary: Delete a vehicle
  *     tags: [Vehicles]
  *     requestBody:
