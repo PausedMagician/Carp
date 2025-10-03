@@ -1,6 +1,5 @@
 import { styles } from "@/App";
 import { Booking, Vehicle, getBookingsForVehicle, getVehicles } from "@/backend/Server";
-import { MyCarousel } from "@/components/CarCarousel";
 import CarListItem from "@/components/CarListItem";
 // import { Car, getAll } from "@/types/Car";
 import { StatusBar } from "expo-status-bar";
@@ -37,7 +36,6 @@ export default function VehiclesScreen() {
   return (
     <View style={styles.container}>
       <Text>Meow</Text>
-      <MyCarousel />
       {/* <Text>Cars: {cars.toString()}</Text> */}
       <FlatList
         data={cars}
