@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Employee } from "./Employee";
 import { Vehicle } from "./Vehicle";
 import { LogEntry } from "./LogEntry";
@@ -26,7 +26,8 @@ export class Booking {
     @ManyToOne(() => Employee, employee => employee.bookings)
     employee: Employee
 
-    @ManyToOne(() => Vehicle, vehicle => vehicle.bookings)
+    @ManyToOne(() => Vehicle, vehicle => vehicle.bookings, {eager: true})
+    @JoinTable()
     vehicle: Vehicle
 
     @OneToMany(() => LogEntry, logEntry => logEntry.booking)

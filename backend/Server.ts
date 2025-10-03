@@ -45,7 +45,12 @@ app.get('/v1.json', (req: Request, res: Response) => {
 
 try {
     AppDataSource.initialize().then(() => {
-        MockData.create();
+        // If app data source has 0 records in the vehicle table, then create mock data
+        AppDataSource.getRepository("vehicle").count().then((count) => {
+            if (count === 0) {
+                MockData.create();
+            }
+        });
     });
 } catch (error) {
     console.log(error);

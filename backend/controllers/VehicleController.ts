@@ -135,16 +135,32 @@ export const getVehicle = (req: Request, res: Response) => {
     }}));
 };
 
+/**
+ * @swagger
+ * /vehicles-available:
+ *  get:
+ *    operationId: getAvailableVehicles
+ *    summary: Get all available vehicles
+ *    tags: [Vehicles]
+ *    responses:
+ *      200:
+ *        description: List of all available vehicles
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Vehicle'
+ */
 export const getAvailableVehicles = async (req: Request, res: Response) => {
     const allVehicles = await vehicleRepository.find();
 
     const unavailableIds = await bookingRepository.createQueryBuilder("b")
-    .select("b.vehicleId")
-    .where("date('now') BETWEEN b.start_date AND b.end_date")
-    .getMany();
+        .select("b.vehicleId")
+        .where("b.start_date <= :now AND b.end_date >= :now", { now: new Date() })
+        .getRawMany();
 
     const availableVehicles = allVehicles.filter(vehicle => 
-        //@ts-expect-error
         !unavailableIds.some(booking => booking.vehicleId === vehicle.id)
     );
 

@@ -265,6 +265,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Log[];
         }
     }
+    namespace GetAvailableVehicles {
+        namespace Responses {
+            export type $200 = Components.Schemas.Vehicle[];
+        }
+    }
     namespace GetBookingById {
         namespace Parameters {
             export type Id = number;
@@ -469,6 +474,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetVehicleById.Responses.$200>
+  /**
+   * getAvailableVehicles - Get all available vehicles
+   */
+  'getAvailableVehicles'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetAvailableVehicles.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -631,6 +644,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetVehicleById.Responses.$200>
+  }
+  ['/vehicles-available']: {
+    /**
+     * getAvailableVehicles - Get all available vehicles
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetAvailableVehicles.Responses.$200>
   }
 }
 
