@@ -83,6 +83,7 @@ export const createVehicle = async (req: Request, res: Response) => {
  * @swagger
  * /vehicles:
  *   get:
+ *     operationId: getVehicles
  *     summary: Get all vehicles
  *     tags: [Vehicles]
  *     responses:
@@ -106,6 +107,7 @@ export const getVehicles = async (req: Request, res: Response) => {
  * @swagger
  * /vehicles/{id}:
  *   get:
+ *     operationId: getVehicleById
  *     summary: Get vehicle by ID
  *     tags: [Vehicles]
  *     parameters:

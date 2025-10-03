@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express, { Request, Response } from "express";
+import cors from 'cors';
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { createCompany, getCompany, getCompanys, updateCompany, deleteCompany } from "./controllers/CompanyController";
@@ -13,6 +14,8 @@ import { MockData } from "./Data/MockData";
 
 // Create a new express application instance
 const app = express();
+
+app.use(cors());
 
 const swaggerOptions = {
     definition: {
@@ -34,6 +37,11 @@ const swaggerOptions = {
 
 const specs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+app.get('/v1.json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(specs);
+});
 
 try {
     AppDataSource.initialize().then(() => {

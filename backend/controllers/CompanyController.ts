@@ -29,6 +29,7 @@ const companyRepository = AppDataSource.getRepository(Company);
  * @swagger
  * /companies:
  *   post:
+ *     operationId: createCompany
  *     summary: Create a new company
  *     tags: [Companies]
  *     requestBody:
@@ -54,7 +55,8 @@ export const createCompany = async (req: Request, res: Response) => {
 /**
  * @swagger
  * /companies:
- *   get:
+ *   get: 
+ *     operationId: getAllCompanies
  *     summary: Get all companies
  *     tags: [Companies]
  *     responses:
@@ -75,6 +77,7 @@ export const getCompanys = async (req: Request, res: Response) => {
  * @swagger
  * /companies/{id}:
  *   get:
+ *     operationId: getCompanyById
  *     summary: Get company by ID
  *     tags: [Companies]
  *     parameters:
@@ -100,6 +103,7 @@ export const getCompany = async (req: Request, res: Response) => {
  * @swagger
  * /companies:
  *   put:
+ *     operationId: updateCompany
  *     summary: Update a company
  *     tags: [Companies]
  *     requestBody:
@@ -126,6 +130,7 @@ export const updateCompany = async (req: Request, res: Response) => {
  * @swagger
  * /companies:
  *   delete:
+ *     operationId: deleteCompany
  *     summary: Delete a company
  *     tags: [Companies]
  *     requestBody:
