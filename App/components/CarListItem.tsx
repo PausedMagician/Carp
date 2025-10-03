@@ -1,26 +1,27 @@
-import { Car } from "@/types/Car";
+
+import { Vehicle } from "@/types/openapi";
 import { ListRenderItemInfo, Text, View, StyleSheet } from "react-native";
 
 
-export default function CarListItem(carEntry: ListRenderItemInfo<Car>) {
+export default function CarListItem(entry: ListRenderItemInfo<{car: Vehicle, isAvailable: boolean}>) {
     return (
-        <View style={[styles.container, !carEntry.item.isAvailable && styles.unavailableContainer]}>
+        <View style={[styles.container, !entry.item.isAvailable && styles.unavailableContainer]}>
             <View style={styles.header}>
-                <Text style={styles.name}> {carEntry.item.make} </Text>
-                <Text style={carEntry.item.isAvailable ? styles.price : styles.unavailableText}>
-                     ${carEntry.item.pricePerDay}/day
+                <Text style={styles.name}> {entry.item.car.make} </Text>
+                <Text style={entry.item.isAvailable ? styles.price : styles.unavailableText}>
+                     {entry.item.car.type}
                 </Text>
             </View>
 
-            <Text style={styles.model}> {carEntry.item.model} </Text>
-            <Text style={styles.year}> {carEntry.item.year} </Text>
+            <Text style={styles.model}> {entry.item.car.model} </Text>
+            <Text style={styles.year}> {entry.item.car.year} </Text>
 
             <View style={styles.availablilityContainer}>
                 <Text style={[
                     styles.availability,
-                    carEntry.item.isAvailable ? styles.available : styles.unavailable
+                    entry.item.isAvailable ? styles.available : styles.unavailable
                 ]}>
-                    {carEntry.item.isAvailable ? 'Available' : 'Unavailable'}
+                    {entry.item.isAvailable ? 'Available' : 'Unavailable'}
                 </Text>
             </View>
         </View>
