@@ -40,9 +40,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    /* DONE-TODO: Wrap children with AuthContext.Provider */
-    <AuthContext value={contextValue}>
+    <AuthContext.Provider value={contextValue}>
       {children}
-    </AuthContext>
+    </AuthContext.Provider>
   );
 }

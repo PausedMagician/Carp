@@ -1,6 +1,6 @@
-import HomeScreen from "./Home";
+import HomeScreen from "./HomeScreen";
 import VehiclesScreen from "./vehicles/VehiclesScreen";
-import LoginScreen from "./login/Login";
+import LoginScreen from "./login/LoginScreen";
 
 // Export all screens
 export { HomeScreen, VehiclesScreen as VehicleScreen, LoginScreen };
