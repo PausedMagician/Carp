@@ -1,4 +1,4 @@
-import { styles } from "@/App";
+import { styles } from "@/constants/Stylings";
 import { client } from "@/backend/Server";
 import CarListItem from "@/components/CarListItem";
 import { Vehicle } from "@/types/openapi";
