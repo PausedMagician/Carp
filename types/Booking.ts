@@ -40,6 +40,46 @@ export interface Booking {
     updated_at: string | null;
 }
 
+export interface Log {
+    id: number;
+    user_id: number;
+    booking_id: number;
+    start_date: string;
+    end_date: string;
+    start_odometer: number;
+    end_odometer: number;
+    from_location: string;
+    to_location: string;
+}
+
+export interface Maintenance {
+    id: number;
+    car_id: number;
+    user_id: number | null;
+    reason: string;
+    status: string;
+    log: string;
+    schedule: {
+        maintenance_planned_at: string;
+        maintenance_planned_for: string;
+        maintenance_done_at: string;
+    };
+}
+
+export interface User {
+    id: number;
+    username: string;
+    password: string;
+    email: string;
+    personal_details: {
+        first_name: string;
+        last_name: string;
+        birthdate: string;
+    };
+    created_at: string;
+    updated_at: string | null;
+}
+
 export type HomeStackParamList = {
     Dashboard: undefined;
     BookingDate: { vehicle: Vehicle };
