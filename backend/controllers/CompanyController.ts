@@ -13,7 +13,6 @@ const companyRepository = AppDataSource.getRepository(Company);
  *       required:
  *         - name
  *         - address
- *         - contactNumber
  *       properties:
  *         id:
  *           type: integer
