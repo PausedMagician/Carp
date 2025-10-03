@@ -6,6 +6,44 @@ import { Request, Response } from 'express';
 const employeeRepository = AppDataSource.getRepository(Employee);
 const personalDetailsRepository = AppDataSource.getRepository(PersonalDetails);
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Employee:
+ *       type: object
+ *       required:
+ *         - id
+ *         - username
+ *         - password
+ *         - email
+ *         - department
+ *         - personal_details
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID
+ *         username:
+ *           type: string
+ *           description: Employee username
+ *         password:
+ *           type: string
+ *           description: Employee password
+ *         email:
+ *           type: string
+ *           description: Employee email
+ *         department:
+ *           type: string
+ *           description: Employee department
+ *         personal_details:
+ *           $ref: '#/components/schemas/PersonalDetails'
+ *       example:
+ *         id: 1
+ *         username: johndoe
+ *         password: securepassword
+ *         email: johndoe@example.com
+ */
+
 export const createEmployee = async (req: Request, res: Response) => {
     const obj = employeeRepository.create(req.body);
     //@ts-expect-error

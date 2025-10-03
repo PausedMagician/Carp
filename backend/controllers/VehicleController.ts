@@ -10,6 +10,63 @@ const vehicleRegistrationRepository = AppDataSource.getRepository(VehicleRegistr
 const vehicleSpecRepository = AppDataSource.getRepository(VehicleSpec);
 const VehicleTransmissionRepository = AppDataSource.getRepository(VehicleTransmission);
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Vehicle:
+ *       type: object
+ *       required:
+ *         - make
+ *         - model
+ *         - variant
+ *         - color
+ *         - type
+ *         - year
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID
+ *         make:
+ *           type: string
+ *           description: Vehicle manufacturer
+ *         model:
+ *           type: string
+ *           description: Vehicle model
+ *         variant:
+ *           type: string
+ *           description: Vehicle variant
+ *         color:
+ *           type: string
+ *           description: Vehicle color
+ *         type:
+ *           type: string
+ *           description: Vehicle type
+ *         year:
+ *           type: integer
+ *           description: Manufacturing year
+ */
+
+/**
+ * @swagger
+ * /vehicles:
+ *   post:
+ *     summary: Create a new vehicle
+ *     tags: [Vehicles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Vehicle'
+ *     responses:
+ *       201:
+ *         description: Vehicle created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Vehicle'
+ */
 export const createVehicle = async (req: Request, res: Response) => {
     const obj = vehicleRepository.create(req.body);
     //@ts-expect-error
@@ -22,6 +79,22 @@ export const createVehicle = async (req: Request, res: Response) => {
     res.status(201).json(obj);
 };
 
+/**
+ * @swagger
+ * /vehicles:
+ *   get:
+ *     summary: Get all vehicles
+ *     tags: [Vehicles]
+ *     responses:
+ *       200:
+ *         description: List of all vehicles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Vehicle'
+ */
 export const getVehicles = async (req: Request, res: Response) => {
     res.json(await vehicleRepository.find({relations: {
         registration: true,
@@ -29,6 +102,27 @@ export const getVehicles = async (req: Request, res: Response) => {
     } }));
 };
 
+/**
+ * @swagger
+ * /vehicles/{id}:
+ *   get:
+ *     summary: Get vehicle by ID
+ *     tags: [Vehicles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Vehicle ID
+ *     responses:
+ *       200:
+ *         description: Vehicle details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Vehicle'
+ */
 export const getVehicle = (req: Request, res: Response) => {
     res.json(vehicleRepository.findOne({where: {id: parseInt(req.params.id)}, relations: {
         registration: true,
@@ -36,6 +130,26 @@ export const getVehicle = (req: Request, res: Response) => {
     }}));
 };
 
+/**
+ * @swagger
+ * /vehicles:
+ *   put:
+ *     summary: Update a vehicle
+ *     tags: [Vehicles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Vehicle'
+ *     responses:
+ *       200:
+ *         description: Vehicle updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Vehicle'
+ */
 export const updateVehicle = async (req: Request, res: Response) => {
     const obj = vehicleRepository.create(req.body);
     //@ts-expect-error
@@ -48,6 +162,22 @@ export const updateVehicle = async (req: Request, res: Response) => {
     res.status(200).json(obj);
 };
 
+/**
+ * @swagger
+ * /vehicles:
+ *   delete:
+ *     summary: Delete a vehicle
+ *     tags: [Vehicles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Vehicle'
+ *     responses:
+ *       200:
+ *         description: Vehicle deleted successfully
+ */
 export const deleteVehicle = (req: Request, res: Response) => {
     vehicleRepository.delete(req.body);
     res.status(200).json();
