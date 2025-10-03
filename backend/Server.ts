@@ -1,20 +1,59 @@
 import "reflect-metadata";
 import express, { Request, Response } from "express";
+import cors from 'cors';
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import { createCompany, getCompany, getCompanys, updateCompany, deleteCompany } from "./controllers/CompanyController";
 import { createBooking, getBooking, getBookings, updateBooking, deleteBooking } from "./controllers/BookingController";
 import { createEmployee, getEmployee, getEmployees, updateEmployee, deleteEmployee } from "./controllers/EmployeeController";
 import { createLog, getLog, getLogs, updateLog, deleteLog } from "./controllers/LogController";
 import { createMaintenance, getMaintenance, getMaintenances, updateMaintenance, deleteMaintenance } from "./controllers/MaintenanceController";
-import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle } from "./controllers/VehicleController";
+import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle, getAvailableVehicles } from "./controllers/VehicleController";
 import { AppDataSource } from "./AppDataSource";
+import { MockData } from "./Data/MockData";
 
 // Create a new express application instance
 const app = express();
 
+app.use(cors());
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Carp Fleet Management API',
+            version: '1.0.0',
+            description: 'A fleet management system API for vehicles, employees, bookings, and maintenance',
+        },
+        servers: [
+            {
+                url: 'http://localhost:3000',
+                description: 'Development server',
+            },
+        ],
+    },
+    apis: ['./controllers/*.ts', './entities/*.ts'], // paths to files containing OpenAPI definitions
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+app.get('/v1.json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(specs);
+});
+
 try {
-    AppDataSource.initialize()
+    AppDataSource.initialize().then(() => {
+        // If app data source has 0 records in the vehicle table, then create mock data
+        AppDataSource.getRepository("vehicle").count().then((count) => {
+            if (count === 0) {
+                MockData.create();
+            }
+        });
+    });
 } catch (error) {
-    console.log(error)
+    console.log(error);
 }
 
 // Set the network port
@@ -67,6 +106,7 @@ app.delete('/maintenances', deleteMaintenance);
 app.post('/vehicles', createVehicle);
 app.get('/vehicles', getVehicles);
 app.get('/vehicles/:id', getVehicle);
+app.get('/vehicles-available', getAvailableVehicles)
 app.put('/vehicles', updateVehicle);
 app.delete('/vehicles', deleteVehicle);
 

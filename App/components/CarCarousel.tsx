@@ -3,15 +3,21 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import CarCarouselItem from './CarCarouselItem';
-import { getVehicles, Vehicle } from '@/backend/Server';
+import { Vehicle } from '@/types/openapi';
+import { client } from '@/backend/Server';
 
 const width = Dimensions.get("screen").width;
+const height = Dimensions.get("screen").height;
 
 export function MyCarousel() {
     const [data, setData] = useState<Vehicle[]>([]);
 
     useEffect(() => {
-        setData(getVehicles());
+        client.then((c) => {
+            c.getAvailableVehicles().then((vehicles) => {
+                setData(vehicles.data);
+            });
+        })
     }, []);
 
     const ref = React.useRef<ICarouselInstance>(null);
@@ -31,8 +37,8 @@ export function MyCarousel() {
         <View style={{ flex: 1 }}>
             <Carousel
                 ref={ref}
-                width={width}
-                height={width} 
+                width={800}
+                height={height / 2} 
                 data={data}
                 onProgressChange={progress}
                 renderItem={({ index }) => (
@@ -44,7 +50,7 @@ export function MyCarousel() {
                 progress={progress}
                 data={data}
                 dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
-                containerStyle={{ gap: 5, marginTop: 30 }}
+                containerStyle={{ gap: 5, marginTop: 20 }}
                 onPress={onPressPagination}
             />
         </View>
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'floralwhite',
         borderRadius: 5,
         height: 300,
-        padding: 50,
+        padding: 10,
         marginLeft: 25,
         marginRight: 25
     },

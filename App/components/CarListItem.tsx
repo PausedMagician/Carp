@@ -1,8 +1,9 @@
-import { Booking, Vehicle } from "@/backend/Server";
+
+import { Vehicle } from "@/types/openapi";
 import { ListRenderItemInfo, Text, View, StyleSheet } from "react-native";
 
 
-export default function CarListItem(entry: ListRenderItemInfo<{car: Vehicle, bookings: Booking[], isAvailable: boolean}>) {
+export default function CarListItem(entry: ListRenderItemInfo<{car: Vehicle, isAvailable: boolean}>) {
     return (
         <View style={[styles.container, !entry.item.isAvailable && styles.unavailableContainer]}>
             <View style={styles.header}>

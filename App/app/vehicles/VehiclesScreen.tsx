@@ -1,6 +1,7 @@
-import { styles } from "@/App";
-import { Booking, Vehicle, getBookingsForVehicle, getVehicles } from "@/backend/Server";
+import { styles } from "@/constants/Stylings";
+import { client } from "@/backend/Server";
 import CarListItem from "@/components/CarListItem";
+import { Vehicle } from "@/types/openapi";
 // import { Car, getAll } from "@/types/Car";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useState } from "react";
@@ -8,7 +9,7 @@ import { View, Text, FlatList } from "react-native";
 
 
 export default function VehiclesScreen() {
-  const [cars, setCars] = useState<{car: Vehicle, bookings: Booking[], isAvailable: boolean}[]>();
+  const [cars, setCars] = useState<{car: Vehicle, isAvailable: boolean}[]>();
 
   // const loadCars = useCallback(async () => {
   //   try {
@@ -18,19 +19,11 @@ export default function VehiclesScreen() {
 
 
   useEffect(() => {
-    const map: {car: Vehicle, bookings: Booking[], isAvailable: boolean}[] = [];
-    const cars = getVehicles();
-    cars.forEach(car => {
-      const bookings = getBookingsForVehicle(car.id);
-      const now = new Date();
-      const isAvailable = bookings.every(booking => {
-          const start = new Date(booking.start_date);
-          const end = new Date(booking.end_date);
-          return now < start || now > end;
-      });
-      map.push({car, bookings, isAvailable});
-    });
-    setCars(map);
+    const map: {car: Vehicle, isAvailable: boolean}[] = [];
+    client.then(c => c.getVehicles().then(vehicles => {
+      vehicles.data.forEach(v => map.push({car: v, isAvailable: true})); // TODO: isAvailable
+      setCars(map);
+    })).catch(err => console.error(err));
   }, [])
 
   return (

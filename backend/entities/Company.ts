@@ -13,9 +13,9 @@ export class Company {
     @Column({ type: "varchar" })
     address!: string
 
-    @OneToMany(() => Employee, employee => employee.company)
-    employees: Employee[];
+    @OneToMany(() => Employee, employee => employee.company, { nullable: true })
+    employees: Employee[] | null;
 
-    @OneToMany(() => Vehicle, vehicle => vehicle.company)
-    vehicles: Vehicle[];
+    @OneToMany(() => Vehicle, vehicle => vehicle.company, { nullable: true })
+    vehicles: Vehicle[] | null;
 }
