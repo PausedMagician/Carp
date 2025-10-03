@@ -1,17 +1,22 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { HomeScreen, VehicleScreen, LoginScreen, SettingsScreen } from './app/Screens';
 import { AuthContext, AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './hooks/UseAuth';
 import Feather from '@expo/vector-icons/Feather';
+import { ThemeContext } from "@/contexts/ThemeContext";
+import { settingsStyles } from '@/app/settings/SettingsStyles';
+import { useThemedStyles } from './hooks/useThemedStyles';
 
 const Tab = createBottomTabNavigator();
 
 function Navigator() {
-    const auth = useAuth();
+	const { darkMode } = useContext(ThemeContext);
+	const s = useThemedStyles(settingsStyles);
+	const auth = useAuth();
 
     if (auth.user == null) {
         return (
@@ -25,7 +30,12 @@ function Navigator() {
     }
 
 	return (
-		<Tab.Navigator initialRouteName="Home">
+		<Tab.Navigator initialRouteName="Home" screenOptions={{
+          tabBarStyle: {
+            backgroundColor: darkMode ? "#555" : "#bbb",
+          },
+		  headerStyle: { backgroundColor: darkMode ? "#555" : "#fff"}
+		}}>
 			<Tab.Screen
 				name="Vehicles"
 				component={VehicleScreen}
@@ -38,9 +48,9 @@ function Navigator() {
 			name="Settings"
 			component={SettingsScreen}
 			options={{
-				headerShown: false, // your stack handles headers
-				tabBarIcon: ({ size }) => (
-				<Feather name="settings" size={20} />
+				headerShown: false, // Stack in settings handles headers itself
+				tabBarIcon: ({ size, color }) => (
+				<Feather name="settings" size={20} color={s.rowText.color}  />
 				),
 			}}
 			/>
@@ -50,13 +60,17 @@ function Navigator() {
 }
 
 export default function App() {
-	return (
-        <AuthProvider>
-            <NavigationContainer>
-                <Navigator />
-            </NavigationContainer>
-        </AuthProvider>
-	);
+  const [darkMode, setDarkMode] = useState(false);
+
+  return (
+    <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
+      <AuthProvider>
+        <NavigationContainer theme={darkMode ? DarkTheme : DefaultTheme}>
+          <Navigator />
+        </NavigationContainer>
+      </AuthProvider>
+    </ThemeContext.Provider>
+  );
 }
 
 export const styles = StyleSheet.create({
