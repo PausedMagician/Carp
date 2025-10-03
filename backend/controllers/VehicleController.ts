@@ -1,4 +1,5 @@
 import { AppDataSource } from '@/AppDataSource';
+import { Booking } from '@/entities/Booking';
 import { Vehicle } from '@/entities/Vehicle';
 import { VehicleRegistration } from '@/entities/VehicleRegistration';
 import { VehicleSpec } from '@/entities/VehicleSpec';
@@ -9,6 +10,7 @@ const vehicleRepository = AppDataSource.getRepository(Vehicle);
 const vehicleRegistrationRepository = AppDataSource.getRepository(VehicleRegistration);
 const vehicleSpecRepository = AppDataSource.getRepository(VehicleSpec);
 const VehicleTransmissionRepository = AppDataSource.getRepository(VehicleTransmission);
+const bookingRepository = AppDataSource.getRepository(Booking);
 
 /**
  * @swagger
@@ -132,6 +134,22 @@ export const getVehicle = (req: Request, res: Response) => {
         spec: true
     }}));
 };
+
+export const getAvailableVehicles = async (req: Request, res: Response) => {
+    const allVehicles = await vehicleRepository.find();
+
+    const unavailableIds = await bookingRepository.createQueryBuilder("b")
+    .select("b.vehicleId")
+    .where("date('now') BETWEEN b.start_date AND b.end_date")
+    .getMany();
+
+    const availableVehicles = allVehicles.filter(vehicle => 
+        //@ts-expect-error
+        !unavailableIds.some(booking => booking.vehicleId === vehicle.id)
+    );
+
+    res.json(availableVehicles);
+}
 
 /**
  * @swagger
