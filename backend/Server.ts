@@ -5,7 +5,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { createCompany, getCompany, getCompanys, updateCompany, deleteCompany } from "./controllers/CompanyController";
 import { createBooking, getBooking, getBookings, updateBooking, deleteBooking } from "./controllers/BookingController";
-import { createEmployee, getEmployee, getEmployees, updateEmployee, deleteEmployee } from "./controllers/EmployeeController";
+import { createEmployee, getEmployee, getEmployees, updateEmployee, deleteEmployee, login } from "./controllers/EmployeeController";
 import { createLog, getLog, getLogs, updateLog, deleteLog } from "./controllers/LogController";
 import { createMaintenance, getMaintenance, getMaintenances, updateMaintenance, deleteMaintenance } from "./controllers/MaintenanceController";
 import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle, getAvailableVehicles, getVehicleBookingsById } from "./controllers/VehicleController";
@@ -85,6 +85,7 @@ app.delete('/bookings', deleteBooking);
 
 // Employee
 app.post('/employees', createEmployee);
+app.post('/employees/login', login);
 app.get('/employees', getEmployees);
 app.get('/employees/:id', getEmployee);
 app.put('/employees', updateEmployee);

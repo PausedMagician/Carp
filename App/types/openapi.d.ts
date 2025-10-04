@@ -522,6 +522,17 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Vehicle[];
         }
     }
+    namespace Login {
+        export interface RequestBody {
+            username?: string;
+            password?: string;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Employee;
+            export interface $401 {
+            }
+        }
+    }
     namespace UpdateBooking {
         export type RequestBody = Components.Schemas.Booking;
         namespace Responses {
@@ -688,6 +699,14 @@ export interface OperationMethods {
     data?: Paths.DeleteEmployee.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
+  /**
+   * login - Employee login
+   */
+  'login'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.Login.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.Login.Responses.$200>
   /**
    * getVehicleImage - Get vehicle image
    */
@@ -950,6 +969,16 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
   }
   ['/employees/{id}']: {
+  }
+  ['/employees/login']: {
+    /**
+     * login - Employee login
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.Login.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.Login.Responses.$200>
   }
   ['/images/vehicles/{id}']: {
     /**
