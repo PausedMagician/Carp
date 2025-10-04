@@ -105,7 +105,7 @@ export const createEmployee = async (req: Request, res: Response) => {
  *                 $ref: '#/components/schemas/Employee'
  */
 export const getEmployees = async (req: Request, res: Response) => {
-    res.json(await employeeRepository.find());
+    res.json(await employeeRepository.find({ relations: ['personal_details'] }));
 };
 
 /**
@@ -130,7 +130,10 @@ export const getEmployees = async (req: Request, res: Response) => {
  *               $ref: '#/components/schemas/Employee'
  */
 export const getEmployee = async (req: Request, res: Response) => {
-    res.json(await employeeRepository.findOne({where: {id: parseInt(req.params.id)} }));
+    res.json(await employeeRepository.findOne({
+        where: { id: parseInt(req.params.id) },
+        relations: ['personal_details']
+    }));
 };
 
 /**
