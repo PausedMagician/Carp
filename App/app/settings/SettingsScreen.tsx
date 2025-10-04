@@ -7,14 +7,26 @@ import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { settingsStyles } from "./SettingsStyles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { useAuth } from '@/hooks/UseAuth';
 
 const Stack = createStackNavigator();
 
 // Account card component
-function AccountCard() {
+export function AccountCard() {
   const navigation = useNavigation<any>();
   const { darkMode } = useContext(ThemeContext);
   const s = useThemedStyles(settingsStyles);
+  const { user } = useAuth();
+
+  if (!user) {
+    return (
+      <View style={s.accountCard}>
+        <Text style={s.accountName}>Not logged in</Text>
+      </View>
+    );
+  }
+
+  const fullName = `${user.personal_details.first_name} ${user.personal_details.last_name}`;
 
   return (
     <View style={s.accountCard}>
@@ -22,10 +34,10 @@ function AccountCard() {
         <MaterialCommunityIcons name="face-man-profile" size={70} color={darkMode ? "#fff" : "#000"} />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={s.accountName}>Sig Mason</Text>
-        <Text style={s.accountEmail}>Sigmason@company.com</Text>
-        <Text style={s.accountEmail}>+45 12 21 54 65</Text>
-        <Text style={s.accountRole}>Fleet Manager</Text>
+        <Text style={s.accountName}>{fullName}</Text>
+        <Text style={s.accountEmail}>{user.email}</Text>
+        <Text style={s.accountEmail}>{user.username}</Text>
+        <Text style={s.accountRole}>{user.department}</Text>
       </View>
       <TouchableOpacity style={s.editButton} onPress={() => navigation.navigate("Account")}>
         <Text style={s.editButtonText}>Edit</Text>
@@ -70,7 +82,7 @@ function GeneralSettings({ navigation }: any) {
         <Text style={s.rowText}>Dark Mode</Text>
         <Switch
           value={darkMode}
-          onValueChange={setDarkMode}
+          onValueChange={(value: boolean) => setDarkMode(value)}
           trackColor={{ false: "#767577", true: "#007AFF" }}
           thumbColor={darkMode ? "#fff" : "#f4f3f4"}
         />
