@@ -221,3 +221,44 @@ export const deleteVehicle = async (req: Request, res: Response) => {
     await vehicleRepository.delete(req.body);
     res.status(200).json();
 };
+
+/**
+ * @swagger
+ * /vehicles/available/{id}:
+ *   get:
+ *     operationId: getAvailableVehicleById
+ *     summary: Get available vehicle by ID
+ *     tags: [Vehicles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Vehicle ID
+ *     responses:
+ *       200:
+ *         description: Available vehicle details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - $ref: '#/components/schemas/Booking'
+ *                 - type: 'null'
+ *       404:
+ *         description: No vehicle found matching id.
+ */
+export const getVehicleBookingsById = async (req: Request, res: Response) => {
+    const vehicleId = parseInt(req.params.id);
+    const vehicle = await vehicleRepository.findOneBy({id: vehicleId});
+    if (!vehicle) {
+        res.status(404).json();
+    } else {
+        const bookings = await bookingRepository.createQueryBuilder("b")
+            .select("b")
+            .where("b.start_date <= :now AND b.end_date >= :now", { now: new Date() })
+            .andWhere("b.vehicleId = :vehicleId", { vehicleId })
+            .getMany();
+        res.json(bookings);
+    }
+};
