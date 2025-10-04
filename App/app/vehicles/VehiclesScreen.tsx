@@ -2,10 +2,6 @@ import {StatusBar} from "expo-status-bar";
 import {useCallback, useEffect, useState} from "react";
 import {View, Text, FlatList} from "react-native";
 
-import { styles } from "@/constants/Stylings";
-import { useThemedStyles } from "@/hooks/useThemedStyles";
-import CarListItem from "@/components/CarListItem";
-import { ThemeContext } from "@/contexts/ThemeContext";
 import { client } from "@/backend/Server";
 import { Vehicle } from "@/types/openapi";
 import { useBooking } from "@/hooks/UseBooking";
@@ -23,8 +19,14 @@ export default function VehiclesScreen() {
     const {checkAvailability} = useBooking();
 
     useEffect(() => {
-        loadVehicles();
-    }, []);
+        client
+            .then(c => c.getVehicles())
+            .then(res => {
+            const data = Array.isArray(res) ? res : res.data;
+            setVehicles(data.map(v => ({ car: v, isAvailable: true })));
+            })
+            .catch(err => console.error("Error loading vehicles:", err));
+        }, []);
 
     /**
      * ToDo: Load vehicles from backend and check their availability
@@ -63,13 +65,13 @@ export default function VehiclesScreen() {
     }, [])
 
     return (
-        <View style={styles.container}>
+        <View>
             <Text>Meow</Text>
             {/* <Text>Cars: {cars.toString()}</Text> */}
             <FlatList
-                data={vehicles}
-                renderItem={CarListItem}
-            />
+  data={vehicles}
+  renderItem={(info) => <CarListItem {...info} />}
+/>
             <StatusBar style="auto"/>
             {/* <Navigator /> */}
         </View>

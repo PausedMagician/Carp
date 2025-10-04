@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { View, Text, Switch, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Switch, TouchableOpacity, ScrollView, Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
-import { settingsStyles as s } from "./SettingsStyles";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-
-import { settingsStyles as s } from "./SettingsStyles";
-
+import { useNavigation } from "@react-navigation/native";
+import React, { useContext } from "react";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { settingsStyles } from "./SettingsStyles";
+import { ThemeContext } from "@/contexts/ThemeContext";
+import { useAuth } from '@/hooks/UseAuth';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 
@@ -81,7 +82,7 @@ function GeneralSettings({ navigation }: any) {
         <Text style={s.rowText}>Dark Mode</Text>
         <Switch
           value={darkMode}
-          onValueChange={(value: boolean) => setDarkMode(value)}
+          onValueChange={setDarkMode}
           trackColor={{ false: "#767577", true: "#007AFF" }}
           thumbColor={darkMode ? "#fff" : "#f4f3f4"}
         />
