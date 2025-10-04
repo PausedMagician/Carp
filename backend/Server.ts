@@ -11,6 +11,7 @@ import { createMaintenance, getMaintenance, getMaintenances, updateMaintenance, 
 import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle, getAvailableVehicles, getVehicleBookingsById } from "./controllers/VehicleController";
 import { AppDataSource } from "./AppDataSource";
 import { MockData } from "./Data/MockData";
+import { getVehicleImage } from "./controllers/ImageController";
 
 // Create a new express application instance
 const app = express();
@@ -111,6 +112,9 @@ app.get('/vehicles-available', getAvailableVehicles);
 app.get('/vehicles/available/:id', getVehicleBookingsById); // Subject to change
 app.put('/vehicles', updateVehicle);
 app.delete('/vehicles', deleteVehicle);
+
+// Images
+app.get('/images/vehicles/:id', getVehicleImage);
 
 
 

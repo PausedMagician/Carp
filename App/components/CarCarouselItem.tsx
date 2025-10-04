@@ -1,8 +1,10 @@
+import { client } from "@/backend/Server";
 import { Vehicle } from "@/types/openapi";
 import { useAssets } from "expo-asset";
 import { Image } from "expo-image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { fromByteArray } from 'base64-js';
 
 
 export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
@@ -25,7 +27,18 @@ export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
         }
     }
 
-    const [assets, error] = useAssets([require("../assets/images/cars/1.png"), require("../assets/images/cars/2.png")])
+    const [image, setImage] = useState<{ uri: string } | null>(null);
+
+    useEffect(() => {
+        client.then(async (c) => {
+            c.getVehicleImage(vehicle.id!, null, { responseType: 'arraybuffer' }).then(response => {
+                //@ts-expect-error
+                const base64String = fromByteArray(new Uint8Array(response.data));
+                const imageUri = `data:image/png;base64,${base64String}`;
+                setImage({ uri: imageUri });
+            });
+        });
+    }, [vehicle.id]);
 
     return (
         // Replace mock data with actual data when db ready
@@ -37,7 +50,7 @@ export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
         >
             {/* <Image source={{ uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FFcp63ROWYAE4aU0.png&f=1&nofb=1&ipt=25161646c178644682cf0bcb2c879914af17bd8f164a9009209124dbbd9d2996" }} style={styles.image} 
             pointerEvents="none"/> */}
-            {assets && (<Image source={assets[vehicle.id! % 2]} style={styles.image} pointerEvents="none" />)}
+            <Image source={image} style={styles.image} pointerEvents="none" />
             <Text style={styles.title}>{vehicle.make} {vehicle.model}</Text>
             <Text style={styles.text}>Distance Covered: 300 nmi  </Text>
             <Text style={styles.text}>Last Serviced: {vehicle.year}</Text>

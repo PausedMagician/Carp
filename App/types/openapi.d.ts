@@ -504,6 +504,19 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Vehicle;
         }
     }
+    namespace GetVehicleImage {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = string; // arraybuffer
+            export interface $404 {
+            }
+        }
+    }
     namespace GetVehicles {
         namespace Responses {
             export type $200 = Components.Schemas.Vehicle[];
@@ -675,6 +688,14 @@ export interface OperationMethods {
     data?: Paths.DeleteEmployee.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
+  /**
+   * getVehicleImage - Get vehicle image
+   */
+  'getVehicleImage'(
+    parameters?: Parameters<Paths.GetVehicleImage.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetVehicleImage.Responses.$200>
   /**
    * getAllLogs - Get all logs
    */
@@ -929,6 +950,16 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
   }
   ['/employees/{id}']: {
+  }
+  ['/images/vehicles/{id}']: {
+    /**
+     * getVehicleImage - Get vehicle image
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetVehicleImage.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetVehicleImage.Responses.$200>
   }
   ['/logs']: {
     /**
