@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import CarCarouselItem from './CarCarouselItem';
 import { Vehicle } from '@/types/openapi';
 import { client } from '@/backend/Server';
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 export function MyCarousel() {
     const [data, setData] = useState<Vehicle[]>([]);
+    const { width, height } = useWindowDimensions();
 
     useEffect(() => {
         client.then((c) => {
@@ -63,7 +62,6 @@ const styles = StyleSheet.create({
     slide: {
         backgroundColor: 'floralwhite',
         borderRadius: 5,
-        height: 300,
         padding: 10,
         marginLeft: 25,
         marginRight: 25

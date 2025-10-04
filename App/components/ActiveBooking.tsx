@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, useWindowDimensions } from "react-native";
 import { Booking, Vehicle } from "@/types/openapi";
 import { client } from "@/backend/Server";
+import moment from "moment";
 
 export function ActiveBooking({ booking}: { booking: Booking | null }) {
     const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+    const {width, height} = useWindowDimensions();
 
     useEffect(() => {
         if (!booking) return;
@@ -14,12 +16,26 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
 
     return (
         <View style={styles.container}>
-            <Text>Active Booking</Text>
+            <Text style={styles.title}>Your current bookings</Text>
             {vehicle && (
-                <>
-                    <Text>Vehicle: {vehicle.make} {vehicle.model}</Text> 
-                </>)
-            }
+                <View style={[styles.card,{ width: width * 0.9 }]}>
+                    <View style={styles.leftSection}>
+                        <Image 
+                            source={{ uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FFcp63ROWYAE4aU0.png&f=1&nofb=1&ipt=25161646c178644682cf0bcb2c879914af17bd8f164a9009209124dbbd9d2996" }} 
+                            style={styles.vehicleImage}
+                            />
+                        <Text style={styles.vehicleName}>
+                            {vehicle.make} {vehicle.model}
+                        </Text>
+                    </View>
+                    <View style={styles.rightSection}>
+                        <Text style={styles.bookingDate}>
+                            Booking Date: {moment(booking?.start_date).format('YYYY-MM-DD')} to {moment(booking?.end_date).format('YYYY-MM-DD')}
+                        </Text>
+                    
+                    </View>
+                </View>
+            )}
         </View>
     );
 }
@@ -27,5 +43,57 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
 const styles = StyleSheet.create({
     container: {
         flex: 3,
+        padding: 16,
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 12,
+        alignSelf: 'center',
+    },
+    card: {
+        flexDirection: 'row',
+        backgroundColor: '#420ce3ff',
+        borderRadius: 8,
+        padding: 10,
+        paddingLeft: 16,
+        paddingRight: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    vehicleImage: {
+        width: '100%',
+        height: 80,
+        borderRadius: 8,
+    },
+    details: {
+        marginLeft: 12,
+        justifyContent: 'center',
+        position: 'relative',
+    },
+    vehicleName: {
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 4,
+        flexWrap: 'wrap',
+    },
+    bookingDate: {
+        fontSize: 14,
+        color: '#666',
+    },
+    rightSection: {
+        marginLeft: 16,
+        justifyContent: 'center',
+        flex: 1,
+        flexShrink: 1,
+    },
+    leftSection: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 3,
+        borderRadius: 8,
     },
 });

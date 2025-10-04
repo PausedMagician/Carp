@@ -1,12 +1,16 @@
+import { useBooking } from "@/hooks/UseBooking";
 import { Vehicle } from "@/types/openapi";
 import { useAssets } from "expo-asset";
 import { Image } from "expo-image";
+import moment from "moment";
 import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 
 export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
     const [pressStart, setPressStart] = useState({ x: 0, y: 0, time: 0 });
+
+    const bookingContext = useBooking();
 
     const handlePressIn = (event: any) => {
         setPressStart({
@@ -21,7 +25,11 @@ export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
         const duration = Date.now() - pressStart.time;
 
         if (moveX < 10 && moveY < 10 && duration < 200) {
-            alert(`${vehicle.make} ${vehicle.model} Clicked!`);
+            bookingContext.setSelectedVehicle(vehicle);
+            const fromTime = moment().startOf('day');
+            const toTime = moment().startOf('day').add(1, 'day');
+            bookingContext.setDateRange(fromTime.toDate(), toTime.toDate());
+            alert(`Selected ${vehicle.make} ${vehicle.model} for booking.\nFrom: ${fromTime.format('YYYY-MM-DD')}\nTo: ${toTime.format('YYYY-MM-DD')}`);
         }
     }
 
