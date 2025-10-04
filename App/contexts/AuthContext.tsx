@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
+import type { Employee } from "@/types/openapi";
 
 export interface PersonalDetails {
   first_name: string;
@@ -13,6 +14,10 @@ export interface User {
   department?: string;
   personal_details: PersonalDetails;
 }
+
+const users: User[] = [
+  {username: "User", password: "Pass"}
+]
 
 interface AuthContextType {
   user: User | null;
@@ -56,7 +61,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    /* DONE-TODO: Wrap children with AuthContext.Provider */
     <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
