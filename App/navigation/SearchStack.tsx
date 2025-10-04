@@ -13,9 +13,6 @@ const Stack = createNativeStackNavigator<SearchStackParamList>();
  *
  * User searches/filters vehicles, then proceeds to booking flow
  */
-
-// ToDo: Create the respective Screens!
-/*
 export default function SearchStack() {
     return (
         <Stack.Navigator
@@ -32,16 +29,15 @@ export default function SearchStack() {
                 }}
             />
 
-            <Stack.Screen
-                name="BookingDate"
-                component={BookingDateScreen}
-                options={{
-                    title: 'Select Dates',
-                    headerShown: true,
-                    headerBackTitle: 'Search',
-                }}
-            />
+            {/*<Stack.Screen*/}
+            {/*    name="BookingDate"*/}
+            {/*    component={BookingDateScreen}*/}
+            {/*    options={{*/}
+            {/*        title: 'Select Dates',*/}
+            {/*        headerShown: true,*/}
+            {/*        headerBackTitle: 'Search',*/}
+            {/*    }}*/}
+            {/*/>*/}
         </Stack.Navigator>
     );
 }
-*/

@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import type {SettingsStackParamList} from '@/types/Navigation';
 
 import ProfileScreen from '@/app/profile/ProfileScreen';
+import {VehicleScreen} from "@/app/Screens";
 //import SettingsMainScreen from '@/app/settings/SettingsMainScreen';
 //import RentingHistoryScreen from '@/app/profile/RentingHistoryScreen';
 //import FAQScreen from '@/app/settings/FAQScreen';
@@ -15,8 +16,6 @@ const Stack = createNativeStackNavigator<SettingsStackParamList>();
  * RentingHistory accessed from Profile
  */
 
-// ToDo: Create the respective Screens!
-/*
 export default function SettingsStack() {
     return (
         <Stack.Navigator
@@ -45,7 +44,7 @@ export default function SettingsStack() {
 
             <Stack.Screen
                 name="RentingHistory"
-                component={RentingHistoryScreen}
+                component={VehicleScreen} // Should be RentingHistoryScreen
                 options={{
                     title: 'Renting History',
                 }}
@@ -53,7 +52,7 @@ export default function SettingsStack() {
 
             <Stack.Screen
                 name="FAQ"
-                component={FAQScreen}
+                component={VehicleScreen} // Should be FAQScreen
                 options={{
                     title: 'FAQ',
                 }}
@@ -61,4 +60,3 @@ export default function SettingsStack() {
         </Stack.Navigator>
     );
 }
-*/

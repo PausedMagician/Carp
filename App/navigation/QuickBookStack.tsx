@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { QuickBookStackParamList } from '@/types/Navigation';
+import {VehicleScreen} from "@/app/Screens";
 
 //import DateSelectionScreen from '@/app/booking/DateSelectionScreen';
 //import AvailableVehiclesScreen from '@/app/booking/AvailableVehiclesScreen';
@@ -15,10 +16,7 @@ const Stack = createNativeStackNavigator<QuickBookStackParamList>();
  *
  * User selects dates first, then sees only available vehicles for those dates
  */
-
-// ToDo: Create the respective Screens!
-/*
-export function QuickBookStack() {
+export default function QuickBookStack() {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -28,12 +26,12 @@ export function QuickBookStack() {
         >
             <Stack.Screen
                 name="DateSelection"
-                component={DateSelectionScreen}
+                component={VehicleScreen} // Should be DateSelectionScreen
                 options={{ title: 'Select Dates' }}
             />
             <Stack.Screen
                 name="AvailableVehicles"
-                component={AvailableVehiclesScreen}
+                component={VehicleScreen} // Should be AvailableVehicleScreen
                 options={{
                     title: 'Available Vehicles',
                     headerShown: true,
@@ -41,7 +39,7 @@ export function QuickBookStack() {
             />
             <Stack.Screen
                 name="BookingConfirmation"
-                component={BookingConfirmationScreen}
+                component={VehicleScreen} // Should be BookingConfirmationScreen
                 options={{
                     title: 'Confirm Booking',
                     headerShown: true,
@@ -49,7 +47,7 @@ export function QuickBookStack() {
             />
             <Stack.Screen
                 name="BookingSuccess"
-                component={BookingSuccessScreen}
+                component={VehicleScreen} // Should be BookingSuccessScreen
                 options={{
                     headerShown: false,
                     gestureEnabled: false,
@@ -58,4 +56,3 @@ export function QuickBookStack() {
         </Stack.Navigator>
     );
 }
-*/

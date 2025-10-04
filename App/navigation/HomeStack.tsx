@@ -15,10 +15,7 @@ const Stack = createNativeStackNavigator<HomeStackParamList>();
  *
  * User selects a vehicle from the dashboard, then proceeds to date selection
  */
-
-// ToDo: Create the respective Screens!
-/*
-export function HomeStack() {
+export default function HomeStack() {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -31,33 +28,31 @@ export function HomeStack() {
                 component={HomeScreen}
                 options={{ title: 'Vehicle Dashboard' }}
             />
-
-            <Stack.Screen
-                name="BookingDate"
-                component={BookingDateScreen}
-                options={{
-                    title: 'Select Dates',
-                    headerShown: true,
-                    headerBackTitle: 'Back',
-                }}
-            />
-            <Stack.Screen
-                name="BookingConfirmation"
-                component={BookingConfirmationScreen}
-                options={{
-                    title: 'Confirm Booking',
-                    headerShown: true,
-                }}
-            />
-            <Stack.Screen
-                name="BookingSuccess"
-                component={BookingSuccessScreen}
-                options={{
-                    headerShown: false,
-                    gestureEnabled: false,
-                }}
-            />
+            {/*<Stack.Screen*/}
+            {/*    name="BookingDate"*/}
+            {/*    component={BookingDateScreen}*/}
+            {/*    options={{*/}
+            {/*        title: 'Select Dates',*/}
+            {/*        headerShown: true,*/}
+            {/*        headerBackTitle: 'Back',*/}
+            {/*    }}*/}
+            {/*/>*/}
+            {/*<Stack.Screen*/}
+            {/*    name="BookingConfirmation"*/}
+            {/*    component={BookingConfirmationScreen}*/}
+            {/*    options={{*/}
+            {/*        title: 'Confirm Booking',*/}
+            {/*        headerShown: true,*/}
+            {/*    }}*/}
+            {/*/>*/}
+            {/*<Stack.Screen*/}
+            {/*    name="BookingSuccess"*/}
+            {/*    component={BookingSuccessScreen}*/}
+            {/*    options={{*/}
+            {/*        headerShown: false,*/}
+            {/*        gestureEnabled: false,*/}
+            {/*    }}*/}
+            {/*/>*/}
         </Stack.Navigator>
     );
 }
-*/
