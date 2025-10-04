@@ -1,15 +1,26 @@
 import { styles } from "@/constants/Stylings";
-import { StatusBar } from "expo-status-bar";
+import { MyCarousel } from "@/components/CarCarousel";
 import { View, Text } from "react-native";
+import { ActiveBooking } from "@/components/ActiveBooking";
+import { useEffect, useState } from "react";
+import { Booking } from "@/types/openapi";
+import { client } from "@/backend/Server";
 
 export default function HomeScreen() {
+    const [booking, setBooking] = useState<Booking | null>(null);
 
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-      {/* <Navigator /> */}
-    </View>
+    useEffect(() => {
+        client.then((c) => {
+            c.getBookingById(5).then((response) => {
+                setBooking(response.data);
+            });
+        });
+    }, []);
+    return (
+        <View style={styles.container}>
+            <ActiveBooking booking={booking} />
+            <MyCarousel />
+        </View>
 
-  );
+    );
 }
