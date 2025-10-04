@@ -1,26 +1,23 @@
 import { createContext, useState } from "react";
 import type { Employee } from "@/types/openapi";
 
-export type User = Employee;
+export interface PersonalDetails {
+  first_name: string;
+  last_name: string;
+}
 
-// UNTIL WE GET AN IMPLEMENTATION TO THE BACKEND
-const users: User[] = [
-    {
-        username: "Chad",
-        password: "Paine",
-        email: "chad@paine.com",
-        department: "IT",
-        personal_details: {
-            first_name: "Chad",
-            last_name: "Paine",
-            birthday: "1990-04-20",
-        },
-    }
-];
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  department?: string;
+  personal_details: PersonalDetails;
+}
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => void;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -29,22 +26,34 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (username: string, password: string) => {
-    users.forEach(user => {
-      if (user.username === username && user.password === password) {
-        setUser(user);
+  const login = async (username: string, password: string) => {
+    // Call backend API to get all employees and find a match
+    try {
+      const res = await fetch("http://192.168.50.191:3000/employees");
+      const employees: User[] = await res.json();
+
+      const foundUser = employees.find(
+        (u) => u.username === username && u.password === password
+      );
+      if (foundUser) {
+        setUser(foundUser);
+      } else {
+        alert("Invalid username or password");
       }
-    });
-  }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed. Try again.");
+    }
+  };
 
   const logout = () => {
     setUser(null);
-  }
+  };
 
   const contextValue: AuthContextType = {
-    user: user,
-    login: login,
-    logout: logout,
+    user,
+    login,
+    logout,
   };
 
   return (

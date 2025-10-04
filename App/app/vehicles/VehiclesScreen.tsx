@@ -2,7 +2,6 @@ import {StatusBar} from "expo-status-bar";
 import {useCallback, useEffect, useState} from "react";
 import {View, Text, FlatList} from "react-native";
 
-import { styles } from "@/constants/Stylings";
 import { client } from "@/backend/Server";
 import { Vehicle } from "@/types/openapi";
 import { useBooking } from "@/hooks/UseBooking";

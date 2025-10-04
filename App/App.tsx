@@ -22,6 +22,7 @@ import SettingsStack from './navigation/SettingsStack';
 import { theme } from './constants/theme';
 
 import { appStyles as styles } from './AppStyles';
+import { ThemeProvider } from './app/settings/ThemeProvider';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
@@ -185,11 +186,13 @@ function RootNavigator() {
 export default function App() {
     return (
         <AuthProvider>
-            <BookingProvider>
-                <NavigationContainer>
-                    <RootNavigator />
-                </NavigationContainer>
-            </BookingProvider>
+            <ThemeProvider>
+                <BookingProvider>
+                    <NavigationContainer>
+                        <RootNavigator />
+                    </NavigationContainer>
+                </BookingProvider>
+            </ThemeProvider>
         </AuthProvider>
     );
 }
