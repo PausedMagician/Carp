@@ -128,8 +128,8 @@ export const getVehicles = async (req: Request, res: Response) => {
  *             schema:
  *               $ref: '#/components/schemas/Vehicle'
  */
-export const getVehicle = (req: Request, res: Response) => {
-    res.json(vehicleRepository.findOne({where: {id: parseInt(req.params.id)}, relations: {
+export const getVehicle = async (req: Request, res: Response) => {
+    res.json(await vehicleRepository.findOne({where: {id: parseInt(req.params.id)}, relations: {
         registration: true,
         spec: true
     }}));
@@ -217,7 +217,7 @@ export const updateVehicle = async (req: Request, res: Response) => {
  *       200:
  *         description: Vehicle deleted successfully
  */
-export const deleteVehicle = (req: Request, res: Response) => {
-    vehicleRepository.delete(req.body);
+export const deleteVehicle = async (req: Request, res: Response) => {
+    await vehicleRepository.delete(req.body);
     res.status(200).json();
 };

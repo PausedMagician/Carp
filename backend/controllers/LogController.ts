@@ -17,6 +17,8 @@ const logRepository = AppDataSource.getRepository(LogEntry);
  *         - end_date
  *         - start_odometer
  *         - end_odometer
+ *         - employeeId
+ *         - bookingId
  *       properties:
  *         id:
  *           type: integer
@@ -43,15 +45,33 @@ const logRepository = AppDataSource.getRepository(LogEntry);
  *           type: number
  *           format: float
  *           description: Odometer reading at end
+ *         employeeId:
+ *           type: integer
+ *           description: Employee ID
  *         employee:
- *          $ref: '#/components/schemas/Employee'
+ *           type: number
+ *           description: Employee ID
+ *         bookingId:
+ *           type: integer
+ *           description: Booking ID
  *         booking:
- *           $ref: '#/components/schemas/Booking'
+ *           type: number
+ *           description: Booking ID
+ *       example:
+ *         id: 1
+ *         from_location: "123 Main St"
+ *         to_location: "456 Elm St"
+ *         start_date: "2023-10-01T08:00:00Z"
+ *         end_date: "2023-10-01T09:00:00Z"
+ *         start_odometer: 1000.5
+ *         end_odometer: 1025.7
+ *         employeeId: 1
+ *         bookingId: 1
  */
 
 /**
  * @swagger
- * /companies:
+ * /logs:
  *   post:
  *     operationId: createLog
  *     summary: Create a new log
@@ -78,14 +98,14 @@ export const createLog = async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /companies:
+ * /logs:
  *   get: 
  *     operationId: getAllLogs
- *     summary: Get all companies
+ *     summary: Get all logs
  *     tags: [Logs]
  *     responses:
  *       200:
- *         description: List of all companies
+ *         description: List of all logs
  *         content:
  *           application/json:
  *             schema:
@@ -99,7 +119,7 @@ export const getLogs = async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /companies/{id}:
+ * /logs/{id}:
  *   get:
  *     operationId: getLogById
  *     summary: Get log by ID
@@ -125,7 +145,7 @@ export const getLog = async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /companies:
+ * /logs:
  *   put:
  *     operationId: updateLog
  *     summary: Update a log
@@ -152,7 +172,7 @@ export const updateLog = async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /companies:
+ * /logs:
  *   delete:
  *     operationId: deleteLog
  *     summary: Delete a log
