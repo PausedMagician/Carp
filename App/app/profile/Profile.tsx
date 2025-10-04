@@ -1,8 +1,8 @@
-import { styles } from "@/App";
+import { styles } from "@/constants/Stylings";
 import { StatusBar } from "expo-status-bar";
 import { View, Text } from "react-native";
 
-export default function HomeScreen() {
+export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>

@@ -20,7 +20,7 @@ function Navigator() {
 
     if (auth.user == null) {
         return (
-            <Tab.Navigator initialRouteName="Login">
+            <Tab.Navigator key="guest" initialRouteName="Login">
                 <Tab.Screen
                     name="Login"
                     component={LoginScreen}
@@ -72,12 +72,3 @@ export default function App() {
     </ThemeContext.Provider>
   );
 }
-
-export const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
