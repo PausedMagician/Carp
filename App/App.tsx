@@ -45,12 +45,18 @@ function Navigator() {
     );
 }
 
-export default function App() {
+function App() {
     return (
         <AuthProvider>
-            <NavigationContainer>
-                <Navigator />
-            </NavigationContainer>
+            <BookingProvider>
+                <NavigationContainer>
+                    <Navigator />
+                </NavigationContainer>
+            </BookingProvider>
         </AuthProvider>
     );
 }
+
+App.displayName = 'Carp';
+
+export default App;

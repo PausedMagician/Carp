@@ -17,8 +17,6 @@ interface VehicleWithAvailability {
 export default function VehiclesScreen() {
     const [vehicles, setVehicles] = useState<VehicleWithAvailability[]>([]);
 
-    // I imagine the useBooking() should be imported from BookingContext
-    // @ts-ignore
     const {checkAvailability} = useBooking();
 
     useEffect(() => {
