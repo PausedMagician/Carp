@@ -9,7 +9,6 @@ import { BookingProvider } from './contexts/BookingContext';
 
 import { useAuth } from './hooks/UseAuth';
 
-import HomeScreen from './app/HomeScreen';
 import LoginScreen from './app/login/LoginScreen';
 //import SearchScreen from './app/search/SearchScreen';
 import SettingsScreen from './app/settings/SettingsScreen';
@@ -115,7 +114,13 @@ function MainTabs() {
                 component={QuickBookStack}
                 options={{
                     tabBarLabel: '',
-                    tabBarIcon: () => <QuickBookButton />,
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon
+                            source={require('./assets/icons/navigation/quick-book.png')}
+                            color={color}
+                            focused={focused}
+                        />
+                    ),
                 }}
             />
 

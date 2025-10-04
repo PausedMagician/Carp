@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { QuickBookStackParamList } from '@/types/Navigation';
-import {VehicleScreen} from "@/app/Screens";
+import {VehiclesScreen} from "@/app/Screens";
 
 //import DateSelectionScreen from '@/app/booking/DateSelectionScreen';
 //import AvailableVehiclesScreen from '@/app/booking/AvailableVehiclesScreen';
@@ -26,12 +26,12 @@ export default function QuickBookStack() {
         >
             <Stack.Screen
                 name="DateSelection"
-                component={VehicleScreen} // Should be DateSelectionScreen
+                component={VehiclesScreen} // Should be DateSelectionScreen
                 options={{ title: 'Select Dates' }}
             />
             <Stack.Screen
                 name="AvailableVehicles"
-                component={VehicleScreen} // Should be AvailableVehicleScreen
+                component={VehiclesScreen} // Should be AvailableVehicleScreen
                 options={{
                     title: 'Available Vehicles',
                     headerShown: true,
@@ -39,7 +39,7 @@ export default function QuickBookStack() {
             />
             <Stack.Screen
                 name="BookingConfirmation"
-                component={VehicleScreen} // Should be BookingConfirmationScreen
+                component={VehiclesScreen} // Should be BookingConfirmationScreen
                 options={{
                     title: 'Confirm Booking',
                     headerShown: true,
@@ -47,7 +47,7 @@ export default function QuickBookStack() {
             />
             <Stack.Screen
                 name="BookingSuccess"
-                component={VehicleScreen} // Should be BookingSuccessScreen
+                component={VehiclesScreen} // Should be BookingSuccessScreen
                 options={{
                     headerShown: false,
                     gestureEnabled: false,
