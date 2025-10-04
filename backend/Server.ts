@@ -8,7 +8,7 @@ import { createBooking, getBooking, getBookings, updateBooking, deleteBooking } 
 import { createEmployee, getEmployee, getEmployees, updateEmployee, deleteEmployee } from "./controllers/EmployeeController";
 import { createLog, getLog, getLogs, updateLog, deleteLog } from "./controllers/LogController";
 import { createMaintenance, getMaintenance, getMaintenances, updateMaintenance, deleteMaintenance } from "./controllers/MaintenanceController";
-import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle, getAvailableVehicles } from "./controllers/VehicleController";
+import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle, getAvailableVehicles, getVehicleBookingsById } from "./controllers/VehicleController";
 import { AppDataSource } from "./AppDataSource";
 import { MockData } from "./Data/MockData";
 
@@ -36,7 +36,7 @@ const swaggerOptions = {
 };
 
 const specs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.get('/v1.json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
@@ -107,7 +107,8 @@ app.delete('/maintenances', deleteMaintenance);
 app.post('/vehicles', createVehicle);
 app.get('/vehicles', getVehicles);
 app.get('/vehicles/:id', getVehicle);
-app.get('/vehicles-available', getAvailableVehicles)
+app.get('/vehicles-available', getAvailableVehicles);
+app.get('/vehicles/available/:id', getVehicleBookingsById); // Subject to change
 app.put('/vehicles', updateVehicle);
 app.delete('/vehicles', deleteVehicle);
 

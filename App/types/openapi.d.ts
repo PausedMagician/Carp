@@ -89,6 +89,20 @@ declare namespace Components {
             department: string;
             personal_details: PersonalDetails;
         }
+        /**
+         * example:
+         * {
+         *   "id": 1,
+         *   "from_location": "123 Main St",
+         *   "to_location": "456 Elm St",
+         *   "start_date": "2023-10-01T08:00:00Z",
+         *   "end_date": "2023-10-01T09:00:00Z",
+         *   "start_odometer": 1000.5,
+         *   "end_odometer": 1025.7,
+         *   "employeeId": 1,
+         *   "bookingId": 1
+         * }
+         */
         export interface Log {
             /**
              * Auto-generated ID
@@ -118,8 +132,54 @@ declare namespace Components {
              * Odometer reading at end
              */
             end_odometer: number; // float
-            employee?: Employee;
-            booking?: Booking;
+            /**
+             * Employee ID
+             */
+            employeeId: number;
+            /**
+             * Employee ID
+             */
+            employee?: number;
+            /**
+             * Booking ID
+             */
+            bookingId: number;
+            /**
+             * Booking ID
+             */
+            booking?: number;
+        }
+        export interface Maintenance {
+            /**
+             * Auto-generated ID
+             */
+            id?: number;
+            /**
+             * Reason for maintenance
+             */
+            reason: string;
+            /**
+             * Status of the maintenance
+             */
+            status: string;
+            /**
+             * Log details of the maintenance
+             */
+            log: string;
+            /**
+             * Planned date for the maintenance
+             */
+            planned_at: string; // date-time
+            /**
+             * Date for which the maintenance is planned
+             */
+            planned_for: string; // date-time
+            /**
+             * Date when the maintenance was completed
+             */
+            done_at?: string; // date-time
+            vehicle?: any;
+            reportee?: any;
         }
         export interface PersonalDetails {
             /**
@@ -178,6 +238,12 @@ declare namespace Paths {
             export type $201 = Components.Schemas.Booking;
         }
     }
+    namespace CreateCompany {
+        export type RequestBody = Components.Schemas.Company;
+        namespace Responses {
+            export type $201 = Components.Schemas.Company;
+        }
+    }
     namespace CreateEmployee {
         export type RequestBody = Components.Schemas.Employee;
         namespace Responses {
@@ -185,9 +251,43 @@ declare namespace Paths {
         }
     }
     namespace CreateLog {
-        export type RequestBody = Components.Schemas.Log;
+        export type RequestBody = /**
+         * example:
+         * {
+         *   "id": 1,
+         *   "from_location": "123 Main St",
+         *   "to_location": "456 Elm St",
+         *   "start_date": "2023-10-01T08:00:00Z",
+         *   "end_date": "2023-10-01T09:00:00Z",
+         *   "start_odometer": 1000.5,
+         *   "end_odometer": 1025.7,
+         *   "employeeId": 1,
+         *   "bookingId": 1
+         * }
+         */
+        Components.Schemas.Log;
         namespace Responses {
-            export type $201 = Components.Schemas.Log;
+            export type $201 = /**
+             * example:
+             * {
+             *   "id": 1,
+             *   "from_location": "123 Main St",
+             *   "to_location": "456 Elm St",
+             *   "start_date": "2023-10-01T08:00:00Z",
+             *   "end_date": "2023-10-01T09:00:00Z",
+             *   "start_odometer": 1000.5,
+             *   "end_odometer": 1025.7,
+             *   "employeeId": 1,
+             *   "bookingId": 1
+             * }
+             */
+            Components.Schemas.Log;
+        }
+    }
+    namespace CreateMaintenance {
+        export type RequestBody = Components.Schemas.Maintenance;
+        namespace Responses {
+            export type $201 = Components.Schemas.Maintenance;
         }
     }
     namespace CreateVehicle {
@@ -208,6 +308,13 @@ declare namespace Paths {
             }
         }
     }
+    namespace DeleteCompany {
+        export type RequestBody = Components.Schemas.Company;
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
     namespace DeleteEmployee {
         export type RequestBody = Components.Schemas.Employee;
         namespace Responses {
@@ -216,7 +323,28 @@ declare namespace Paths {
         }
     }
     namespace DeleteLog {
-        export type RequestBody = Components.Schemas.Log;
+        export type RequestBody = /**
+         * example:
+         * {
+         *   "id": 1,
+         *   "from_location": "123 Main St",
+         *   "to_location": "456 Elm St",
+         *   "start_date": "2023-10-01T08:00:00Z",
+         *   "end_date": "2023-10-01T09:00:00Z",
+         *   "start_odometer": 1000.5,
+         *   "end_odometer": 1025.7,
+         *   "employeeId": 1,
+         *   "bookingId": 1
+         * }
+         */
+        Components.Schemas.Log;
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
+    namespace DeleteMaintenance {
+        export type RequestBody = Components.Schemas.Maintenance;
         namespace Responses {
             export interface $200 {
             }
@@ -255,6 +383,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Booking[];
         }
     }
+    namespace GetAllCompanies {
+        namespace Responses {
+            export type $200 = Components.Schemas.Company[];
+        }
+    }
     namespace GetAllEmployees {
         namespace Responses {
             export type $200 = Components.Schemas.Employee[];
@@ -262,7 +395,34 @@ declare namespace Paths {
     }
     namespace GetAllLogs {
         namespace Responses {
-            export type $200 = Components.Schemas.Log[];
+            export type $200 = /**
+             * example:
+             * {
+             *   "id": 1,
+             *   "from_location": "123 Main St",
+             *   "to_location": "456 Elm St",
+             *   "start_date": "2023-10-01T08:00:00Z",
+             *   "end_date": "2023-10-01T09:00:00Z",
+             *   "start_odometer": 1000.5,
+             *   "end_odometer": 1025.7,
+             *   "employeeId": 1,
+             *   "bookingId": 1
+             * }
+             */
+            Components.Schemas.Log[];
+        }
+    }
+    namespace GetAvailableVehicleById {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Booking | null;
+            export interface $404 {
+            }
         }
     }
     namespace GetAvailableVehicles {
@@ -281,6 +441,17 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Booking;
         }
     }
+    namespace GetCompanyById {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Company;
+        }
+    }
     namespace GetLogById {
         namespace Parameters {
             export type Id = number;
@@ -289,7 +460,37 @@ declare namespace Paths {
             id: Parameters.Id;
         }
         namespace Responses {
-            export type $200 = Components.Schemas.Log;
+            export type $200 = /**
+             * example:
+             * {
+             *   "id": 1,
+             *   "from_location": "123 Main St",
+             *   "to_location": "456 Elm St",
+             *   "start_date": "2023-10-01T08:00:00Z",
+             *   "end_date": "2023-10-01T09:00:00Z",
+             *   "start_odometer": 1000.5,
+             *   "end_odometer": 1025.7,
+             *   "employeeId": 1,
+             *   "bookingId": 1
+             * }
+             */
+            Components.Schemas.Log;
+        }
+    }
+    namespace GetMaintenanceById {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Maintenance;
+        }
+    }
+    namespace GetMaintenances {
+        namespace Responses {
+            export type $200 = Components.Schemas.Maintenance[];
         }
     }
     namespace GetVehicleById {
@@ -314,10 +515,50 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Booking;
         }
     }
-    namespace UpdateLog {
-        export type RequestBody = Components.Schemas.Log;
+    namespace UpdateCompany {
+        export type RequestBody = Components.Schemas.Company;
         namespace Responses {
-            export type $200 = Components.Schemas.Log;
+            export type $200 = Components.Schemas.Company;
+        }
+    }
+    namespace UpdateLog {
+        export type RequestBody = /**
+         * example:
+         * {
+         *   "id": 1,
+         *   "from_location": "123 Main St",
+         *   "to_location": "456 Elm St",
+         *   "start_date": "2023-10-01T08:00:00Z",
+         *   "end_date": "2023-10-01T09:00:00Z",
+         *   "start_odometer": 1000.5,
+         *   "end_odometer": 1025.7,
+         *   "employeeId": 1,
+         *   "bookingId": 1
+         * }
+         */
+        Components.Schemas.Log;
+        namespace Responses {
+            export type $200 = /**
+             * example:
+             * {
+             *   "id": 1,
+             *   "from_location": "123 Main St",
+             *   "to_location": "456 Elm St",
+             *   "start_date": "2023-10-01T08:00:00Z",
+             *   "end_date": "2023-10-01T09:00:00Z",
+             *   "start_odometer": 1000.5,
+             *   "end_odometer": 1025.7,
+             *   "employeeId": 1,
+             *   "bookingId": 1
+             * }
+             */
+            Components.Schemas.Log;
+        }
+    }
+    namespace UpdateMaintenance {
+        export type RequestBody = Components.Schemas.Maintenance;
+        namespace Responses {
+            export type $200 = Components.Schemas.Maintenance;
         }
     }
     namespace UpdateVehicle {
@@ -371,7 +612,71 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetBookingById.Responses.$200>
   /**
-   * getAllLogs - Get all companies
+   * getAllCompanies - Get all companies
+   */
+  'getAllCompanies'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetAllCompanies.Responses.$200>
+  /**
+   * updateCompany - Update a company
+   */
+  'updateCompany'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateCompany.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateCompany.Responses.$200>
+  /**
+   * createCompany - Create a new company
+   */
+  'createCompany'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CreateCompany.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateCompany.Responses.$201>
+  /**
+   * deleteCompany - Delete a company
+   */
+  'deleteCompany'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.DeleteCompany.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteCompany.Responses.$200>
+  /**
+   * getCompanyById - Get company by ID
+   */
+  'getCompanyById'(
+    parameters?: Parameters<Paths.GetCompanyById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetCompanyById.Responses.$200>
+  /**
+   * getAllEmployees - Get all employees
+   */
+  'getAllEmployees'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetAllEmployees.Responses.$200>
+  /**
+   * createEmployee - Create a new employee
+   */
+  'createEmployee'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CreateEmployee.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateEmployee.Responses.$201>
+  /**
+   * deleteEmployee - Delete an employee
+   */
+  'deleteEmployee'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.DeleteEmployee.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
+  /**
+   * getAllLogs - Get all logs
    */
   'getAllLogs'(
     parameters?: Parameters<UnknownParamsObject> | null,
@@ -411,29 +716,45 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetLogById.Responses.$200>
   /**
-   * getAllEmployees - Get all employees
+   * getMaintenances - Get all maintenance records
    */
-  'getAllEmployees'(
+  'getMaintenances'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetAllEmployees.Responses.$200>
+  ): OperationResponse<Paths.GetMaintenances.Responses.$200>
   /**
-   * createEmployee - Create a new employee
+   * updateMaintenance - Update a maintenance record
    */
-  'createEmployee'(
+  'updateMaintenance'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateEmployee.RequestBody,
+    data?: Paths.UpdateMaintenance.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateEmployee.Responses.$201>
+  ): OperationResponse<Paths.UpdateMaintenance.Responses.$200>
   /**
-   * deleteEmployee - Delete an employee
+   * createMaintenance - Create a new maintenance record
    */
-  'deleteEmployee'(
+  'createMaintenance'(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.DeleteEmployee.RequestBody,
+    data?: Paths.CreateMaintenance.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
+  ): OperationResponse<Paths.CreateMaintenance.Responses.$201>
+  /**
+   * deleteMaintenance - Delete a maintenance record
+   */
+  'deleteMaintenance'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.DeleteMaintenance.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeleteMaintenance.Responses.$200>
+  /**
+   * getMaintenanceById - Get maintenance record by ID
+   */
+  'getMaintenanceById'(
+    parameters?: Parameters<Paths.GetMaintenanceById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetMaintenanceById.Responses.$200>
   /**
    * getVehicles - Get all vehicles
    */
@@ -482,6 +803,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetAvailableVehicles.Responses.$200>
+  /**
+   * getAvailableVehicleById - Get available vehicle by ID
+   */
+  'getAvailableVehicleById'(
+    parameters?: Parameters<Paths.GetAvailableVehicleById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetAvailableVehicleById.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -531,47 +860,47 @@ export interface PathsDictionary {
   }
   ['/companies']: {
     /**
-     * createLog - Create a new log
+     * createCompany - Create a new company
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateLog.RequestBody,
+      data?: Paths.CreateCompany.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateLog.Responses.$201>
+    ): OperationResponse<Paths.CreateCompany.Responses.$201>
     /**
-     * getAllLogs - Get all companies
+     * getAllCompanies - Get all companies
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetAllLogs.Responses.$200>
+    ): OperationResponse<Paths.GetAllCompanies.Responses.$200>
     /**
-     * updateLog - Update a log
+     * updateCompany - Update a company
      */
     'put'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateLog.RequestBody,
+      data?: Paths.UpdateCompany.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateLog.Responses.$200>
+    ): OperationResponse<Paths.UpdateCompany.Responses.$200>
     /**
-     * deleteLog - Delete a log
+     * deleteCompany - Delete a company
      */
     'delete'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.DeleteLog.RequestBody,
+      data?: Paths.DeleteCompany.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteLog.Responses.$200>
+    ): OperationResponse<Paths.DeleteCompany.Responses.$200>
   }
   ['/companies/{id}']: {
     /**
-     * getLogById - Get log by ID
+     * getCompanyById - Get company by ID
      */
     'get'(
-      parameters?: Parameters<Paths.GetLogById.PathParameters> | null,
+      parameters?: Parameters<Paths.GetCompanyById.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetLogById.Responses.$200>
+    ): OperationResponse<Paths.GetCompanyById.Responses.$200>
   }
   ['/employees']: {
     /**
@@ -600,6 +929,94 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
   }
   ['/employees/{id}']: {
+  }
+  ['/logs']: {
+    /**
+     * createLog - Create a new log
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CreateLog.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateLog.Responses.$201>
+    /**
+     * getAllLogs - Get all logs
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetAllLogs.Responses.$200>
+    /**
+     * updateLog - Update a log
+     */
+    'put'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateLog.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateLog.Responses.$200>
+    /**
+     * deleteLog - Delete a log
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.DeleteLog.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DeleteLog.Responses.$200>
+  }
+  ['/logs/{id}']: {
+    /**
+     * getLogById - Get log by ID
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetLogById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetLogById.Responses.$200>
+  }
+  ['/maintenances']: {
+    /**
+     * createMaintenance - Create a new maintenance record
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CreateMaintenance.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateMaintenance.Responses.$201>
+    /**
+     * getMaintenances - Get all maintenance records
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetMaintenances.Responses.$200>
+    /**
+     * updateMaintenance - Update a maintenance record
+     */
+    'put'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateMaintenance.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateMaintenance.Responses.$200>
+    /**
+     * deleteMaintenance - Delete a maintenance record
+     */
+    'delete'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.DeleteMaintenance.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DeleteMaintenance.Responses.$200>
+  }
+  ['/maintenances/{id}']: {
+    /**
+     * getMaintenanceById - Get maintenance record by ID
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetMaintenanceById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetMaintenanceById.Responses.$200>
   }
   ['/vehicles']: {
     /**
@@ -655,6 +1072,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetAvailableVehicles.Responses.$200>
   }
+  ['/vehicles/available/{id}']: {
+    /**
+     * getAvailableVehicleById - Get available vehicle by ID
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetAvailableVehicleById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetAvailableVehicleById.Responses.$200>
+  }
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
@@ -664,5 +1091,6 @@ export type Booking = Components.Schemas.Booking;
 export type Company = Components.Schemas.Company;
 export type Employee = Components.Schemas.Employee;
 export type Log = Components.Schemas.Log;
+export type Maintenance = Components.Schemas.Maintenance;
 export type PersonalDetails = Components.Schemas.PersonalDetails;
 export type Vehicle = Components.Schemas.Vehicle;

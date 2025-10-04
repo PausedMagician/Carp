@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Employee } from "./Employee";
 import { Vehicle } from "./Vehicle";
 import { Booking } from "./Booking";
@@ -27,9 +27,17 @@ export class LogEntry {
     end_odometer: number;
 
     @ManyToOne(() => Employee, employee => employee.logEntries)
+    @JoinColumn({ name: "employee_id" })
     employee: Employee;
 
+    @Column({ type: "int", nullable: true, name: "employee_id" })
+    employeeId: number | null;
+
     @ManyToOne(() => Booking, booking => booking.logEntries, { nullable: true })
+    @JoinColumn({ name: "booking_id" })
     booking: Booking | null;
+
+    @Column({ type: "int", nullable: true, name: "booking_id" })
+    bookingId: number | null;
 
 }
