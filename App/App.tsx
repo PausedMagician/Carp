@@ -1,15 +1,16 @@
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { HomeScreen, VehicleScreen, LoginScreen, SettingsScreen } from './app/Screens';
-import { AuthContext, AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './hooks/UseAuth';
 import Feather from '@expo/vector-icons/Feather';
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { settingsStyles } from '@/app/settings/SettingsStyles';
 import { useThemedStyles } from './hooks/useThemedStyles';
+import { ThemeProvider } from './app/settings/ThemeProvider';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,11 +32,11 @@ function Navigator() {
 
 	return (
 		<Tab.Navigator initialRouteName="Home" screenOptions={{
-          tabBarStyle: {
-            backgroundColor: darkMode ? "#555" : "#bbb",
-          },
-		  headerStyle: { backgroundColor: darkMode ? "#555" : "#fff"}
-		}}>
+				tabBarStyle: { backgroundColor: darkMode ? "#333" : "#fff" },
+          		headerStyle: { backgroundColor: darkMode ? "#555" : "#fff" },
+          		headerTintColor: darkMode ? "#fff" : "#000",
+          		headerTitleStyle: { fontWeight: "bold" },
+          	}}>
 			<Tab.Screen
 				name="Vehicles"
 				component={VehicleScreen}
@@ -60,15 +61,13 @@ function Navigator() {
 }
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  return (
-    <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
-      <AuthProvider>
-        <NavigationContainer theme={darkMode ? DarkTheme : DefaultTheme}>
-          <Navigator />
-        </NavigationContainer>
-      </AuthProvider>
-    </ThemeContext.Provider>
-  );
+	return (
+        <AuthProvider>
+			<ThemeProvider>
+				<NavigationContainer>
+					<Navigator />
+				</NavigationContainer>
+			</ThemeProvider>
+        </AuthProvider>
+	);
 }

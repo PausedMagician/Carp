@@ -1,15 +1,19 @@
-import { styles } from "@/constants/Stylings";
-import { client } from "@/backend/Server";
-import CarListItem from "@/components/CarListItem";
-import { Vehicle } from "@/types/openapi";
-// import { Car, getAll } from "@/types/Car";
-import { StatusBar } from "expo-status-bar";
-import { useCallback, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, FlatList } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
+import { styles } from "@/constants/Stylings";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import CarListItem from "@/components/CarListItem";
+import { ThemeContext } from "@/contexts/ThemeContext";
+import { client } from "@/backend/Server";
+import { Vehicle } from "@/types/openapi";
 
 export default function VehiclesScreen() {
-  const [cars, setCars] = useState<{car: Vehicle, isAvailable: boolean}[]>();
+  
+  const { darkMode } = useContext(ThemeContext);
+  const s = useThemedStyles(styles);
+  const [cars, setCars] = useState<{car: Vehicle; isAvailable: boolean}[]>();
 
   // const loadCars = useCallback(async () => {
   //   try {
@@ -27,12 +31,18 @@ export default function VehiclesScreen() {
   }, [])
 
   return (
-    <View style={styles.container}>
+    <View style={s.container}>
       <Text>Meow</Text>
       {/* <Text>Cars: {cars.toString()}</Text> */}
       <FlatList
         data={cars}
-        renderItem={CarListItem}
+        renderItem={(props) => <CarListItem {...props} />}
+        style={{
+          width: "100%",
+          backgroundColor: darkMode ? "#1E1E1E" : "#ffffffff",
+          padding: 8,
+          borderRadius: 12,
+        }}
       />
       <StatusBar style="auto" />
       {/* <Navigator /> */}

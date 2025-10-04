@@ -1,25 +1,28 @@
 
 import { Vehicle } from "@/types/openapi";
 import { ListRenderItemInfo, Text, View, StyleSheet } from "react-native";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { styles } from "@/constants/Stylings";
 
 
 export default function CarListItem(entry: ListRenderItemInfo<{car: Vehicle, isAvailable: boolean}>) {
+  const s = useThemedStyles(styles);
     return (
-        <View style={[styles.container, !entry.item.isAvailable && styles.unavailableContainer]}>
-            <View style={styles.header}>
-                <Text style={styles.name}> {entry.item.car.make} </Text>
-                <Text style={entry.item.isAvailable ? styles.price : styles.unavailableText}>
+        <View style={[s.container, !entry.item.isAvailable && s.carItemUnavailable]}>
+            <View style={s.carItemHeader}>
+                <Text style={s.text}> {entry.item.car.make} </Text>
+                <Text style={entry.item.isAvailable ? s.carItemPrice : s.carItemUnavailableText}>
                      {entry.item.car.type}
                 </Text>
             </View>
 
-            <Text style={styles.model}> {entry.item.car.model} </Text>
-            <Text style={styles.year}> {entry.item.car.year} </Text>
+            <Text style={s.carItemModel}> {entry.item.car.model} </Text>
+            <Text style={s.carItemYear}> {entry.item.car.year} </Text>
 
-            <View style={styles.availablilityContainer}>
+            <View style={s.carItemAvailabilityContainer}>
                 <Text style={[
-                    styles.availability,
-                    entry.item.isAvailable ? styles.available : styles.unavailable
+                    s.carItemAvailability,
+                    entry.item.isAvailable ? s.carItemAvailability : s.carItemAvailability
                 ]}>
                     {entry.item.isAvailable ? 'Available' : 'Unavailable'}
                 </Text>
@@ -27,68 +30,3 @@ export default function CarListItem(entry: ListRenderItemInfo<{car: Vehicle, isA
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        padding: 15,
-        marginHorizontal: 10,
-        marginVertical: 5,
-        borderRadius: 10,
-        shadowColor: '#000000',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    unavailableContainer: {
-        opacity: 0.7,
-        backgroundColor: '#f8f8f8'
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 5
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#999999',
-        flex: 1
-    },
-    price: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#999999'
-    },
-    unavailableText: {
-        color: '#999999'
-    },
-    model: {
-        fontSize: 14,
-        color: '#999999',
-        marginBottom: 4,
-    },
-    year: {
-        fontSize: 14,
-        color: '#999999',
-        marginBottom: 8,
-    },
-    availablilityContainer: {
-        alignItems: 'flex-start',
-    },
-    availability: {
-        fontSize: 14,
-        fontWeight: 'bold'
-    },
-    available: {
-        color: '#4caf50'
-    },
-    unavailable: {
-        color: '#f44336'
-    }
-});
