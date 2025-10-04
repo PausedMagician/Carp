@@ -1,9 +1,12 @@
-import { StatusBar } from "expo-status-bar";
+import React from "react";
 import { View, Text, Switch, TouchableOpacity, ScrollView } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
-import { settingsStyles as s } from "./SettingsStyles";
+
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { StatusBar } from "expo-status-bar";
+
+import { settingsStyles as s } from "./SettingsStyles";
+
 
 const Stack = createStackNavigator();
 
