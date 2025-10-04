@@ -57,7 +57,8 @@ try {
 }
 
 // Set the network port
-const port = process.env.PORT || 3000;
+const port = Number.parseInt(process.env.PORT) || 3000;
+const host = process.env.HOST || "0.0.0.0";
 
 // JSON Middleware
 app.use(express.json());
@@ -112,6 +113,6 @@ app.delete('/vehicles', deleteVehicle);
 
 
 
-app.listen(port, () => {
-    console.log(`The server is running at http://localhost:${port}`);
+app.listen(port, host, () => {
+    console.log(`The server is running at http://${host}:${port}`);
 });
