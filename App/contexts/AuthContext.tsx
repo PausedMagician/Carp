@@ -17,6 +17,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (username: string, password: string) => {
     client.then(async (c) => {
       c.login(null, { username, password }).then(response => {
+        if (response.status === 401) {
+          alert("Invalid credentials");
+          return;
+        }
         setUser(response.data);
       });
     });
