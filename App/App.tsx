@@ -14,7 +14,6 @@ import HomeStack from './navigation/HomeStack';
 import QuickBookStack from './navigation/QuickBookStack';
 import SearchStack from './navigation/SearchStack';
 import SettingsStack from './navigation/SettingsStack';
-import AdminScreen from './app/admin/AdminScreen';
 
 import { theme } from './constants/theme';
 
@@ -22,6 +21,39 @@ import { appStyles as styles } from './AppStyles';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
+
+interface TabIconProps {
+    source: any;
+    color: string;
+    focused: boolean;
+}
+
+function TabIcon({ source, color, focused }: TabIconProps) {
+    return (
+        <Image
+            source={source}
+            style={[
+                styles.tabIcon,
+                { tintColor: color },
+                focused && styles.tabIconFocused,
+            ]}
+            resizeMode="contain"
+        />
+    );
+}
+
+function QuickBookButton() {
+    return (
+        <View style={styles.quickBookContainer}>
+            <View style={styles.quickBookButton}>
+                <View style={styles.quickBookPlus}>
+                    <View style={styles.plusHorizontal} />
+                    <View style={styles.plusVertical} />
+                </View>
+            </View>
+        </View>
+    );
+}
 
 /**
  * Shown after login
@@ -99,24 +131,6 @@ function MainTabs() {
                     ),
                 }}
             />
-
-            {/* Kinda ugly */}
-            {isAdmin && (
-                <Tab.Screen
-                    name="Admin"
-                    component={AdminScreen}
-                    options={{
-                        tabBarLabel: 'Admin',
-                        tabBarIcon: ({ color, focused }) => (
-                            <TabIcon
-                                source={require('./assets/icons/navigation/admin_fill.png')}
-                                color={color}
-                                focused={focused}
-                            />
-                        ),
-                    }}
-                />
-            )}
         </Tab.Navigator>
     );
 }
@@ -148,39 +162,5 @@ export default function App() {
                 </NavigationContainer>
             </BookingProvider>
         </AuthProvider>
-    );
-}
-
-
-interface TabIconProps {
-    source: any;
-    color: string;
-    focused: boolean;
-}
-
-function TabIcon({ source, color, focused }: TabIconProps) {
-    return (
-        <Image
-            source={source}
-            style={[
-                styles.tabIcon,
-                { tintColor: color },
-                focused && styles.tabIconFocused,
-            ]}
-            resizeMode="contain"
-        />
-    );
-}
-
-function QuickBookButton() {
-    return (
-        <View style={styles.quickBookContainer}>
-            <View style={styles.quickBookButton}>
-                <View style={styles.quickBookPlus}>
-                    <View style={styles.plusHorizontal} />
-                    <View style={styles.plusVertical} />
-                </View>
-            </View>
-        </View>
     );
 }

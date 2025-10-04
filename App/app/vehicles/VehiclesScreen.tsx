@@ -4,8 +4,9 @@ import {View, Text, FlatList} from "react-native";
 
 import { styles } from "@/constants/Stylings";
 import { client } from "@/backend/Server";
+import { Vehicle } from "@/types/openapi";
+import { useBooking } from "@/hooks/UseBooking";
 import CarListItem from "@/components/CarListItem";
-import {Vehicle} from "@/types/openapi";
 // import { Car, getAll } from "@/types/Car";
 
 interface VehicleWithAvailability {

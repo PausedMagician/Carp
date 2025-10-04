@@ -28,7 +28,7 @@ interface BookingContextType {
     createBooking: () => Promise<Booking>;
 }
 
-const BookingContext = createContext<BookingContextType | undefined>(undefined);
+export const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 export function BookingProvider({ children }: { children: React.ReactNode }) {
     const auth = useAuth();
