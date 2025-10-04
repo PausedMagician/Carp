@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "esModuleInterop":true,
+    "allowSyntheticDefaultImports":true,
+    "target":"es2017",
+    "module":"commonjs",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  }
+}

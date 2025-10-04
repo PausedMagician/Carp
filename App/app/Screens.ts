@@ -4,4 +4,4 @@ import LoginScreen from "./login/Login";
 import SettingsScreen from "./settings/SettingsScreen";
 
 // Export all screens
-export { HomeScreen, VehiclesScreen, SettingsScreen as VehicleScreen, LoginScreen, SettingsScreen };
+export { HomeScreen, VehiclesScreen as VehicleScreen, LoginScreen, SettingsScreen };

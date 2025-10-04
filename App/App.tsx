@@ -15,7 +15,7 @@ function Navigator() {
 
     if (auth.user == null) {
         return (
-            <Tab.Navigator initialRouteName="Login">
+            <Tab.Navigator key="guest" initialRouteName="Login">
                 <Tab.Screen
                     name="Login"
                     component={LoginScreen}
@@ -25,7 +25,7 @@ function Navigator() {
     }
 
 	return (
-		<Tab.Navigator initialRouteName="Home">
+		<Tab.Navigator key="user" initialRouteName="Home">
 			<Tab.Screen
 				name="Vehicles"
 				component={VehicleScreen}
@@ -58,12 +58,3 @@ export default function App() {
         </AuthProvider>
 	);
 }
-
-export const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});

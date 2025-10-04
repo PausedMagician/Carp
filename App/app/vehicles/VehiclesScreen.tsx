@@ -1,13 +1,15 @@
-import { styles } from "@/App";
+import { styles } from "@/constants/Stylings";
+import { client } from "@/backend/Server";
 import CarListItem from "@/components/CarListItem";
-import { Car, getAll } from "@/types/Car";
+import { Vehicle } from "@/types/openapi";
+// import { Car, getAll } from "@/types/Car";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useState } from "react";
 import { View, Text, FlatList } from "react-native";
 
 
 export default function VehiclesScreen() {
-  const [cars, setCars] = useState<Car[]>();
+  const [cars, setCars] = useState<{car: Vehicle, isAvailable: boolean}[]>();
 
   // const loadCars = useCallback(async () => {
   //   try {
@@ -17,7 +19,11 @@ export default function VehiclesScreen() {
 
 
   useEffect(() => {
-    getAll().then(value => setCars(value));
+    const map: {car: Vehicle, isAvailable: boolean}[] = [];
+    client.then(c => c.getVehicles().then(vehicles => {
+      vehicles.data.forEach(v => map.push({car: v, isAvailable: true})); // TODO: isAvailable
+      setCars(map);
+    })).catch(err => console.error(err));
   }, [])
 
   return (
