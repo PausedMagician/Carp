@@ -1,48 +1,64 @@
 import { createContext, useContext, useState } from "react";
 
-export interface User {
-  username: string;
-  password: string;
+export interface PersonalDetails {
+  first_name: string;
+  last_name: string;
 }
 
-const users: User[] = [
-  {username: "User", password: "Pass"}
-]
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  department?: string;
+  personal_details: PersonalDetails;
+}
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => void;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  /* TODO: Add user state here */
   const [user, setUser] = useState<User | null>(null);
-  /* TODO: Create login function */
-  const login = (username: string, password: string) => {
-    users.forEach(user => {
-      if (user.username === username && user.password === password) {
-        setUser(user);
+
+  const login = async (username: string, password: string) => {
+    // Call backend API to get all employees and find a match
+    try {
+      const res = await fetch("http://192.168.50.191:3000/employees");
+      const employees: User[] = await res.json();
+
+      const foundUser = employees.find(
+        (u) => u.username === username && u.password === password
+      );
+      if (foundUser) {
+        setUser(foundUser);
+      } else {
+        alert("Invalid username or password");
       }
-    });
-  }
-  /* TODO: Create logout function */
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed. Try again.");
+    }
+  };
+
   const logout = () => {
     setUser(null);
-  }
-  /* TODO: Create context value object */
+  };
+
   const contextValue: AuthContextType = {
-    user: user,
-    login: login,
-    logout: logout,
+    user,
+    login,
+    logout,
   };
 
   return (
     /* DONE-TODO: Wrap children with AuthContext.Provider */
-    <AuthContext value={contextValue}>
+    <AuthContext.Provider value={contextValue}>
       {children}
-    </AuthContext>
+    </AuthContext.Provider>
   );
 }
