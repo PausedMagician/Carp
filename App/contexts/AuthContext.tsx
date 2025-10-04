@@ -1,13 +1,22 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
+import type { Employee } from "@/types/openapi";
 
-export interface User {
-  username: string;
-  password: string;
-}
+export type User = Employee;
 
+// UNTIL WE GET AN IMPLEMENTATION TO THE BACKEND
 const users: User[] = [
-  {username: "User", password: "Pass"}
-]
+    {
+        username: "Chad",
+        password: "Paine",
+        email: "chad@paine.com",
+        department: "IT",
+        personal_details: {
+            first_name: "Chad",
+            last_name: "Paine",
+            birthday: "1990-04-20",
+        },
+    }
+];
 
 interface AuthContextType {
   user: User | null;
@@ -18,9 +27,8 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  /* TODO: Add user state here */
   const [user, setUser] = useState<User | null>(null);
-  /* TODO: Create login function */
+
   const login = (username: string, password: string) => {
     users.forEach(user => {
       if (user.username === username && user.password === password) {
@@ -28,11 +36,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     });
   }
-  /* TODO: Create logout function */
+
   const logout = () => {
     setUser(null);
   }
-  /* TODO: Create context value object */
+
   const contextValue: AuthContextType = {
     user: user,
     login: login,
