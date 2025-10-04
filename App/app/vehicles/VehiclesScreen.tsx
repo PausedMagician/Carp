@@ -19,14 +19,8 @@ export default function VehiclesScreen() {
     const {checkAvailability} = useBooking();
 
     useEffect(() => {
-        client
-            .then(c => c.getVehicles())
-            .then(res => {
-            const data = Array.isArray(res) ? res : res.data;
-            setVehicles(data.map(v => ({ car: v, isAvailable: true })));
-            })
-            .catch(err => console.error("Error loading vehicles:", err));
-        }, []);
+        loadVehicles();
+    }, []);
 
     /**
      * ToDo: Load vehicles from backend and check their availability
@@ -65,13 +59,13 @@ export default function VehiclesScreen() {
     }, [])
 
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Meow</Text>
             {/* <Text>Cars: {cars.toString()}</Text> */}
             <FlatList
-  data={vehicles}
-  renderItem={(info) => <CarListItem {...info} />}
-/>
+                data={vehicles}
+                renderItem={CarListItem}
+            />
             <StatusBar style="auto"/>
             {/* <Navigator /> */}
         </View>
