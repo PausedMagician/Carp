@@ -1,11 +1,16 @@
-import { Vehicle } from "@/types/openapi";
 import { useAssets } from "expo-asset";
 import { Image } from "expo-image";
 import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { theme } from "@/constants/theme";
+import { Vehicle } from "@/types/openapi";
 
+interface CarCarouselItemProps {
+    vehicle: Vehicle;
+    onVehiclePress?: (vehicle: Vehicle) => void;
+}
 
-export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
+export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselItemProps) {
     const [pressStart, setPressStart] = useState({ x: 0, y: 0, time: 0 });
 
     const handlePressIn = (event: any) => {
@@ -21,50 +26,100 @@ export default function CarCarouselItem({vehicle}: {vehicle: Vehicle}) {
         const duration = Date.now() - pressStart.time;
 
         if (moveX < 10 && moveY < 10 && duration < 200) {
-            alert(`${vehicle.make} ${vehicle.model} Clicked!`);
+            onVehiclePress?.(vehicle);
         }
     }
 
-    const [assets, error] = useAssets([require("../assets/images/cars/1.png"), require("../assets/images/cars/2.png")])
+    const [assets] = useAssets([
+        require("../assets/images/cars/1.png"),
+        require("../assets/images/cars/2.png")
+    ]);
 
     return (
-        // Replace mock data with actual data when db ready
         <TouchableOpacity
             style={styles.slide}
             onPressIn={handlePressIn}
             onPress={handlePressOut}
-            activeOpacity={1}
+            activeOpacity={0.8}
         >
-            {/* <Image source={{ uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FFcp63ROWYAE4aU0.png&f=1&nofb=1&ipt=25161646c178644682cf0bcb2c879914af17bd8f164a9009209124dbbd9d2996" }} style={styles.image} 
-            pointerEvents="none"/> */}
-            {assets && (<Image source={assets[vehicle.id! % 2]} style={styles.image} pointerEvents="none" />)}
-            <Text style={styles.title}>{vehicle.make} {vehicle.model}</Text>
-            <Text style={styles.text}>Distance Covered: 300 nmi  </Text>
-            <Text style={styles.text}>Last Serviced: {vehicle.year}</Text>
-            <Text style={styles.text}>Location: Some Address 123 Some City 123</Text>
+            {assets && (
+                <Image
+                    source={assets[vehicle.id! % 2]}
+                    style={styles.image}
+                    contentFit="cover"
+                    pointerEvents="none"
+                />
+            )}
+
+            <View style={styles.detailsContainer}>
+                <Text style={styles.title}>{vehicle.make} {vehicle.model}</Text>
+
+                <View style={styles.infoRow}>
+                    <Text style={styles.text}>Year: {vehicle.year}</Text>
+                </View>
+
+                <View style={styles.infoRow}>
+                    <Text style={styles.text}>Color: {vehicle.color}</Text>
+                </View>
+
+                <View style={styles.infoRow}>
+                    <Text style={styles.text}>Type: {vehicle.type}</Text>
+                </View>
+
+                <View style={styles.licenseBadge}>
+                    <Text style={styles.licenseText}>
+                        {/*{vehicle.registration?.license || 'N/A'}*/}
+                    </Text>
+                </View>
+            </View>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     slide: {
-        backgroundColor: 'floralwhite',
-        borderRadius: 5,
+        backgroundColor: theme.colors.secondary,
+        borderRadius: theme.borderRadius.lg,
         height: '100%',
         width: 'auto',
-        padding: 20,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold'
+        padding: theme.spacing.lg,
+        ...theme.shadow.medium,
     },
     image: {
         flex: 1,
-        borderRadius: 5,
-        marginBottom: 5,
+        borderRadius: theme.borderRadius.md,
+        marginBottom: theme.spacing.md,
+        backgroundColor: theme.colors.background,
+    },
+    detailsContainer: {
+        gap: theme.spacing.xs,
+    },
+    title: {
+        fontSize: theme.fontSize.xl,
+        fontWeight: 'bold',
+        color: theme.colors.text,
+        marginBottom: theme.spacing.sm,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     text: {
-        fontSize: 16,
-        color: '#333',
+        fontSize: theme.fontSize.md,
+        color: theme.colors.textTertiary,
+    },
+    licenseBadge: {
+        marginTop: theme.spacing.sm,
+        backgroundColor: theme.colors.primary,
+        paddingVertical: theme.spacing.xs,
+        paddingHorizontal: theme.spacing.md,
+        borderRadius: theme.borderRadius.md,
+        alignSelf: 'flex-start',
+    },
+    licenseText: {
+        fontSize: theme.fontSize.sm,
+        fontWeight: 'bold',
+        color: theme.colors.background,
+        letterSpacing: 1,
     },
 });

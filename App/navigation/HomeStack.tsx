@@ -1,11 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import type {HomeStackParamList} from '@/types/Navigation';
 
-import HomeScreen from '@/app/HomeScreen';
-//import BookingDateScreen from '@/app/booking/BookingDateScreen';
-//import BookingConfirmationScreen from '@/app/booking/BookingConfirmationScreen';
-//import BookingSuccessScreen from '@/app/booking/BookingSuccessScreen';
+import {HomeScreen, BookingDateScreen} from "@/app/Screens";
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -28,15 +26,15 @@ export default function HomeStack() {
                 component={HomeScreen}
                 options={{ title: 'Vehicle Dashboard' }}
             />
-            {/*<Stack.Screen*/}
-            {/*    name="BookingDate"*/}
-            {/*    component={BookingDateScreen}*/}
-            {/*    options={{*/}
-            {/*        title: 'Select Dates',*/}
-            {/*        headerShown: true,*/}
-            {/*        headerBackTitle: 'Back',*/}
-            {/*    }}*/}
-            {/*/>*/}
+            <Stack.Screen
+                name="BookingDate"
+                component={BookingDateScreen}
+                options={{
+                    title: 'Select Dates',
+                    headerShown: true,
+                    headerBackTitle: 'Back',
+                }}
+            />
             {/*<Stack.Screen*/}
             {/*    name="BookingConfirmation"*/}
             {/*    component={BookingConfirmationScreen}*/}
