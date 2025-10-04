@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, useWindowDimensions } from "react-native";
+import { View, Text, StyleSheet, Image, useWindowDimensions } from "react-native";
 import { Booking, Vehicle } from "@/types/openapi";
-import { client } from "@/backend/Server";
 import moment from "moment";
+import { theme } from "@/constants/theme";
 
 export function ActiveBooking({ booking}: { booking: Booking | null }) {
     const [vehicle, setVehicle] = useState<Vehicle | null>(null);
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     },
     card: {
         flexDirection: 'row',
-        backgroundColor: '#420ce3ff',
-        borderRadius: 8,
+        backgroundColor: theme.colors.secondary,
+        borderRadius: theme.borderRadius.md,
         padding: 10,
         paddingLeft: 16,
         paddingRight: 16,
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     },
     leftSection: {
         alignItems: 'center',
-        backgroundColor: '#fff',
-        padding: 3,
-        borderRadius: 8,
+        backgroundColor: theme.colors.background,
+        padding: theme.spacing.sm,
+        borderRadius: theme.borderRadius.md,
     },
 });

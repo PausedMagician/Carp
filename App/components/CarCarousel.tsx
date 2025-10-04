@@ -32,13 +32,13 @@ export function MyCarousel() {
         <View style={{ flex: 8 }}>
             <Carousel
                 ref={ref}
-                width={width}
+                width={Math.min(width, 700) * (Math.max(width, 1400) / 1400)}
                 height={height / 2} 
                 data={data}
                 mode='parallax'
                 modeConfig={{
-                    parallaxScrollingOffset: 200,
-                    parallaxScrollingScale: 0.85,
+                    parallaxScrollingOffset: 200 * (Math.max(width, 700) / 700),
+                    parallaxScrollingScale: 0.75,
                 }}
                 onProgressChange={progress}
                 renderItem={({ index }) => (
