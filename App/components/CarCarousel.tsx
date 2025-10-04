@@ -6,8 +6,8 @@ import CarCarouselItem from './CarCarouselItem';
 import { Vehicle } from '@/types/openapi';
 import { client } from '@/backend/Server';
 
-const width = Dimensions.get("screen").width;
-const height = Dimensions.get("screen").height;
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 export function MyCarousel() {
     const [data, setData] = useState<Vehicle[]>([]);
@@ -25,21 +25,22 @@ export function MyCarousel() {
 
     const onPressPagination = (index: number) => {
         ref.current?.scrollTo({
-            /**
-             * Calculate the difference between the current index and the target index
-             * to ensure that the carousel scrolls to the nearest index
-             */
             count: index - progress.value,
             animated: true,
         });
     };
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 8 }}>
             <Carousel
                 ref={ref}
-                width={800}
+                width={width}
                 height={height / 2} 
                 data={data}
+                mode='parallax'
+                modeConfig={{
+                    parallaxScrollingOffset: 200,
+                    parallaxScrollingScale: 0.85,
+                }}
                 onProgressChange={progress}
                 renderItem={({ index }) => (
                     <CarCarouselItem vehicle={data[index]} />
