@@ -6,10 +6,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthProvider } from './contexts/AuthContext';
 import { BookingProvider } from './contexts/BookingContext';
+
 import { useAuth } from './hooks/UseAuth';
 
+import HomeScreen from './app/HomeScreen';
 import LoginScreen from './app/login/LoginScreen';
-import AdminScreen from "@/app/admin/AdminScreen";
+//import SearchScreen from './app/search/SearchScreen';
+import SettingsScreen from './app/settings/SettingsScreen';
+import AdminScreen from "./app/admin/AdminScreen";
 
 import HomeStack from './navigation/HomeStack';
 import QuickBookStack from './navigation/QuickBookStack';
