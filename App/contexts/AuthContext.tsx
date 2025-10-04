@@ -15,10 +15,6 @@ export interface User {
   personal_details: PersonalDetails;
 }
 
-const users: User[] = [
-  {username: "User", password: "Pass"}
-]
-
 interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
