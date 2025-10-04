@@ -8,7 +8,7 @@ import { createBooking, getBooking, getBookings, updateBooking, deleteBooking } 
 import { createEmployee, getEmployee, getEmployees, updateEmployee, deleteEmployee } from "./controllers/EmployeeController";
 import { createLog, getLog, getLogs, updateLog, deleteLog } from "./controllers/LogController";
 import { createMaintenance, getMaintenance, getMaintenances, updateMaintenance, deleteMaintenance } from "./controllers/MaintenanceController";
-import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle } from "./controllers/VehicleController";
+import { createVehicle, getVehicle, getVehicles, updateVehicle, deleteVehicle, getAvailableVehicles } from "./controllers/VehicleController";
 import { AppDataSource } from "./AppDataSource";
 import { MockData } from "./Data/MockData";
 
@@ -45,7 +45,12 @@ app.get('/v1.json', (req: Request, res: Response) => {
 
 try {
     AppDataSource.initialize().then(() => {
-        MockData.create();
+        // If app data source has 0 records in the vehicle table, then create mock data
+        AppDataSource.getRepository("vehicle").count().then((count) => {
+            if (count === 0) {
+                MockData.create();
+            }
+        });
     });
 } catch (error) {
     console.log(error);
@@ -101,6 +106,7 @@ app.delete('/maintenances', deleteMaintenance);
 app.post('/vehicles', createVehicle);
 app.get('/vehicles', getVehicles);
 app.get('/vehicles/:id', getVehicle);
+app.get('/vehicles-available', getAvailableVehicles)
 app.put('/vehicles', updateVehicle);
 app.delete('/vehicles', deleteVehicle);
 

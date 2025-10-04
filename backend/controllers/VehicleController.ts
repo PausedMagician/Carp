@@ -1,4 +1,5 @@
 import { AppDataSource } from '@/AppDataSource';
+import { Booking } from '@/entities/Booking';
 import { Vehicle } from '@/entities/Vehicle';
 import { VehicleRegistration } from '@/entities/VehicleRegistration';
 import { VehicleSpec } from '@/entities/VehicleSpec';
@@ -9,6 +10,7 @@ const vehicleRepository = AppDataSource.getRepository(Vehicle);
 const vehicleRegistrationRepository = AppDataSource.getRepository(VehicleRegistration);
 const vehicleSpecRepository = AppDataSource.getRepository(VehicleSpec);
 const VehicleTransmissionRepository = AppDataSource.getRepository(VehicleTransmission);
+const bookingRepository = AppDataSource.getRepository(Booking);
 
 /**
  * @swagger
@@ -132,6 +134,38 @@ export const getVehicle = (req: Request, res: Response) => {
         spec: true
     }}));
 };
+
+/**
+ * @swagger
+ * /vehicles-available:
+ *  get:
+ *    operationId: getAvailableVehicles
+ *    summary: Get all available vehicles
+ *    tags: [Vehicles]
+ *    responses:
+ *      200:
+ *        description: List of all available vehicles
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Vehicle'
+ */
+export const getAvailableVehicles = async (req: Request, res: Response) => {
+    const allVehicles = await vehicleRepository.find();
+
+    const unavailableIds = await bookingRepository.createQueryBuilder("b")
+        .select("b.vehicleId")
+        .where("b.start_date <= :now AND b.end_date >= :now", { now: new Date() })
+        .getRawMany();
+
+    const availableVehicles = allVehicles.filter(vehicle => 
+        !unavailableIds.some(booking => booking.vehicleId === vehicle.id)
+    );
+
+    res.json(availableVehicles);
+}
 
 /**
  * @swagger
