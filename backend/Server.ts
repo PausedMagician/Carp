@@ -36,7 +36,7 @@ const swaggerOptions = {
 };
 
 const specs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.get('/v1.json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');
@@ -57,7 +57,8 @@ try {
 }
 
 // Set the network port
-const port = process.env.PORT || 3000;
+const port = Number.parseInt(process.env.PORT) || 3000;
+const host = process.env.HOST || "0.0.0.0";
 
 // JSON Middleware
 app.use(express.json());
@@ -112,6 +113,6 @@ app.delete('/vehicles', deleteVehicle);
 
 
 
-app.listen(port, () => {
-    console.log(`The server is running at http://localhost:${port}`);
+app.listen(port, host, () => {
+    console.log(`The server is running at http://${host}:${port}`);
 });
