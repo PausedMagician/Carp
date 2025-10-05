@@ -9,6 +9,7 @@ import { theme } from '@/constants/theme';
 import { HomeStackParamList } from '@/types/Navigation';
 import { Booking, Vehicle } from '@/types/openapi';
 import { useAuth } from '@/hooks/UseAuth';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'Dashboard'>;
 
@@ -50,10 +51,10 @@ export default function HomeScreen() {
     };
 
     return (
-        <View style={localStyles.container}>
+        <SafeAreaView style={localStyles.container}>
             <ActiveBooking booking={booking} />
             <MyCarousel onVehiclePress={handleVehiclePress} />
-        </View>
+        </SafeAreaView>
     );
 }
 
