@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View,} from 'react-native';
+import {ActivityIndicator, Alert, Image, ScrollView, Text, TouchableOpacity, View,} from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -403,7 +403,10 @@ export default function BookingDateScreen() {
                                 </TouchableOpacity>
 
                                 <View style={styles.datesDivider}>
-                                    <Text style={styles.dividerText}>></Text> {/* DOES NOT CAUSE A COMPILE ERROR ToDo: Replace with icon */}
+                                    <Image
+                                        source={require('@/assets/icons/arrow_right.png')}
+                                        style={{ width: 20, height: 20}}
+                                    />
                                 </View>
 
                                 <TouchableOpacity
