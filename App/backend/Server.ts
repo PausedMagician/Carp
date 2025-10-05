@@ -2,8 +2,6 @@ import { Client } from '@/types/openapi'
 import OpenAPIClientAxios from 'openapi-client-axios';
 import { Platform } from 'react-native';
 
-// OBS: Pleasse check this section before committing!!
-//
 const ENDPOINT = "https://carp-app-api.vm1.itnerd.dk";
 const api = new OpenAPIClientAxios({ 
   definition: `${ENDPOINT}/v1.json`,
