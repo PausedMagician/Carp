@@ -47,6 +47,7 @@ export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.title}>Quick Book</Text>
             <Carousel
                 ref={ref}
                 width={width}
@@ -79,6 +80,13 @@ export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
 }
 
 const createStyles = (theme: Theme) => StyleSheet.create({
+    title: {
+        fontSize: theme.fontSize.lg,
+        fontWeight: 'bold',
+        marginTop: theme.spacing.lg,
+        alignSelf: 'center',
+        color: theme.colors.text,
+    },
     container: {
         flex: 8,
     },
