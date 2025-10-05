@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import CarCarouselItem from './CarCarouselItem';
@@ -7,8 +7,6 @@ import { Vehicle } from '@/types/openapi';
 import { client } from '@/backend/Server';
 import { theme } from "@/constants/theme";
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 interface CarCarouselProps {
     onVehiclePress?: (vehicle: Vehicle) => void;
@@ -16,6 +14,7 @@ interface CarCarouselProps {
 
 export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
     const [data, setData] = useState<Vehicle[]>([]);
+    const { width, height } = useWindowDimensions();
 
     useEffect(() => {
         loadAvailableVehicles();
@@ -53,8 +52,8 @@ export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
                 data={data}
                 mode="parallax"
                 modeConfig={{
-                    parallaxScrollingOffset: 200,
-                    parallaxScrollingScale: 0.85,
+                    parallaxScrollingOffset: 200 * (Math.max(width, 700) / 700),
+                    parallaxScrollingScale: 0.75,
                 }}
                 onProgressChange={progress}
                 renderItem={({ index }) => (

@@ -1,5 +1,7 @@
+import { useBooking } from "@/hooks/UseBooking";
 import { useAssets } from "expo-asset";
 import { Image } from "expo-image";
+import moment from "moment";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { theme } from "@/constants/theme";
@@ -12,6 +14,8 @@ interface CarCarouselItemProps {
 
 export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselItemProps) {
     const [pressStart, setPressStart] = useState({ x: 0, y: 0, time: 0 });
+
+    const bookingContext = useBooking();
 
     const handlePressIn = (event: any) => {
         setPressStart({
