@@ -83,7 +83,7 @@ export default function BookingDateScreen() {
     /**
      * Clear all selected dates
      */
-    const handleClearDates = () => {
+    const clearDates = () => {
         setDateRange(null as any, null as any);
         setEditMode('none');
         setIsSelecting(false);
@@ -187,6 +187,7 @@ export default function BookingDateScreen() {
 
         // The alert should only appear if tapping an already selected date
         // It should probably be refactored into its own function
+        // This shit is so cursed
         if (isStartDate || isEndDate) {
             Alert.alert(
                 'Deselect Date',
@@ -198,13 +199,21 @@ export default function BookingDateScreen() {
                         style: 'destructive',
                         onPress: () => {
                             if (isStartDate && isEndDate) {
-                                handleClearDates();
+                                clearDates();
                             } else if (isStartDate) {
-                                setDateRange(null as any, endDate!);
-                                updateMarkedDates(endDate!, endDate!);
+                                if (endDate) {
+                                    setDateRange(null as any, endDate);
+                                    updateMarkedDates(endDate, endDate);
+                                } else {
+                                    clearDates();
+                                }
                             } else {
-                                setDateRange(startDate!, null as any);
-                                updateMarkedDates(startDate!, startDate!);
+                                if (startDate) {
+                                    setDateRange(startDate, null as any);
+                                    updateMarkedDates(startDate, startDate);
+                                } else {
+                                    clearDates();
+                                }
                             }
                             setEditMode('none');
                         }
@@ -377,7 +386,7 @@ export default function BookingDateScreen() {
                         <View>
                             <View style={styles.selectionHeader}>
                                 <Text style={styles.cardTitle}>Selected Dates</Text>
-                                <TouchableOpacity onPress={handleClearDates}>
+                                <TouchableOpacity onPress={clearDates}>
                                     <Text style={styles.clearLink}>Clear</Text>
                                 </TouchableOpacity>
                             </View>
