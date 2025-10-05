@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, useWindowDimensions } from "react-native";
 import { Booking, Vehicle } from "@/types/openapi";
 import moment from "moment";
-import { theme } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { Theme } from "@/constants/theme";
 
-export function ActiveBooking({ booking}: { booking: Booking | null }) {
+export function ActiveBooking({ booking }: { booking: Booking | null }) {
     const [vehicle, setVehicle] = useState<Vehicle | null>(null);
-    const {width, height} = useWindowDimensions();
+    const { width, height } = useWindowDimensions();
+    const theme = useThemedStyles();
+    const styles = createStyles(theme);
 
     useEffect(() => {
         if (!booking) return;
@@ -18,12 +21,12 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
         <View style={styles.container}>
             <Text style={styles.title}>Your current bookings</Text>
             {vehicle && (
-                <View style={[styles.card,{ width: width * 0.9 }]}>
+                <View style={[styles.card, { width: width * 0.9 }]}>
                     <View style={styles.leftSection}>
-                        <Image 
-                            source={{ uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FFcp63ROWYAE4aU0.png&f=1&nofb=1&ipt=25161646c178644682cf0bcb2c879914af17bd8f164a9009209124dbbd9d2996" }} 
+                        <Image
+                            source={{ uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FFcp63ROWYAE4aU0.png&f=1&nofb=1&ipt=25161646c178644682cf0bcb2c879914af17bd8f164a9009209124dbbd9d2996" }}
                             style={styles.vehicleImage}
-                            />
+                        />
                         <Text style={styles.vehicleName}>
                             {vehicle.make} {vehicle.model}
                         </Text>
@@ -32,7 +35,6 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
                         <Text style={styles.bookingDate}>
                             Booking Date: {moment(booking?.start_date).format('YYYY-MM-DD')} to {moment(booking?.end_date).format('YYYY-MM-DD')}
                         </Text>
-                    
                     </View>
                 </View>
             )}
@@ -40,7 +42,7 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 3,
         padding: 16,
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 12,
         alignSelf: 'center',
+        color: theme.colors.text,
     },
     card: {
         flexDirection: 'row',
@@ -79,10 +82,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 4,
         flexWrap: 'wrap',
+        color: theme.colors.text,
     },
     bookingDate: {
         fontSize: 14,
-        color: '#666',
+        color: theme.colors.textTertiary,
     },
     rightSection: {
         marginLeft: 16,

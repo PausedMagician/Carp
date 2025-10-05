@@ -5,8 +5,8 @@ import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated
 import CarCarouselItem from './CarCarouselItem';
 import { Vehicle } from '@/types/openapi';
 import { client } from '@/backend/Server';
-import { theme } from "@/constants/theme";
-
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { Theme } from "@/constants/theme";
 
 interface CarCarouselProps {
     onVehiclePress?: (vehicle: Vehicle) => void;
@@ -15,6 +15,8 @@ interface CarCarouselProps {
 export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
     const [data, setData] = useState<Vehicle[]>([]);
     const { width, height } = useWindowDimensions();
+    const theme = useThemedStyles();
+    const styles = createStyles(theme);
 
     useEffect(() => {
         loadAvailableVehicles();
@@ -76,7 +78,7 @@ export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 8,
     },
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: theme.colors.primary,
     },
-
     paginationContainer: {
         gap: 5,
         marginTop: theme.spacing.lg,

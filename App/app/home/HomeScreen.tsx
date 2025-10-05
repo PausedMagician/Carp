@@ -5,7 +5,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ActiveBooking } from '@/components/ActiveBooking';
 import { MyCarousel } from '@/components/CarCarousel';
 import { client } from '@/backend/Server';
-import { theme } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/useThemedStyles';
+import { Theme } from '@/constants/theme';
 import { HomeStackParamList } from '@/types/Navigation';
 import { Booking, Vehicle } from '@/types/openapi';
 
@@ -17,6 +18,8 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'D
 export default function HomeScreen() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [booking, setBooking] = useState<Booking | null>(null);
+    const theme = useThemedStyles();
+    const styles = createStyles(theme);
 
     useEffect(() => {
         loadActiveBooking();
@@ -32,9 +35,9 @@ export default function HomeScreen() {
             const response = await c.getAllBookings();
             const bookings = response.data;
 
-            // Find first active booking (status = "Booked" or "Ongoing") <- VERY naive approach BRUH
+            // Find first active booking (status = 'Booked' or 'Ongoing') <- VERY naive approach BRUH
             const activeBooking = bookings.find(
-                (b: Booking) => b.booking_status === "Booked" || b.booking_status === "Ongoing"
+                (b: Booking) => b.booking_status === 'Booked' || b.booking_status === "Ongoing"
             );
 
             if (activeBooking) {
@@ -53,14 +56,14 @@ export default function HomeScreen() {
     };
 
     return (
-        <View style={localStyles.container}>
+        <View style={styles.container}>
             <ActiveBooking booking={booking} />
             <MyCarousel onVehiclePress={handleVehiclePress} />
         </View>
     );
 }
 
-const localStyles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.colors.background,
