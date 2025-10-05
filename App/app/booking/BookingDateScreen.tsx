@@ -11,8 +11,8 @@ import { client } from '@/backend/Server';
 import { useBooking } from '@/hooks/UseBooking';
 import { HomeStackParamList } from '@/types/Navigation';
 
-import { theme } from '@/constants/theme';
-import { bookingStyles as styles } from "@/app/booking/BookingStyles";
+import { useThemedStyles } from '@/hooks/useThemedStyles';
+import { createBookingStyles } from './BookingStyles';
 
 type BookingDateScreenRouteProp = RouteProp<HomeStackParamList, 'BookingDate'>;
 type BookingDateScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'BookingDate'>;
@@ -21,6 +21,9 @@ type EditMode = 'none' | 'start' | 'end';
 
 // ToDo: Implement an image for the vehicle somewhere here
 export default function BookingDateScreen() {
+    const theme = useThemedStyles();
+    const styles = createBookingStyles(theme);
+
     const navigation = useNavigation<BookingDateScreenNavigationProp>();
     const route = useRoute<BookingDateScreenRouteProp>();
     const { vehicle } = route.params;

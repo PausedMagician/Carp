@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { ActiveBooking } from '@/components/ActiveBooking';
 import { MyCarousel } from '@/components/CarCarousel';
 import { client } from '@/backend/Server';
-import { theme } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/useThemedStyles';
+import { createHomeStyles } from './HomeStyles';
 import { HomeStackParamList } from '@/types/Navigation';
 import { Booking, Vehicle } from '@/types/openapi';
 import { useAuth } from '@/hooks/UseAuth';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'Dashboard'>;
 
-/**
- * HomeScreen - Vehicle Dashboard
- */
 export default function HomeScreen() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [booking, setBooking] = useState<Booking | null>(null);
+    const theme = useThemedStyles();
+    const styles = createHomeStyles(theme);
     const auth = useAuth();
 
     useEffect(() => {
         loadActiveBooking();
     }, []);
 
-    /**
-     * Load a user's active booking
-     * ToDo: Filter by current user when auth is properly implemented
-     */
     const loadActiveBooking = async () => {
         try {
             const c = await client;
@@ -43,24 +39,14 @@ export default function HomeScreen() {
         }
     };
 
-    /**
-     * Handle vehicle selection from the carousel
-     */
     const handleVehiclePress = (vehicle: Vehicle) => {
         navigation.navigate('BookingDate', { vehicle });
     };
 
     return (
-        <SafeAreaView style={localStyles.container}>
+        <SafeAreaView style={styles.container}>
             <ActiveBooking booking={booking} />
             <MyCarousel onVehiclePress={handleVehiclePress} />
         </SafeAreaView>
     );
 }
-
-const localStyles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.colors.background,
-    },
-});

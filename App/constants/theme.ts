@@ -25,10 +25,7 @@ export const colors = {
     },
 };
 
-// ToDo: Implement dark mode
-export const theme = {
-    colors: colors.light,
-
+const baseTheme = {
     spacing: {
         xs: 4,
         sm: 8,
@@ -37,7 +34,6 @@ export const theme = {
         xl: 32,
         xxl: 48,
     },
-
     borderRadius: {
         sm: 4,
         md: 8,
@@ -45,7 +41,6 @@ export const theme = {
         xl: 16,
         full: 9999,
     },
-
     fontSize: {
         xs: 12,
         sm: 14,
@@ -54,7 +49,6 @@ export const theme = {
         xl: 24,
         xxl: 32,
     },
-
     shadow: {
         small: {
             shadowColor: '#000000',
@@ -73,4 +67,9 @@ export const theme = {
     },
 };
 
-export type Theme = typeof theme;
+export const getTheme = (darkMode: boolean) => ({
+   ...baseTheme,
+    colors: darkMode ? colors.dark : colors.light,
+});
+
+export type Theme = ReturnType<typeof getTheme>;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { adminStyles as styles } from './AdminStyles';
+import { useThemedStyles } from '@/hooks/useThemedStyles';
+import { createAdminStyles } from './AdminStyles';
 
 /**
  * Only accessible to admins
@@ -12,6 +13,9 @@ import { adminStyles as styles } from './AdminStyles';
  * - Company-wide booking history
  */
 export default function AdminScreen() {
+    const theme = useThemedStyles();
+    const styles = createAdminStyles(theme);
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
