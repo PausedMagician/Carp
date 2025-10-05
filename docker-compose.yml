@@ -6,6 +6,7 @@ services:
         networks:
             carp_internal:
                 ipv4_address: 10.232.21.3
+            private_network:
         volumes:
             - carb_database_volume:/database.sqlite
 
