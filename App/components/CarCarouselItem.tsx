@@ -57,7 +57,7 @@ export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselIt
             style={styles.slide}
             onPressIn={handlePressIn}
             onPress={handlePressOut}
-            activeOpacity={0.8}
+            activeOpacity={0.95}
         >
             <Image source={image} style={styles.image} pointerEvents="none" />
             <View style={styles.detailsContainer}>
@@ -77,7 +77,7 @@ export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselIt
 
                 <View style={styles.licenseBadge}>
                     <Text style={styles.licenseText}>
-                        {/*{vehicle.registration?.license || 'N/A'}*/}
+                        {vehicle.registration?.license}
                     </Text>
                 </View>
             </View>
