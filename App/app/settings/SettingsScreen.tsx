@@ -9,6 +9,7 @@ import { ThemeContext } from "@/contexts/ThemeContext";
 import { useAuth } from '@/hooks/UseAuth';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import type { Booking } from "@/types/openapi";
+import { client } from "@/backend/Server";
 
 const Stack = createStackNavigator();
 
@@ -62,23 +63,18 @@ function GeneralSettings({ navigation }: any) {
     const { user } = useAuth();
     const [bookings, setBookings] = useState<Booking[]>([]);
 
-    // Fetch user bookings
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const apiClient = await import("@/backend/Server").then(m => m.client);
-                const res = await apiClient.getAllBookings();
-                // Filter bookings for current user
-                const userBookings = res.data.filter(
-                    (b: Booking) => b.employee?.id === user?.id
-                );
-                setBookings(userBookings);
-            } catch (error) {
-                console.error("Error fetching bookings:", error);
-            }
-        };
-        if (user) fetchBookings();
-    }, [user]);
+  // Fetch user bookings
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const res = await (await client).getEmployeeBookingsById(user!.id);
+        setBookings(res.data.reverse());
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+    if (user) fetchBookings();
+  }, [user]);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

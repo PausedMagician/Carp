@@ -6,6 +6,8 @@ import { client } from "@/backend/Server";
 import { Vehicle } from "@/types/openapi";
 import { useBooking } from "@/hooks/UseBooking";
 import CarListItem from "@/components/CarListItem";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { styles as s } from "@/constants/Stylings";
 // import { Car, getAll } from "@/types/Car";
 
 interface VehicleWithAvailability {
@@ -15,8 +17,8 @@ interface VehicleWithAvailability {
 
 export default function VehiclesScreen() {
     const [vehicles, setVehicles] = useState<VehicleWithAvailability[]>([]);
-
     const {checkAvailability} = useBooking();
+    const styles = useThemedStyles(s);
 
     useEffect(() => {
         loadVehicles();
@@ -39,16 +41,15 @@ export default function VehiclesScreen() {
 
             // Collection consisting of available vehicles, make a Promise?
             // @ts-ignore
-            const vehiclesWithAvailability = await Promise.all(
+            // const vehiclesWithAvailability = await Promise.all(
 
-            );
+            // );
 
             //setVehicles(vehiclesWithAvailability);
         } catch (e) {
             console.error("Error loading vehicles:", e);
         }
     }, [checkAvailability]);
-
     // --- Old ---
     useEffect(() => {
         const map: { car: Vehicle, isAvailable: boolean }[] = [];
