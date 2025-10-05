@@ -1,50 +1,30 @@
 import { createContext, useState } from "react";
 import type { Employee } from "@/types/openapi";
+import { client } from "@/backend/Server";
 
-export interface PersonalDetails {
-  first_name: string;
-  last_name: string;
-}
-
-export interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  department?: string;
-  personal_details: PersonalDetails;
-}
 
 interface AuthContextType {
-  user: User | null;
-  login: (username: string, password: string) => Promise<void>;
+  user: Employee | null;
+  login: (username: string, password: string) => void;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Employee | null>(null);
 
-  const login = async (username: string, password: string) => {
-    // Call backend API to get all employees and find a match
-    try {
-      const res = await fetch("http://192.168.50.191:3000/employees");
-      const employees: User[] = await res.json();
-
-      const foundUser = employees.find(
-        (u) => u.username === username && u.password === password
-      );
-      if (foundUser) {
-        setUser(foundUser);
-      } else {
-        alert("Invalid username or password");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Login failed. Try again.");
-    }
-  };
+  const login = (username: string, password: string) => {
+    client.then(async (c) => {
+      c.login(null, { username, password }).then(response => {
+        if (response.status === 401) {
+          alert("Invalid credentials");
+          return;
+        }
+        setUser(response.data);
+      });
+    });
+  }
 
   const logout = () => {
     setUser(null);
