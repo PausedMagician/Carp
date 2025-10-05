@@ -1,11 +1,12 @@
-import { useBooking } from "@/hooks/UseBooking";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAssets } from "expo-asset";
 import { Image } from "expo-image";
 import moment from "moment";
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme } from "@/constants/theme";
+
 import { Vehicle } from "@/types/openapi";
+import { theme } from "@/constants/theme";
+import { useBooking } from "@/hooks/UseBooking";
 
 interface CarCarouselItemProps {
     vehicle: Vehicle;
