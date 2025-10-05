@@ -28,8 +28,8 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:3000',
-                description: 'Development server',
+                url: 'https://carp-app-api.vm1.itnerd.dk/',
+                description: 'Cloud server',
             },
         ],
     },
