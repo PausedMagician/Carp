@@ -5,6 +5,7 @@ import { ActiveBooking } from "@/components/ActiveBooking";
 import { useEffect, useState } from "react";
 import { Booking } from "@/types/openapi";
 import { client } from "@/backend/Server";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
     const [booking, setBooking] = useState<Booking | null>(null);
@@ -17,10 +18,9 @@ export default function HomeScreen() {
         });
     }, []);
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ActiveBooking booking={booking} />
             <MyCarousel />
-        </View>
-
+        </SafeAreaView>
     );
 }

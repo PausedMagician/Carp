@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 import CarCarouselItem from './CarCarouselItem';
 import { Vehicle } from '@/types/openapi';
 import { client } from '@/backend/Server';
+import { theme } from "@/constants/theme";
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
-export function MyCarousel() {
+interface CarCarouselProps {
+    onVehiclePress?: (vehicle: Vehicle) => void;
+}
+
+export function MyCarousel({ onVehiclePress }: CarCarouselProps) {
     const [data, setData] = useState<Vehicle[]>([]);
+    const { width, height } = useWindowDimensions();
 
     useEffect(() => {
-        client.then((c) => {
-            c.getAvailableVehicles().then((vehicles) => {
-                setData(vehicles.data);
-            });
-        })
+        loadAvailableVehicles();
     }, []);
+
+    /**
+     * Load available vehicles from backend
+     */
+    const loadAvailableVehicles = async () => {
+        try {
+            const c = await client;
+            const vehicles = await c.getAvailableVehicles();
+            setData(vehicles.data);
+        } catch (error) {
+            console.error('Error loading vehicles:', error);
+        }
+    };
 
     const ref = React.useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
@@ -29,47 +42,57 @@ export function MyCarousel() {
             animated: true,
         });
     };
+
     return (
-        <View style={{ flex: 8 }}>
+        <View style={styles.container}>
             <Carousel
                 ref={ref}
                 width={width}
-                height={height / 2} 
+                height={height / 2}
                 data={data}
-                mode='parallax'
+                mode="parallax"
                 modeConfig={{
-                    parallaxScrollingOffset: 200,
-                    parallaxScrollingScale: 0.85,
+                    parallaxScrollingOffset: 200 * (Math.max(width, 700) / 700),
+                    parallaxScrollingScale: 0.75,
                 }}
                 onProgressChange={progress}
                 renderItem={({ index }) => (
-                    <CarCarouselItem vehicle={data[index]} />
+                    <CarCarouselItem
+                        vehicle={data[index]}
+                        onVehiclePress={onVehiclePress}
+                    />
                 )}
             />
 
             <Pagination.Basic
                 progress={progress}
                 data={data}
-                dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
-                containerStyle={{ gap: 5, marginTop: 20 }}
+                dotStyle={styles.paginationDot}
+                activeDotStyle={styles.activePaginationDot}
+                containerStyle={styles.paginationContainer}
                 onPress={onPressPagination}
             />
         </View>
     );
 }
 
-
 const styles = StyleSheet.create({
-    slide: {
-        backgroundColor: 'floralwhite',
-        borderRadius: 5,
-        height: 300,
-        padding: 10,
-        marginLeft: 25,
-        marginRight: 25
+    container: {
+        flex: 8,
     },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold'
-    }
+    paginationDot: {
+        backgroundColor: "rgba(0,0,0,0.2)",
+        borderRadius: 50,
+    },
+    activePaginationDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: theme.colors.primary,
+    },
+
+    paginationContainer: {
+        gap: 5,
+        marginTop: theme.spacing.lg,
+    },
 });

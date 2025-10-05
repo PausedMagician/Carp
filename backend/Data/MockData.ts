@@ -336,41 +336,46 @@ let bookings: Booking[] = [
 
 //#region LogEntries
 let logEntries: LogEntry[] = [
-	{
-		id: 1,
-		from_location: "Home",
-		to_location: "School",
-		start_date: new Date("2023-09-01T08:00:00Z"),
-		end_date: new Date("2023-09-01T09:00:00Z"),
-		start_odometer: 10000,
-		end_odometer: 10020,
-		employee: employees[0],
-		booking: bookings[0]
-	},
-	{
-		id: 2,
-		from_location: "Office",
-		to_location: "Downtown",
-		start_date: new Date("2023-09-15T09:00:00Z"),
-		end_date: new Date("2023-09-15T12:00:00Z"),
-		start_odometer: 15000,
-		end_odometer: 15040,
-		employee: employees[2],
-		booking: bookings[2]
-	},
-	{
-		id: 3,
-		from_location: "Warehouse",
-		to_location: "Industrial Park",
-		start_date: new Date("2023-10-03T08:00:00Z"),
-		end_date: new Date("2023-10-03T10:30:00Z"),
-		start_odometer: 22000,
-		end_odometer: 22050,
-		employee: employees[3],
-		booking: bookings[3]
-	},
+    {
+        id: 1,
+        from_location: "Home",
+        to_location: "School",
+        start_date: new Date("2023-09-01T08:00:00Z"),
+        end_date: new Date("2023-09-01T09:00:00Z"),
+        start_odometer: 10000,
+        end_odometer: 10020,
+        employee: employees[0],
+        booking: bookings[0],
+        employeeId: 0,
+        bookingId: 0
+    },
+    {
+        id: 2,
+        from_location: "Office",
+        to_location: "Downtown",
+        start_date: new Date("2023-09-15T09:00:00Z"),
+        end_date: new Date("2023-09-15T12:00:00Z"),
+        start_odometer: 15000,
+        end_odometer: 15040,
+        employee: employees[2],
+        booking: bookings[2],
+        employeeId: 0,
+        bookingId: 0
+    },
+    {
+        id: 3,
+        from_location: "Warehouse",
+        to_location: "Industrial Park",
+        start_date: new Date("2023-10-03T08:00:00Z"),
+        end_date: new Date("2023-10-03T10:30:00Z"),
+        start_odometer: 22000,
+        end_odometer: 22050,
+        employee: employees[3],
+        booking: bookings[3],
+        employeeId: 0,
+        bookingId: 0
+    },
 ];
-
 
 export class MockData {
 	static async create() {
