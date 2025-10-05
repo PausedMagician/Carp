@@ -47,6 +47,78 @@ const bookingRepository = AppDataSource.getRepository(Booking);
  *         year:
  *           type: integer
  *           description: Manufacturing year
+ *         registration:
+ *           $ref: '#/components/schemas/VehicleRegistration'
+ *         spec:
+ *           $ref: '#/components/schemas/VehicleSpec'
+ *     VehicleRegistration:
+ *       type: object
+ *       required:
+ *         - license
+ *         - serial
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID
+ *         license:
+ *           type: string
+ *           description: License plate of the vehicle
+ *         serial:
+ *           type: string
+ *           description: Serial number of the vehicle
+ *     VehicleSpec:
+ *       type: object
+ *       required:
+ *         - horse_power
+ *         - top_speed
+ *         - mileage
+ *         - trailer_hitch
+ *         - fuel_type
+ *         - tyres
+ *         - transmission
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID
+ *         horse_power:
+ *           type: number
+ *           format: float
+ *           description: Horse power
+ *         top_speed:
+ *           type: number
+ *           format: float
+ *           description: Top speed of the vehicle
+ *         mileage:
+ *           type: number
+ *           format: float
+ *           description: The mileage in km/l
+ *         trailer_hitch:
+ *           type: boolean
+ *           description: If the vehicle has a trailer hitch
+ *         fuel_type:
+ *           type: string
+ *           description: Petrol, Diesel, Electric...
+ *         tyres:
+ *           type: string
+ *           description: Summer, Winter, All-Season...
+ *         transmission:
+ *           $ref: '#/components/schemas/VehicleTransmission'
+ *           description: The transmission type of the vehicle
+ *     VehicleTransmission:
+ *       type: object
+ *       required:
+ *         - type
+ *         - drive
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: Auto-generated ID
+ *         type:
+ *           type: string
+ *           description: Type as in automatic, manual or semi-automatic
+ *         drive:
+ *           type: string
+ *           description: 4WD, FWD, RWD
  */
 
 /**

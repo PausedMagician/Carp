@@ -228,6 +228,70 @@ declare namespace Components {
              * Manufacturing year
              */
             year: number;
+            registration?: VehicleRegistration;
+            spec?: VehicleSpec;
+        }
+        export interface VehicleRegistration {
+            /**
+             * Auto-generated ID
+             */
+            id?: number;
+            /**
+             * License plate of the vehicle
+             */
+            license: string;
+            /**
+             * Serial number of the vehicle
+             */
+            serial: string;
+        }
+        export interface VehicleSpec {
+            /**
+             * Auto-generated ID
+             */
+            id?: number;
+            /**
+             * Horse power
+             */
+            horse_power: number; // float
+            /**
+             * Top speed of the vehicle
+             */
+            top_speed: number; // float
+            /**
+             * The mileage in km/l
+             */
+            mileage: number; // float
+            /**
+             * If the vehicle has a trailer hitch
+             */
+            trailer_hitch: boolean;
+            /**
+             * Petrol, Diesel, Electric...
+             */
+            fuel_type: string;
+            /**
+             * Summer, Winter, All-Season...
+             */
+            tyres: string;
+            /**
+             * The transmission type of the vehicle
+             */
+            transmission: VehicleTransmission;
+        }
+        export interface VehicleTransmission {
+            /**
+             * Auto-generated ID
+             */
+            id?: number;
+            /**
+             * Type as in automatic, manual or semi-automatic
+             */
+            type: string;
+            /**
+             * 4WD, FWD, RWD
+             */
+            drive: string;
         }
     }
 }
@@ -1226,3 +1290,6 @@ export type Log = Components.Schemas.Log;
 export type Maintenance = Components.Schemas.Maintenance;
 export type PersonalDetails = Components.Schemas.PersonalDetails;
 export type Vehicle = Components.Schemas.Vehicle;
+export type VehicleRegistration = Components.Schemas.VehicleRegistration;
+export type VehicleSpec = Components.Schemas.VehicleSpec;
+export type VehicleTransmission = Components.Schemas.VehicleTransmission;
