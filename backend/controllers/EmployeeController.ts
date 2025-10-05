@@ -38,6 +38,9 @@ const bookingRepository = AppDataSource.getRepository(Booking);
  *         department:
  *           type: string
  *           description: Employee department
+ *         isAdmin:
+ *           type: boolean
+ *           description: Is the employee an admin
  *         personal_details:
  *           $ref: '#/components/schemas/PersonalDetails'
  *     PersonalDetails:
