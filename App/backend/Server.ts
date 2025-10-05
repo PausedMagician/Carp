@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 // 
 // If the line below have been modified, to a local environment, the cloud environment will fail!
 //
-const ENDPOINT = Platform.OS === 'web' ? "https://carp-app.vm1.itnerd.dk/api" : "your ip endpoint";
+const ENDPOINT = Platform.OS === 'web' ? "https://carp-app-api.vm1.itnerd.dk" : "your ip endpoint";
 const api = new OpenAPIClientAxios({ 
   definition: `${ENDPOINT}/v1.json`,
   axiosConfigDefaults: {
