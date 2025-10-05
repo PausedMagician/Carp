@@ -105,7 +105,7 @@ export const createEmployee = async (req: Request, res: Response) => {
  *                 $ref: '#/components/schemas/Employee'
  */
 export const getEmployees = async (req: Request, res: Response) => {
-    res.json(await employeeRepository.find());
+    res.json(await employeeRepository.find({ relations: ['personal_details'] }));
 };
 
 /**
@@ -130,7 +130,10 @@ export const getEmployees = async (req: Request, res: Response) => {
  *               $ref: '#/components/schemas/Employee'
  */
 export const getEmployee = async (req: Request, res: Response) => {
-    res.json(await employeeRepository.findOne({where: {id: parseInt(req.params.id)} }));
+    res.json(await employeeRepository.findOne({
+        where: { id: parseInt(req.params.id) },
+        relations: ['personal_details']
+    }));
 };
 
 /**
@@ -182,3 +185,42 @@ export const deleteEmployee = (req: Request, res: Response) => {
     employeeRepository.delete(req.body);
     res.status(200).json();
 };
+
+
+/**
+ * @swagger
+ * /employees/login:
+ *   post:
+ *     operationId: login
+ *     summary: Employee login
+ *     tags: [Employees]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       401:
+ *         description: Invalid credentials
+ */
+export const login = async (req: Request, res: Response) => {
+    const { username, password } = req.body;
+    const employee = await employeeRepository.findOne({ where: { username, password } });
+    if (employee) {
+        res.status(200).json(employee);
+    } else {
+        res.status(401).json({ message: 'Invalid credentials' });
+    }
+}

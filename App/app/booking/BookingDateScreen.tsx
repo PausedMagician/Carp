@@ -40,6 +40,9 @@ export default function BookingDateScreen() {
         loadUnavailableDates();
     }, [vehicle]);
 
+    /**
+     * Load unavailable dates from existing bookings for this vehicle
+     */
     const loadUnavailableDates = async () => {
         try {
             setIsLoading(true);
@@ -77,6 +80,9 @@ export default function BookingDateScreen() {
         }
     };
 
+    /**
+     * Clear all selected dates
+     */
     const handleClearDates = () => {
         setDateRange(null as any, null as any);
         setEditMode('none');
@@ -92,10 +98,20 @@ export default function BookingDateScreen() {
         setMarkedDates(marked);
     };
 
+    /**
+     * Enter edit mode for changing start or end date
+     */
     const handleEditDate = (mode: 'start' | 'end') => {
         setEditMode(mode);
     };
 
+    /**
+     * Long-press for date selection
+     *
+     * Behavior:
+     * - No dates selected: Start new range selection
+     * - Start date exists: Set as start or end based on position
+     */
     const onDayLongPress = useCallback((day: DateData) => {
         const selectedDate = new Date(day.dateString);
 
@@ -103,13 +119,60 @@ export default function BookingDateScreen() {
             return;
         }
 
-        setIsSelecting(true);
-        setSelectionStart(selectedDate);
-        setEditMode('none');
-        setDateRange(selectedDate, selectedDate);
-        updateMarkedDates(selectedDate, selectedDate);
-    }, [markedDates]);
+        // If no dates selected, start new selection
+        if (!startDate) {
+            setIsSelecting(true);
+            setSelectionStart(selectedDate);
+            setEditMode('none');
+            setDateRange(selectedDate, selectedDate);
+            updateMarkedDates(selectedDate, selectedDate);
+            return;
+        }
 
+        if (startDate && !endDate) {
+            // Only start date exists
+            if (selectedDate < startDate) {
+                // New date is before start -> make it the new start
+                setDateRange(selectedDate, startDate);
+                updateMarkedDates(selectedDate, startDate);
+            } else {
+                // New date is after start -> make it the end
+                setDateRange(startDate, selectedDate);
+                updateMarkedDates(startDate, selectedDate);
+            }
+        } else if (startDate && endDate) {
+            // Both dates exist so we adjust the closer endpoint
+            const distToStart = Math.abs(selectedDate.getTime() - startDate.getTime());
+            const distToEnd = Math.abs(selectedDate.getTime() - endDate.getTime());
+
+            if (selectedDate < startDate) {
+                // Before range -> new start
+                setDateRange(selectedDate, endDate);
+                updateMarkedDates(selectedDate, endDate);
+            } else if (selectedDate > endDate) {
+                // After range -> new end
+                setDateRange(startDate, selectedDate);
+                updateMarkedDates(startDate, selectedDate);
+            } else {
+                // Within range -> replace closer endpoint
+                if (distToStart < distToEnd) {
+                    setDateRange(selectedDate, endDate);
+                    updateMarkedDates(selectedDate, endDate);
+                } else {
+                    setDateRange(startDate, selectedDate);
+                    updateMarkedDates(startDate, selectedDate);
+                }
+            }
+        }
+
+        setIsSelecting(false);
+        setSelectionStart(null);
+        setEditMode('none');
+    }, [markedDates, startDate, endDate]);
+
+    /**
+     * Press for date selection
+     */
     const onDayPress = useCallback((day: DateData) => {
         const selectedDate = new Date(day.dateString);
         const dateString = day.dateString;
@@ -122,6 +185,8 @@ export default function BookingDateScreen() {
         const isStartDate = startDate && dateString === startDate.toISOString().split('T')[0];
         const isEndDate = endDate && dateString === endDate.toISOString().split('T')[0];
 
+        // The alert should only appear if tapping an already selected date
+        // It should probably be refactored into its own function
         if (isStartDate || isEndDate) {
             Alert.alert(
                 'Deselect Date',
@@ -201,25 +266,41 @@ export default function BookingDateScreen() {
         }
     }, [isSelecting, selectionStart, startDate, endDate, markedDates, editMode]);
 
+    /**
+     * Update calendar markings with selected date range
+     */
     const updateMarkedDates = (start: Date, end: Date) => {
         const marked = { ...markedDates };
 
+        // Clear previous selections
         Object.keys(marked).forEach(key => {
             if (!marked[key].disabled) {
                 delete marked[key];
             }
         });
 
+        // Mark selected range
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
             const dateString = d.toISOString().split('T')[0];
 
             if (!marked[dateString]?.disabled) {
+                const isStart = d.getTime() === start.getTime();
+                const isEnd = d.getTime() === end.getTime();
+
                 marked[dateString] = {
                     selected: true,
                     color: theme.colors.primary,
                     textColor: theme.colors.background,
-                    startingDay: d.getTime() === start.getTime(),
-                    endingDay: d.getTime() === end.getTime(),
+                    startingDay: isStart,
+                    endingDay: isEnd,
+                    // Hack to customize the check-in and check-out dates
+                    ...(isStart || isEnd ? {
+                        customTextStyle: {
+                            color: theme.colors.background, // Not semantically correct
+                            fontWeight: 'bold',
+                            fontSize: 16,
+                        }
+                    } : {}),
                 };
             }
         }
@@ -227,6 +308,9 @@ export default function BookingDateScreen() {
         setMarkedDates(marked);
     };
 
+    /**
+     * Navigate to booking confirmation
+     */
     const handleContinue = () => {
         if (startDate && endDate) {
             navigation.navigate('BookingConfirmation', {
@@ -240,12 +324,14 @@ export default function BookingDateScreen() {
     const canContinue = startDate && endDate;
     const hasSelection = startDate || endDate;
 
-    // Most of these instructions are never shown due to the current logic
+    /**
+     * Based on current state
+     */
     const getInstructions = () => {
         if (editMode === 'start') return 'Tap a date to set your new check-in';
         if (editMode === 'end') return 'Tap a date to set your new check-out';
         if (isSelecting) return 'Tap another date to complete your selection';
-        if (!startDate) return 'Tap a date to begin, or long press then tap to select a range'; // This is the only one that is ever shown
+        if (!startDate) return 'Tap a date to begin, or long press then tap to select a range';
         if (!endDate) return 'Tap another date to set your check-out';
         return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
     };
@@ -253,7 +339,7 @@ export default function BookingDateScreen() {
     return (
         <SafeAreaView style={styles.container} edges={['bottom']}>
             <ScrollView style={styles.scrollView}>
-                {/* Vehicle Info Card */}
+                {/* Vehicle info card */}
                 <View style={styles.vehicleCard}>
                     <View style={styles.vehicleInfo}>
                         <Text style={styles.vehicleName}>
@@ -263,6 +349,10 @@ export default function BookingDateScreen() {
                             {vehicle.year} • {vehicle.type} • {vehicle.color}
                         </Text>
                     </View>
+
+                    {/*/!* ToDo: Implement Specification as a separate page or keep modal? *!/*/}
+
+                    {/*/!* ToDo: Implement Service Info as a separate page or keep modal? *!/*/}
 
                     <View style={styles.actionButtons}>
                         <TouchableOpacity
@@ -281,7 +371,7 @@ export default function BookingDateScreen() {
                     </View>
                 </View>
 
-                {/* The idea here is to prevents the layout from shifting by always occupying the same space */}
+                {/* Date selection card */}
                 <View style={styles.dynamicCard}>
                     {hasSelection ? (
                         <View>
@@ -292,7 +382,6 @@ export default function BookingDateScreen() {
                                 </TouchableOpacity>
                             </View>
 
-                            {/* Since it is an English app, I think we should stick to MM/DD format */}
                             <View style={styles.datesRow}>
                                 <TouchableOpacity
                                     style={styles.dateBox}
@@ -300,12 +389,12 @@ export default function BookingDateScreen() {
                                 >
                                     <Text style={styles.dateBoxLabel}>Check-in</Text>
                                     <Text style={styles.dateBoxValue}>
-                                        {startDate ? startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '--'}
+                                        {startDate ? startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '-'}
                                     </Text>
                                 </TouchableOpacity>
 
                                 <View style={styles.datesDivider}>
-                                    <Text style={styles.dividerText}>></Text> {/* ToDo: Replace with icon */}
+                                    <Text style={styles.dividerText}>></Text> {/* DOES NOT CAUSE A COMPILE ERROR ToDo: Replace with icon */}
                                 </View>
 
                                 <TouchableOpacity
@@ -314,13 +403,12 @@ export default function BookingDateScreen() {
                                 >
                                     <Text style={styles.dateBoxLabel}>Check-out</Text>
                                     <Text style={styles.dateBoxValue}>
-                                        {endDate ? endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '--'}
+                                        {endDate ? endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '-'}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     ) : (
-                        // Instructions (shown when no selection)
                         <View>
                             <Text style={styles.cardTitle}>Select Dates</Text>
                             <Text style={styles.instructionsText}>{getInstructions()}</Text>
@@ -328,12 +416,13 @@ export default function BookingDateScreen() {
                     )}
                 </View>
 
+                {/* Status */}
                 {(isSelecting || editMode !== 'none') && (
                     <View style={styles.statusBanner}>
                         <Text style={styles.statusText}>
                             {editMode !== 'none'
                                 ? `${editMode === 'start' ? 'Editing check-in' : 'Editing check-out'}`
-                                : 'Choose an start/end date to complete your selection'
+                                : 'Choose an end date to complete your selection'
                             }
                         </Text>
                     </View>
@@ -373,6 +462,7 @@ export default function BookingDateScreen() {
                 <View style={styles.bottomPadding} />
             </ScrollView>
 
+            {/* Bottom bar */}
             <View style={styles.bottomBar}>
                 <TouchableOpacity
                     style={[styles.continueButton, !canContinue && styles.continueButtonDisabled]}
@@ -384,11 +474,6 @@ export default function BookingDateScreen() {
                     </Text>
                 </TouchableOpacity>
             </View>
-
-            {/*/!* ToDo: Implement Specification as a separate page or keep modal? *!/*/}
-
-            {/*/!* ToDo: Implement Service Info as a separate page or keep modal? *!/*/}
-
         </SafeAreaView>
     );
 }

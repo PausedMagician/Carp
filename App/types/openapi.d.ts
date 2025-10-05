@@ -504,9 +504,33 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Vehicle;
         }
     }
+    namespace GetVehicleImage {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = string; // arraybuffer
+            export interface $404 {
+            }
+        }
+    }
     namespace GetVehicles {
         namespace Responses {
             export type $200 = Components.Schemas.Vehicle[];
+        }
+    }
+    namespace Login {
+        export interface RequestBody {
+            username?: string;
+            password?: string;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Employee;
+            export interface $401 {
+            }
         }
     }
     namespace UpdateBooking {
@@ -675,6 +699,22 @@ export interface OperationMethods {
     data?: Paths.DeleteEmployee.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
+  /**
+   * login - Employee login
+   */
+  'login'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.Login.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.Login.Responses.$200>
+  /**
+   * getVehicleImage - Get vehicle image
+   */
+  'getVehicleImage'(
+    parameters?: Parameters<Paths.GetVehicleImage.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetVehicleImage.Responses.$200>
   /**
    * getAllLogs - Get all logs
    */
@@ -929,6 +969,26 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
   }
   ['/employees/{id}']: {
+  }
+  ['/employees/login']: {
+    /**
+     * login - Employee login
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.Login.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.Login.Responses.$200>
+  }
+  ['/images/vehicles/{id}']: {
+    /**
+     * getVehicleImage - Get vehicle image
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetVehicleImage.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetVehicleImage.Responses.$200>
   }
   ['/logs']: {
     /**

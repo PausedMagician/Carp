@@ -1,25 +1,10 @@
 import { createContext, useState } from "react";
 import type { Employee } from "@/types/openapi";
+import { client } from "@/backend/Server";
 
-export type User = Employee;
-
-// UNTIL WE GET AN IMPLEMENTATION TO THE BACKEND
-const users: User[] = [
-    {
-        username: "Chad",
-        password: "Paine",
-        email: "chad@paine.com",
-        department: "IT",
-        personal_details: {
-            first_name: "Chad",
-            last_name: "Paine",
-            birthday: "1990-04-20",
-        },
-    }
-];
 
 interface AuthContextType {
-  user: User | null;
+  user: Employee | null;
   login: (username: string, password: string) => void;
   logout: () => void;
 }
@@ -27,24 +12,28 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Employee | null>(null);
 
   const login = (username: string, password: string) => {
-    users.forEach(user => {
-      if (user.username === username && user.password === password) {
-        setUser(user);
-      }
+    client.then(async (c) => {
+      c.login(null, { username, password }).then(response => {
+        if (response.status === 401) {
+          alert("Invalid credentials");
+          return;
+        }
+        setUser(response.data);
+      });
     });
   }
 
   const logout = () => {
     setUser(null);
-  }
+  };
 
   const contextValue: AuthContextType = {
-    user: user,
-    login: login,
-    logout: logout,
+    user,
+    login,
+    logout,
   };
 
   return (

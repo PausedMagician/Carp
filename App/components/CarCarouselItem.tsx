@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useAssets } from "expo-asset";
 import { Image } from "expo-image";
 import moment from "moment";
 
+import { fromByteArray } from 'base64-js';
+
+import { client } from "@/backend/Server";
 import { Vehicle } from "@/types/openapi";
+
 import { theme } from "@/constants/theme";
 import { useBooking } from "@/hooks/UseBooking";
 
@@ -35,10 +39,18 @@ export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselIt
         }
     }
 
-    const [assets] = useAssets([
-        require("../assets/images/cars/1.png"),
-        require("../assets/images/cars/2.png")
-    ]);
+    const [image, setImage] = useState<{ uri: string } | null>(null);
+
+    useEffect(() => {
+        client.then(async (c) => {
+            c.getVehicleImage(vehicle.id!, null, { responseType: 'arraybuffer' }).then(response => {
+                //@ts-expect-error
+                const base64String = fromByteArray(new Uint8Array(response.data));
+                const imageUri = `data:image/png;base64,${base64String}`;
+                setImage({ uri: imageUri });
+            });
+        });
+    }, [vehicle.id]);
 
     return (
         <TouchableOpacity
@@ -47,15 +59,7 @@ export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselIt
             onPress={handlePressOut}
             activeOpacity={0.8}
         >
-            {assets && (
-                <Image
-                    source={assets[vehicle.id! % 2]}
-                    style={styles.image}
-                    contentFit="cover"
-                    pointerEvents="none"
-                />
-            )}
-
+            <Image source={image} style={styles.image} pointerEvents="none" />
             <View style={styles.detailsContainer}>
                 <Text style={styles.title}>{vehicle.make} {vehicle.model}</Text>
 
