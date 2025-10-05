@@ -192,6 +192,7 @@ let employees: Employee[] = [
 		company: {...companies[0]},
 		department: "Idk",
 		email: "john.doe@example.com",
+		isAdmin: true,
 		personal_details: personal_details[0],
 		bookings: [],
 		logEntries: [],

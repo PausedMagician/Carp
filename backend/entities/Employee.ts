@@ -21,6 +21,9 @@ export class Employee {
     
     @Column({ type: "varchar" })
     department: string
+
+    @Column({ type: "boolean", default: false })
+    isAdmin?: boolean = false
     
     @OneToOne(() => PersonalDetails, {eager: true})
     @JoinColumn()
