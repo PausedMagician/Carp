@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 import type { Vehicle, Booking } from '@/types/openapi';
-import {useAuth} from "@/hooks/UseAuth";
-import {client} from "@/backend/Server";
+import { client } from '@/backend/Server';
+import { useAuth } from '@/hooks/UseAuth';
 
 interface BookingContextType {
     // Booking state
@@ -97,17 +97,18 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
             const response = await apiClient.getAllBookings();
             const bookings = response.data;
 
+            // Filter for conflicting bookings
             const conflictingBookings = bookings.filter((booking) => {
-                // We only check bookings for this vehicle
+                // Only check bookings for this vehicle
                 if (booking.vehicle?.id !== vehicleId) return false;
 
-                // We simply ignore cancelled bookings
+                // Ignore cancelled bookings
                 if (booking.booking_status === 'Cancelled') return false;
 
                 const bookingStart = new Date(booking.start_date);
                 const bookingEnd = new Date(booking.end_date);
 
-                // Make sure we do not overlap the dates
+                // Check for date overlap
                 return (start <= bookingEnd && end >= bookingStart);
             });
 
@@ -130,6 +131,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
             const response = await apiClient.getVehicles();
             const vehicles = response.data;
 
+            // Check availability for each vehicle
             const availableVehicles: Vehicle[] = [];
 
             for (const vehicle of vehicles) {
@@ -148,10 +150,15 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
 
     /**
      * Create a new booking
+     * Requires user to be authenticated
      */
     const createBooking = async (): Promise<Booking> => {
         if (!isValidBooking()) {
-            throw new Error('Invalid booking: missing required fields');
+            throw new Error('Invalid booking: missing required input');
+        }
+
+        if (!auth.user) {
+            throw new Error('User must be authenticated to create a booking');
         }
 
         try {
@@ -161,20 +168,22 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
                 purpose: purpose,
                 booking_status: 'Booked',
                 destination: destination,
-                start_date: startDate!.toISOString(), // ISO is correct here?
-                end_date: endDate!.toISOString(), // ISO is correct here?
+                start_date: startDate!.toISOString().split('T')[0], // Date only
+                end_date: endDate!.toISOString().split('T')[0],
                 employee: {
-                    id: auth.user!.id,
-                    username: auth.user!.username,
-                    password: auth.user!.password,
-                    email: auth.user!.email,
-                    //department: '', // No department? :(
-                    personal_details: auth.user!.personal_details,
+                    id: auth.user.id,
+                    username: auth.user.username,
+                    password: auth.user.password,
+                    email: auth.user.email,
+                    department: auth.user.department,
+                    personal_details: auth.user.personal_details,
                 },
                 vehicle: selectedVehicle!,
             };
 
             const response = await apiClient.createBooking(null, bookingData);
+
+            clearBooking();
 
             return response.data;
         } catch (error) {
