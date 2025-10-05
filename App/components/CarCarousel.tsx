@@ -85,6 +85,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         fontWeight: 'bold',
         marginTop: theme.spacing.lg,
         alignSelf: 'center',
+        color: theme.colors.text,
     },
     container: {
         flex: 8,
