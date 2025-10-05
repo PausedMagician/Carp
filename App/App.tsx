@@ -6,11 +6,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthProvider } from './contexts/AuthContext';
 import { BookingProvider } from './contexts/BookingContext';
+import { ThemeProvider } from './app/settings/ThemeProvider';
 
 import { useAuth } from './hooks/UseAuth';
+import { useThemedStyles } from './hooks/useThemedStyles';
 
 import LoginScreen from './app/login/LoginScreen';
-//import SearchScreen from './app/search/SearchScreen';
 import SettingsScreen from './app/settings/SettingsScreen';
 import AdminScreen from "./app/admin/AdminScreen";
 
@@ -19,10 +20,7 @@ import QuickBookStack from './navigation/QuickBookStack';
 import SearchStack from './navigation/SearchStack';
 import SettingsStack from './navigation/SettingsStack';
 
-import { theme } from './constants/theme';
-
-import { appStyles as styles } from './AppStyles';
-import { ThemeProvider } from './app/settings/ThemeProvider';
+import { createAppStyles } from './AppStyles';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
@@ -34,6 +32,9 @@ interface TabIconProps {
 }
 
 function TabIcon({ source, color, focused }: TabIconProps) {
+    const theme = useThemedStyles();
+    const styles = createAppStyles(theme);
+
     return (
         <Image
             source={source}
@@ -48,6 +49,9 @@ function TabIcon({ source, color, focused }: TabIconProps) {
 }
 
 function QuickBookButton() {
+    const theme = useThemedStyles();
+    const styles = createAppStyles(theme);
+
     return (
         <View style={styles.quickBookContainer}>
             <View style={styles.quickBookButton}>
@@ -66,6 +70,9 @@ function QuickBookButton() {
  * Tabs: Home | Search | Quick Book | Settings | Admin (if admin)
  */
 function MainTabs() {
+    const theme = useThemedStyles();
+    const styles = createAppStyles(theme);
+
     // hardcoded to false :)
     const isAdmin = false;
 

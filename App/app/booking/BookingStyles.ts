@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import {theme} from "@/constants/theme";
+import { Theme } from '@/constants/theme';
 
-export const bookingStyles = StyleSheet.create({
+export const createBookingStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.colors.background,

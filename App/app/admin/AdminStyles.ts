@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { theme } from '@/constants/theme';
+import { Theme } from '@/constants/theme';
 
-export const adminStyles = StyleSheet.create({
+export const createAdminStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.colors.background,

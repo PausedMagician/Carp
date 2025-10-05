@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { ThemeContext } from "@/contexts/ThemeContext";
-import { StyleSheet } from "react-native";
+import { useContext } from 'react';
+import { ThemeContext } from '@/contexts/ThemeContext';
+import { getTheme } from '@/constants/theme';
 
-export function useThemedStyles<T>(styles: (darkMode: boolean) => T): T {
-  const { darkMode } = useContext(ThemeContext);
-  return styles(darkMode);
+export function useThemedStyles() {
+    const { darkMode } = useContext(ThemeContext);
+    return getTheme(darkMode);
 }
