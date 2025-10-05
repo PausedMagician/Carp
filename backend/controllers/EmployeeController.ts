@@ -1,10 +1,14 @@
 import { AppDataSource } from '@/AppDataSource';
+import { Booking } from '@/entities/Booking';
 import { Employee } from '@/entities/Employee';
 import { PersonalDetails } from '@/entities/PersonalDetails';
 import { Request, Response } from 'express';
+import moment from 'moment';
+import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 
 const employeeRepository = AppDataSource.getRepository(Employee);
 const personalDetailsRepository = AppDataSource.getRepository(PersonalDetails);
+const bookingRepository = AppDataSource.getRepository(Booking);
 
 /**
  * @swagger
@@ -112,6 +116,7 @@ export const getEmployees = async (req: Request, res: Response) => {
  * @swagger
  * /employees/{id}:
  *   get:
+ *     operationId: getEmployeeById
  *     summary: Get employee by ID
  *     tags: [Employees]
  *     parameters:
@@ -135,6 +140,69 @@ export const getEmployee = async (req: Request, res: Response) => {
         relations: ['personal_details']
     }));
 };
+
+/**
+ * @swagger
+ * /employees/{id}/bookings:
+ *   get:
+ *     operationId: getEmployeeBookingsById
+ *     summary: Get employee bookings by ID
+ *     tags: [Employees, Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Employee ID
+ *     responses:
+ *       200:
+ *         description: Employee data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Booking'
+ */
+export const getEmployeeBookings = async (req: Request, res: Response) => {
+    res.json(await bookingRepository.findBy({
+        employee: { id: parseInt(req.params.id) }
+    }))
+};
+
+/**
+ * @swagger
+ * /employees/{id}/bookings/current:
+ *   get:
+ *     operationId: getEmployeeCurrentBookingsById
+ *     summary: Get employee current bookings by employee ID
+ *     tags: [Employees, Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Employee ID
+ *     responses:
+ *       200:
+ *         description: Employee data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Booking'
+ */
+export const getEmployeeCurrentBookings = async (req: Request, res: Response) => {
+    res.json(await bookingRepository.findBy({
+        employee: { id: parseInt(req.params.id) },
+        start_date: LessThanOrEqual(moment().startOf('day').set('hour', 12).toDate()),
+        end_date: MoreThanOrEqual(moment().startOf('day').set('hour', 12).toDate())
+    }))
+};
+
 
 /**
  * @swagger

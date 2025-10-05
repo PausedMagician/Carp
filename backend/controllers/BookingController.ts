@@ -33,11 +33,11 @@ const bookingRepository = AppDataSource.getRepository(Booking);
  *           description: Destination of the booking
  *         start_date:
  *           type: string
- *           format: date-time
+ *           format: date
  *           description: Start date of the booking
  *         end_date:
  *           type: string
- *           format: date-time
+ *           format: date
  *           description: End date of the booking
  *         employee:
  *           type: object

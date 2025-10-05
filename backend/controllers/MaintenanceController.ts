@@ -35,7 +35,7 @@ const maintenanceRepository = AppDataSource.getRepository(Maintenance);
  *           description: Planned date for the maintenance
  *         planned_for:
  *           type: string
- *           format: date-time
+ *           format: date
  *           description: Date for which the maintenance is planned
  *         done_at:
  *           type: string
