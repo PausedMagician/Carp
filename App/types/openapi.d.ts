@@ -28,11 +28,11 @@ declare namespace Components {
             /**
              * Start date of the booking
              */
-            start_date: string; // date-time
+            start_date: string; // date
             /**
              * End date of the booking
              */
-            end_date: string; // date-time
+            end_date: string; // date
             /**
              * Employee associated with the booking
              */
@@ -173,7 +173,7 @@ declare namespace Components {
             /**
              * Date for which the maintenance is planned
              */
-            planned_for: string; // date-time
+            planned_for: string; // date
             /**
              * Date when the maintenance was completed
              */
@@ -365,19 +365,6 @@ declare namespace Paths {
             }
         }
     }
-    namespace Employees$Id {
-        namespace Get {
-            namespace Parameters {
-                export type Id = number;
-            }
-            export interface PathParameters {
-                id: Parameters.Id;
-            }
-            namespace Responses {
-                export type $200 = Components.Schemas.Employee;
-            }
-        }
-    }
     namespace GetAllBookings {
         namespace Responses {
             export type $200 = Components.Schemas.Booking[];
@@ -450,6 +437,39 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.Company;
+        }
+    }
+    namespace GetEmployeeBookingsById {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Booking[];
+        }
+    }
+    namespace GetEmployeeById {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Employee;
+        }
+    }
+    namespace GetEmployeeCurrentBookingsById {
+        namespace Parameters {
+            export type Id = number;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Booking[];
         }
     }
     namespace GetLogById {
@@ -699,6 +719,30 @@ export interface OperationMethods {
     data?: Paths.DeleteEmployee.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
+  /**
+   * getEmployeeById - Get employee by ID
+   */
+  'getEmployeeById'(
+    parameters?: Parameters<Paths.GetEmployeeById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetEmployeeById.Responses.$200>
+  /**
+   * getEmployeeBookingsById - Get employee bookings by ID
+   */
+  'getEmployeeBookingsById'(
+    parameters?: Parameters<Paths.GetEmployeeBookingsById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetEmployeeBookingsById.Responses.$200>
+  /**
+   * getEmployeeCurrentBookingsById - Get employee current bookings by employee ID
+   */
+  'getEmployeeCurrentBookingsById'(
+    parameters?: Parameters<Paths.GetEmployeeCurrentBookingsById.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetEmployeeCurrentBookingsById.Responses.$200>
   /**
    * login - Employee login
    */
@@ -969,6 +1013,34 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.DeleteEmployee.Responses.$200>
   }
   ['/employees/{id}']: {
+    /**
+     * getEmployeeById - Get employee by ID
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetEmployeeById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetEmployeeById.Responses.$200>
+  }
+  ['/employees/{id}/bookings']: {
+    /**
+     * getEmployeeBookingsById - Get employee bookings by ID
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetEmployeeBookingsById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetEmployeeBookingsById.Responses.$200>
+  }
+  ['/employees/{id}/bookings/current']: {
+    /**
+     * getEmployeeCurrentBookingsById - Get employee current bookings by employee ID
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetEmployeeCurrentBookingsById.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetEmployeeCurrentBookingsById.Responses.$200>
   }
   ['/employees/login']: {
     /**

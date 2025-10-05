@@ -8,6 +8,7 @@ import { client } from '@/backend/Server';
 import { theme } from '@/constants/theme';
 import { HomeStackParamList } from '@/types/Navigation';
 import { Booking, Vehicle } from '@/types/openapi';
+import { useAuth } from '@/hooks/UseAuth';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'Dashboard'>;
 
@@ -17,6 +18,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'D
 export default function HomeScreen() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [booking, setBooking] = useState<Booking | null>(null);
+    const auth = useAuth();
 
     useEffect(() => {
         loadActiveBooking();
@@ -29,16 +31,11 @@ export default function HomeScreen() {
     const loadActiveBooking = async () => {
         try {
             const c = await client;
-            const response = await c.getAllBookings();
+            const response = await c.getEmployeeCurrentBookingsById(auth.user!.id);
             const bookings = response.data;
 
-            // Find first active booking (status = "Booked" or "Ongoing") <- VERY naive approach BRUH
-            const activeBooking = bookings.find(
-                (b: Booking) => b.booking_status === "Booked" || b.booking_status === "Ongoing"
-            );
-
-            if (activeBooking) {
-                setBooking(activeBooking);
+            if (bookings.length > 0) {
+                setBooking(bookings[0]);
             }
         } catch (error) {
             console.error('Error loading active booking:', error);
