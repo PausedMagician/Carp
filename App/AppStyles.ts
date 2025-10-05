@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { theme } from '@/constants/theme';
+import { Theme } from '@/constants/theme';
 
-export const appStyles = StyleSheet.create({
+export const createAppStyles = (theme: Theme) => StyleSheet.create({
     tabBar: {
         backgroundColor: theme.colors.background,
         borderTopColor: theme.colors.secondary,

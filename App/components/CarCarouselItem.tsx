@@ -9,7 +9,8 @@ import { fromByteArray } from 'base64-js';
 import { client } from "@/backend/Server";
 import { Vehicle } from "@/types/openapi";
 
-import { theme } from "@/constants/theme";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { Theme } from "@/constants/theme";
 import { useBooking } from "@/hooks/UseBooking";
 
 interface CarCarouselItemProps {
@@ -19,7 +20,8 @@ interface CarCarouselItemProps {
 
 export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselItemProps) {
     const [pressStart, setPressStart] = useState({ x: 0, y: 0, time: 0 });
-
+    const theme = useThemedStyles();
+    const styles = createStyles(theme);
     const bookingContext = useBooking();
 
     const handlePressIn = (event: any) => {
@@ -29,6 +31,7 @@ export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselIt
             time: Date.now(),
         });
     }
+
     const handlePressOut = (event: any) => {
         const moveX = Math.abs(event.nativeEvent.pageX - pressStart.x);
         const moveY = Math.abs(event.nativeEvent.pageY - pressStart.y);
@@ -85,7 +88,7 @@ export default function CarCarouselItem({vehicle, onVehiclePress}: CarCarouselIt
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
     slide: {
         backgroundColor: theme.colors.secondary,
         borderRadius: theme.borderRadius.lg,

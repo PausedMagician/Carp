@@ -5,15 +5,18 @@ import { Image } from "expo-image";
 
 import { fromByteArray } from 'base64-js';
 
-import { theme } from "@/constants/theme";
+import { Theme } from "@/constants/theme";
 
 import { client } from "@/backend/Server";
 import { Booking, Vehicle } from "@/types/openapi";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 
 export function ActiveBooking({ booking}: { booking: Booking | null }) {
     const [vehicle, setVehicle] = useState<Vehicle | null>(null);
     const {width, height} = useWindowDimensions();
     const [image, setImage] = useState<{ uri: string } | null>(null);
+    const theme = useThemedStyles();
+    const styles = createStyles(theme);
 
     useEffect(() => {
         if (!booking) return;
@@ -37,7 +40,7 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
         <View style={styles.container}>
             <Text style={styles.title}>Your current bookings</Text>
             {vehicle && (
-                <View style={[styles.card,{ width: width * 0.9 }]}>
+                <View style={[styles.card, { width: width * 0.9 }]}>
                     <View style={styles.leftSection}>
                         <Image source={image} style={styles.vehicleImage} />
                         <Text style={styles.vehicleName}>
@@ -48,7 +51,6 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
                         <Text style={styles.bookingDate}>
                             Booking Date: {moment(booking?.start_date).format('YYYY-MM-DD')} to {moment(booking?.end_date).format('YYYY-MM-DD')}
                         </Text>
-                    
                     </View>
                 </View>
             )}
@@ -56,7 +58,7 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 3,
         padding: theme.spacing.md,
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: theme.spacing.lg,
         alignSelf: 'center',
+        color: theme.colors.text,
     },
     card: {
         flexDirection: 'row',
@@ -94,10 +97,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: theme.spacing.xs,
         flexWrap: 'wrap',
+        color: theme.colors.text,
     },
     bookingDate: {
         fontSize: 14,
-        color: '#666',
+        color: theme.colors.textTertiary,
     },
     rightSection: {
         marginLeft: theme.spacing.md,
