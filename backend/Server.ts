@@ -28,9 +28,13 @@ const swaggerOptions = {
         },
         servers: [
             {
+                url: 'https://carp-app-api.vm1.itnerd.dk/',
+                description: 'Cloud server',
+            },
+            {
                 url: 'http://localhost:3000',
                 description: 'Development server',
-            },
+            }
         ],
     },
     apis: ['./controllers/*.ts', './entities/*.ts'], // paths to files containing OpenAPI definitions
