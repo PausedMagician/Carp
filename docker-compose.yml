@@ -1,16 +1,4 @@
 services:
-    frontend:
-        container_name: carp-frontend
-        build: ./app
-        depends_on:
-            - backend
-        ports:
-          - 8888:80
-        restart: unless-stopped
-        networks:
-            carp_internal:
-                ipv4_address: 10.232.21.2
-
     backend:
         container_name: carp-backend
         build: ./backend
@@ -18,6 +6,7 @@ services:
         networks:
             carp_internal:
                 ipv4_address: 10.232.21.3
+            private_network:
         volumes:
             - carb_database_volume:/database.sqlite
 
