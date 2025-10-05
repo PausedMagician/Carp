@@ -1,4 +1,4 @@
-import type { Vehicle, Booking } from './openapi';
+import type { Vehicle, Booking, Employee } from './openapi';
 
 /**
  * Home - Vehicle Dashboard
@@ -98,6 +98,22 @@ export type SettingsStackParamList = {
     /** Pretty self-explanatory, bozo */
     FAQ: undefined;
 };
+
+export type AdminStackParamList = {
+    Dashboard: undefined;
+
+    AllVehicles: undefined;
+
+    EditVehicle: { vehicle: Vehicle }
+
+    AddVehicle: undefined;
+
+    AllEmployees: undefined;
+    
+    EditEmployee: { employee: Employee };
+
+    AddEmployee: undefined;
+}
 
 /**
  * Root Tab Navigator (better name than the generic "Navigator" I suppose)

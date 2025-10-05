@@ -87,6 +87,10 @@ declare namespace Components {
              * Employee department
              */
             department: string;
+            /**
+             * Is the employee an admin
+             */
+            isAdmin?: boolean;
             personal_details: PersonalDetails;
         }
         /**

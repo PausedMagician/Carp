@@ -3,6 +3,7 @@ import HomeScreen from "./home/HomeScreen";
 import VehiclesScreen from "./vehicles/VehiclesScreen";
 import SettingsScreen from "./settings/SettingsScreen";
 import ProfileScreen from "./profile/ProfileScreen";
+import AdminScreen from "./admin/AdminScreen";
 
 // Booking screens
 import BookingDateScreen from "./booking/BookingDateScreen";
@@ -15,4 +16,5 @@ export {
     SettingsScreen,
     ProfileScreen,
     BookingDateScreen,
+    AdminScreen
 };
