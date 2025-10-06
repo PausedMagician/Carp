@@ -6,6 +6,13 @@ export const createAdminStyles = (theme: Theme) => StyleSheet.create({
         flex: 1,
         backgroundColor: theme.colors.background,
     },
+    gridContainer: {
+        flex: 1, // Columns should be set dynamically
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: theme.spacing.sm,
+    },
     header: {
         padding: theme.spacing.lg,
         paddingTop: theme.spacing.xl,
