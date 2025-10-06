@@ -36,6 +36,16 @@ export const createAdminStyles = (theme: Theme) => StyleSheet.create({
         marginBottom: theme.spacing.lg,
         ...theme.shadow.small,
     },
+    cardIconContainer: {
+        width: '100%',
+        aspectRatio: 1/1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    cardIcon: {
+        color: theme.colors.textSecondary
+    },
     cardImage: {
         width: '100%',
         aspectRatio: 1/1,
@@ -55,6 +65,32 @@ export const createAdminStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.md,
         color: theme.colors.textTertiary,
     },
+    bottomBorder: {
+        borderBottomColor: theme.colors.text,
+        borderBottomWidth: 1,
+        width: '95%',
+        padding: theme.spacing.sm,
+        marginHorizontal: theme.spacing.sm
+    },
+    // Buttons
+    button: {
+        padding: theme.spacing.sm,
+        borderRadius: theme.borderRadius.md,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: theme.colors.text,
+        fontSize: theme.fontSize.md,
+        fontWeight: '600',
+    },
+    confirmButton: {
+        backgroundColor: theme.colors.success,
+    },
+    cancelButton: {
+        backgroundColor: theme.colors.error,
+    },
+
     // Editing (text inputs and more)
     formImageContainer: {
         flex: 1,
@@ -91,14 +127,18 @@ export const createAdminStyles = (theme: Theme) => StyleSheet.create({
     },
     formLabel: {
         fontSize: theme.fontSize.md,
+        color: theme.colors.text,
     },
     formInput: {
         fontSize: theme.fontSize.md,
         width: 150,
-        borderRadius: theme.borderRadius.sm,
+        // borderRadius: theme.borderRadius.sm,
         textAlign: 'center',
-        color: theme.colors.textMuted,
-        backgroundColor: theme.colors.accent,
-        padding: theme.spacing.xs
+        color: theme.colors.text,
+        // backgroundColor: theme.colors.accent,
+        padding: theme.spacing.xs,
+        borderBottomColor: theme.colors.text,
+        borderBottomWidth: 1,
+        borderWidth: 0,
     }
 });

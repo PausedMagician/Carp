@@ -7,10 +7,12 @@ interface HorizontalSliderListProps<T> {
     title?: string;
     handleRedirect?: () => void;
     data: T[];
-    renderItem: ({ item }: { item: T }) => React.ReactElement;
+    renderItem: ({ item, index }: { item: T, index: number }) => React.ReactElement;
+    renderStart?: () => React.ReactElement;
+    renderEnd?: () => React.ReactElement;
 }
 
-export default function HorizontalSliderList<T>({ title, handleRedirect, data, renderItem }: HorizontalSliderListProps<T>) {
+export default function HorizontalSliderList<T>({ title, handleRedirect, data, renderItem, renderStart, renderEnd }: HorizontalSliderListProps<T>) {
     const theme = useThemedStyles();
     const styles = createStyles(theme);
 
@@ -30,11 +32,21 @@ export default function HorizontalSliderList<T>({ title, handleRedirect, data, r
                 </View>
             )}
             <ScrollView horizontal showsHorizontalScrollIndicator={true} style={{ marginTop: 16 }}>
-                {data.map((item) => (
+                {renderStart && (
+                    <View key='renderStart' style={{ marginRight: 16 }}>
+                        {renderStart()}
+                    </View>
+                )}
+                {data.map((item, index) => (
                     <View key={(item as any).id} style={{ marginRight: 16 }}>
-                        {renderItem({ item })}
+                        {renderItem({ item, index })}
                     </View>
                 ))}
+                {renderEnd && (
+                    <View key='renderStart' style={{ marginRight: 16 }}>
+                        {renderEnd()}
+                    </View>
+                )}
             </ScrollView>
         </>
     );

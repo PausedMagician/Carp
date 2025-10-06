@@ -104,13 +104,13 @@ export type AdminStackParamList = {
 
     AllVehicles: undefined;
 
-    EditVehicle: { vehicle: Vehicle }
+    EditVehicle: { vehicle: Vehicle, image?: { uri: string } };
 
     AddVehicle: undefined;
 
     AllEmployees: undefined;
     
-    EditEmployee: { employee: Employee };
+    EditEmployee: { employee: Employee, image?: { uri: string } };
 
     AddEmployee: undefined;
 }
