@@ -183,8 +183,6 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
 
             const response = await apiClient.createBooking(null, bookingData);
 
-            clearBooking();
-
             return response.data;
         } catch (error) {
             console.error('Error creating booking:', error);
