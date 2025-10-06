@@ -53,6 +53,8 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
                         </Text>
                     </View>
                 </View>
+            )} {!vehicle && (
+                <Text style={ styles.info }>No active bookings</Text>
             )}
         </View>
     );
@@ -69,6 +71,12 @@ const createStyles = (theme: Theme) => StyleSheet.create({
         marginBottom: theme.spacing.lg,
         alignSelf: 'center',
         color: theme.colors.text,
+    },
+    info: {
+        fontSize: theme.fontSize.lg,
+        marginBottom: theme.spacing.lg,
+        alignSelf: 'center',
+        color: theme.colors.textQuaternary,
     },
     card: {
         flexDirection: 'row',
