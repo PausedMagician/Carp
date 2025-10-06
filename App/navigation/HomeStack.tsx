@@ -1,9 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import type {HomeStackParamList} from '@/types/Navigation';
 
 import {HomeScreen, BookingDateScreen, BookingConfirmationScreen} from "@/app/Screens";
+import BookingSuccessScreen from '@/app/booking/BookingSuccessScreen';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -45,14 +45,14 @@ export default function HomeStack() {
                 }}
             />
 
-            {/*<Stack.Screen*/}
-            {/*    name="BookingSuccess"*/}
-            {/*    component={BookingSuccessScreen}*/}
-            {/*    options={{*/}
-            {/*        headerShown: false,*/}
-            {/*        gestureEnabled: false,*/}
-            {/*    }}*/}
-            {/*/>*/}
+            <Stack.Screen
+                name="BookingSuccess"
+                component={BookingSuccessScreen}
+                options={{
+                    headerShown: false,
+                    gestureEnabled: false,
+                }}
+            />
         </Stack.Navigator>
     );
 }
