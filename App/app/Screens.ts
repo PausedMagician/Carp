@@ -8,6 +8,7 @@ import AdminScreen from "./admin/AdminScreen";
 // Booking screens
 import BookingDateScreen from "./booking/BookingDateScreen";
 import BookingConfirmationScreen from "./booking/BookingConfirmationScreen";
+import BookingSuccessScreen from "./booking/BookingSuccessScreen";
 
 // Export all screens
 export {
@@ -19,4 +20,5 @@ export {
     BookingDateScreen,
     AdminScreen,
     BookingConfirmationScreen,
+    BookingSuccessScreen,
 };
