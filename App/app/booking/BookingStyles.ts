@@ -137,6 +137,34 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         borderRadius: theme.borderRadius.lg,
         ...theme.shadow.small,
     },
+    calendarLegend: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: theme.spacing.lg,
+        paddingHorizontal: theme.spacing.md,
+        paddingVertical: theme.spacing.sm,
+        marginBottom: theme.spacing.sm,
+    },
+    legendItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: theme.spacing.xs,
+    },
+    legendDot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+    },
+    legendBar: {
+        width: 20,
+        height: 8,
+        borderRadius: 4,
+    },
+    legendText: {
+        fontSize: theme.fontSize.sm,
+        color: theme.colors.textTertiary,
+    },
     bottomPadding: {
         height: 100,
     },
@@ -174,7 +202,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         ...theme.shadow.small,
     },
     required: {
-        color: '#FF3B30', // :(
+        color: '#FF3B30', // Should not be hardcoded :(
     },
     vehicleRow: {
         flexDirection: 'row',
@@ -263,5 +291,121 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.xs,
         color: theme.colors.textSecondary,
         textAlign: 'center',
+    },
+
+    // Success screen
+    successHeader: {
+        alignItems: 'center',
+        paddingVertical: theme.spacing.xl,
+        paddingHorizontal: theme.spacing.md,
+    },
+    successIconContainer: {
+        marginBottom: theme.spacing.lg,
+    },
+    successIcon: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: theme.colors.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...theme.shadow.medium,
+    },
+    successIconText: {
+        fontSize: 48,
+        color: theme.colors.background,
+        fontWeight: 'bold',
+    },
+    successTitle: {
+        fontSize: theme.fontSize.xxl,
+        fontWeight: 'bold',
+        color: theme.colors.text,
+        marginBottom: theme.spacing.xs,
+    },
+    successSubtitle: {
+        fontSize: theme.fontSize.md,
+        color: theme.colors.textSecondary,
+        textAlign: 'center',
+    },
+    referenceContainer: {
+        backgroundColor: theme.colors.background,
+        padding: theme.spacing.md,
+        borderRadius: theme.borderRadius.md,
+        alignItems: 'center',
+        marginVertical: theme.spacing.sm,
+    },
+    referenceNumber: {
+        fontSize: theme.fontSize.xl,
+        fontWeight: 'bold',
+        color: theme.colors.primary,
+        letterSpacing: 1,
+    },
+    referenceNote: {
+        fontSize: theme.fontSize.xs,
+        color: theme.colors.textSecondary,
+        fontStyle: 'italic',
+        textAlign: 'center',
+    },
+    detailRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: theme.spacing.sm,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.colors.background,
+    },
+    detailLabel: {
+        fontSize: theme.fontSize.md,
+        color: theme.colors.textSecondary,
+        fontWeight: '500',
+    },
+    detailValue: {
+        fontSize: theme.fontSize.md,
+        color: theme.colors.text,
+        fontWeight: '600',
+        flex: 1,
+        textAlign: 'right',
+        marginLeft: theme.spacing.md,
+    },
+    statusBadge: {
+        backgroundColor: theme.colors.primary,
+        paddingVertical: theme.spacing.xs,
+        paddingHorizontal: theme.spacing.md,
+        borderRadius: theme.borderRadius.md,
+    },
+    statusBadgeText: {
+        fontSize: theme.fontSize.sm,
+        color: theme.colors.background,
+        fontWeight: '600',
+    },
+    nextStepsText: {
+        fontSize: theme.fontSize.md,
+        color: theme.colors.text,
+        lineHeight: 24,
+    },
+    primaryButton: {
+        backgroundColor: theme.colors.primary,
+        padding: theme.spacing.lg,
+        borderRadius: theme.borderRadius.lg,
+        alignItems: 'center',
+        marginBottom: theme.spacing.sm,
+    },
+    primaryButtonText: {
+        color: theme.colors.background,
+        fontSize: theme.fontSize.md,
+        fontWeight: 'bold',
+    },
+    secondaryButton: {
+        backgroundColor: theme.colors.secondary,
+        padding: theme.spacing.lg,
+        borderRadius: theme.borderRadius.lg,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: theme.colors.primary,
+    },
+    secondaryButtonText: {
+        color: theme.colors.primary,
+        fontSize: theme.fontSize.md,
+        fontWeight: '600',
     },
 });
