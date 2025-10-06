@@ -186,13 +186,12 @@ export default function BookingSuccessScreen() {
                     </View>
                 </View>
 
-                {/* Next Steps */}
+                {/* Next steps */}
                 <View style={styles.card}>
                     <Text style={styles.cardTitle}>Next Steps</Text>
                     <Text style={styles.nextStepsText}>
                         • Check your email for booking confirmation{'\n'}
                         • Pick up the vehicle on your check-in date{'\n'}
-                        • Bring your employee ID and driver's license{'\n'}
                         • Inspect the vehicle before departing
                     </Text>
                 </View>
