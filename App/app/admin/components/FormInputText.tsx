@@ -25,7 +25,7 @@ export default function FormInputText({ label, value, onChange, onBlur }: FormIn
     return (
         <View style={styles.formGroup}>
             <Text style={styles.formLabel}>{label}</Text>
-            <TextInput style={[styles.formInput, changed && styles.formInputChanged]} value={value?.toString()} onChangeText={onChangeWrapper} onBlur={onBlur} />
+            <TextInput placeholder="..." style={[styles.formInput, changed && styles.formInputChanged]} value={value?.toString()} onChangeText={onChangeWrapper} onBlur={onBlur} />
         </View>
     );
 }
