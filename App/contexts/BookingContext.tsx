@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import type { Vehicle, Booking } from '@/types/openapi';
 import { client } from '@/backend/Server';
 import { useAuth } from '@/hooks/UseAuth';
@@ -25,7 +25,7 @@ interface BookingContextType {
     // API
     checkAvailability: (vehicleId: number, start: Date, end: Date) => Promise<boolean>;
     getAvailableVehicles: (start: Date, end: Date) => Promise<Vehicle[]>;
-    createBooking: () => Promise<Booking>;
+    createBooking: (customPurpose?: string, customDestination?: string) => Promise<Booking>;
 }
 
 export const BookingContext = createContext<BookingContextType | undefined>(undefined);
@@ -152,24 +152,28 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
      * Create a new booking
      * Requires user to be authenticated
      */
-    const createBooking = async (): Promise<Booking> => {
-        if (!isValidBooking()) {
-            throw new Error('Invalid booking: missing required input');
-        }
+    const createBooking = async (
+        customPurpose?: string,
+        customDestination?: string
+    ): Promise<Booking> => {
+        // Use provided values or fall back to context state
+        const finalPurpose = customPurpose !== undefined ? customPurpose : purpose;
+        const finalDestination = customDestination !== undefined ? customDestination : destination;
 
-        if (!auth.user) {
-            throw new Error('User must be authenticated to create a booking');
+        // Validate with final values
+        if (!selectedVehicle || !startDate || !endDate || !finalPurpose.trim() || !auth.user) {
+            throw new Error('Invalid booking: missing required input');
         }
 
         try {
             const apiClient = await client;
 
             const bookingData: Booking = {
-                purpose: purpose,
+                purpose: finalPurpose,
                 booking_status: 'Booked',
-                destination: destination,
-                start_date: startDate!.toISOString().split('T')[0], // Date only
-                end_date: endDate!.toISOString().split('T')[0],
+                destination: finalDestination,
+                start_date: startDate.toISOString().split('T')[0], // Date only
+                end_date: endDate.toISOString().split('T')[0],
                 employee: {
                     id: auth.user.id,
                     username: auth.user.username,
@@ -178,7 +182,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
                     department: auth.user.department,
                     personal_details: auth.user.personal_details,
                 },
-                vehicle: selectedVehicle!,
+                vehicle: selectedVehicle,
             };
 
             const response = await apiClient.createBooking(null, bookingData);
@@ -213,4 +217,16 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
             {children}
         </BookingContext.Provider>
     );
+}
+
+/**
+ * Hook to use booking context
+ * Must be used within BookingProvider
+ */
+export function useBooking() {
+    const context = useContext(BookingContext);
+    if (context === undefined) {
+        throw new Error('useBooking must be used within a BookingProvider');
+    }
+    return context;
 }
