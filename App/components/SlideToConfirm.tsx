@@ -13,7 +13,7 @@ import { Theme } from '@/constants/theme';
 
 const SLIDER_HEIGHT = 60;
 const THUMB_SIZE = 52;
-const SLIDE_THRESHOLD = 0.85; // Reduced from 0.90 for better UX
+const SLIDE_THRESHOLD = 0.85;
 
 type SlideToConfirmProps = {
     onConfirm: () => void;
@@ -31,11 +31,11 @@ const SlideToConfirm = forwardRef<SlideToConfirmHandle, SlideToConfirmProps>(
         const [containerWidth, setContainerWidth] = useState(0);
         const slideAnim = useRef(new Animated.Value(0)).current;
 
-        // Calculate maxSlide based on actual container width
+        // Calculate maxSlide based on container width
         const maxSlide = containerWidth > 0 ? containerWidth - THUMB_SIZE - 8 : 0;
 
         /**
-         * Measure actual container width on layout
+         * Measure container width on layout
          */
         const onLayout = (event: LayoutChangeEvent) => {
             const { width } = event.nativeEvent.layout;
@@ -70,12 +70,12 @@ const SlideToConfirm = forwardRef<SlideToConfirmHandle, SlideToConfirmProps>(
             },
 
             onPanResponderRelease: (_, gestureState) => {
-                // Use the current animated value, not gestureState.dx
+                // Use the current animated value
                 const finalX = Math.max(0, Math.min(gestureState.dx, maxSlide));
                 const progress = finalX / maxSlide;
 
                 if (progress >= SLIDE_THRESHOLD) {
-                    // Success! Call onConfirm BEFORE animation
+                    // Success! Call onConfirm before animation
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
                     // Animate to end
@@ -85,7 +85,7 @@ const SlideToConfirm = forwardRef<SlideToConfirmHandle, SlideToConfirmProps>(
                         useNativeDriver: false,
                     }).start();
 
-                    // Call onConfirm immediately, not in animation callback
+                    // Call onConfirm immediately and not in animation callback
                     // This ensures it fires even if component unmounts
                     setTimeout(() => {
                         onConfirm();
