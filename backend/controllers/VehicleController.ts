@@ -143,13 +143,14 @@ const bookingRepository = AppDataSource.getRepository(Booking);
  *               $ref: '#/components/schemas/Vehicle'
  */
 export const createVehicle = async (req: Request, res: Response) => {
-    const obj = vehicleRepository.create(req.body);
-    //@ts-expect-error
+    let obj: Vehicle | Vehicle[] = vehicleRepository.create(req.body);
+    // Check if object is an array
+    if (Array.isArray(obj)) {
+        obj = obj[0];
+    }
     await vehicleRegistrationRepository.insert(obj.registration);
-    //@ts-expect-error
+    await VehicleTransmissionRepository.insert(obj.spec.transmission);
     await vehicleSpecRepository.insert(obj.spec);
-    //@ts-expect-error
-    await VehicleTransmissionRepository.insert(obj.spec.transmission)
     await vehicleRepository.insert(obj);
     res.status(201).json(obj);
 };
@@ -174,7 +175,7 @@ export const createVehicle = async (req: Request, res: Response) => {
 export const getVehicles = async (req: Request, res: Response) => {
     res.json(await vehicleRepository.find({relations: {
         registration: true,
-        spec: true
+        spec: true,
     } }));
 };
 
