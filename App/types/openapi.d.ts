@@ -87,6 +87,10 @@ declare namespace Components {
              * Employee department
              */
             department: string;
+            /**
+             * Is the employee an admin
+             */
+            isAdmin?: boolean;
             personal_details: PersonalDetails;
         }
         /**
@@ -421,14 +425,6 @@ declare namespace Paths {
             }
         }
     }
-    namespace Employees {
-        namespace Put {
-            export type RequestBody = Components.Schemas.Employee;
-            namespace Responses {
-                export type $200 = Components.Schemas.Employee;
-            }
-        }
-    }
     namespace GetAllBookings {
         namespace Responses {
             export type $200 = Components.Schemas.Booking[];
@@ -629,6 +625,12 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Company;
         }
     }
+    namespace UpdateEmployee {
+        export type RequestBody = Components.Schemas.Employee;
+        namespace Responses {
+            export type $200 = Components.Schemas.Employee;
+        }
+    }
     namespace UpdateLog {
         export type RequestBody = /**
          * example:
@@ -767,6 +769,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetAllEmployees.Responses.$200>
+  /**
+   * updateEmployee - Update an existing employee
+   */
+  'updateEmployee'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateEmployee.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateEmployee.Responses.$200>
   /**
    * createEmployee - Create a new employee
    */
@@ -1067,6 +1077,14 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetAllEmployees.Responses.$200>
+    /**
+     * updateEmployee - Update an existing employee
+     */
+    'put'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateEmployee.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateEmployee.Responses.$200>
     /**
      * deleteEmployee - Delete an employee
      */

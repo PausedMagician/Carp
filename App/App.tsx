@@ -21,6 +21,7 @@ import SearchStack from './navigation/SearchStack';
 import SettingsStack from './navigation/SettingsStack';
 
 import { createAppStyles } from './AppStyles';
+import AdminStack from './navigation/AdminStack';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
@@ -74,7 +75,8 @@ function MainTabs() {
     const styles = createAppStyles(theme);
 
     // hardcoded to false :)
-    const isAdmin = false;
+    const isAdmin = useAuth().user?.isAdmin ?? false;
+    console.log(isAdmin);
 
     return (
         <Tab.Navigator
@@ -150,7 +152,7 @@ function MainTabs() {
             {isAdmin && (
                 <Tab.Screen
                     name="Admin"
-                    component={AdminScreen}
+                    component={AdminStack}
                     options={{
                         tabBarLabel: '',
                         tabBarIcon: ({ color, focused }) => (

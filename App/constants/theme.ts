@@ -11,6 +11,9 @@ export const colors = {
         textSecondary: '#ADA5F3',
         textTertiary: '#321FE0',
         textQuaternary: '#1E1287',
+        success: '#4CAF50',
+        warning: '#FFC107',
+        error: '#F44336',
     },
     dark: {
         background: '#010104',
@@ -22,6 +25,9 @@ export const colors = {
         textSecondary: '#100C5A',
         textTertiary: '#281FE0',
         textQuaternary: '#7E78ED',
+        success: '#4CAF50',
+        warning: '#FFC107',
+        error: '#F44336',
     },
 };
 
