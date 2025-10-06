@@ -6,6 +6,7 @@ import ProfileScreen from "./profile/ProfileScreen";
 
 // Booking screens
 import BookingDateScreen from "./booking/BookingDateScreen";
+import BookingConfirmationScreen from "./booking/BookingConfirmationScreen";
 
 // Export all screens
 export {
@@ -15,4 +16,5 @@ export {
     SettingsScreen,
     ProfileScreen,
     BookingDateScreen,
+    BookingConfirmationScreen,
 };

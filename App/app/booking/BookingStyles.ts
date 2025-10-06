@@ -9,6 +9,8 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
     scrollView: {
         flex: 1,
     },
+
+    // Date selection
     vehicleCard: {
         backgroundColor: theme.colors.secondary,
         padding: theme.spacing.lg,
@@ -45,7 +47,6 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.sm,
         fontWeight: '600',
     },
-
     dynamicCard: {
         backgroundColor: theme.colors.secondary,
         padding: theme.spacing.lg,
@@ -65,8 +66,6 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         color: theme.colors.textTertiary,
         lineHeight: 20,
     },
-
-    // Replaces instructions
     selectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -106,7 +105,6 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.lg,
         color: theme.colors.textTertiary,
     },
-
     statusBanner: {
         backgroundColor: theme.colors.accent,
         padding: theme.spacing.sm,
@@ -120,7 +118,6 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.sm,
         fontWeight: '600',
     },
-
     loadingContainer: {
         padding: theme.spacing.xxl,
         alignItems: 'center',
@@ -130,10 +127,9 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.md,
         color: theme.colors.textSecondary,
     },
-
     calendarWrapper: {
         borderRadius: theme.borderRadius.lg,
-        overflow: 'hidden', // To clip the corners of the calendar
+        overflow: 'hidden',
         backgroundColor: theme.colors.secondary,
     },
     calendarShadowWrapper: {
@@ -141,11 +137,9 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         borderRadius: theme.borderRadius.lg,
         ...theme.shadow.small,
     },
-
     bottomPadding: {
         height: 100,
     },
-
     bottomBar: {
         position: 'absolute',
         bottom: 0,
@@ -168,5 +162,106 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         color: theme.colors.background,
         fontSize: theme.fontSize.md,
         fontWeight: 'bold',
+    },
+
+    // Confirmation screen
+    card: {
+        backgroundColor: theme.colors.secondary,
+        padding: theme.spacing.lg,
+        marginHorizontal: theme.spacing.md,
+        marginTop: theme.spacing.md,
+        borderRadius: theme.borderRadius.lg,
+        ...theme.shadow.small,
+    },
+    required: {
+        color: '#FF3B30', // :(
+    },
+    vehicleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    vehicleImage: {
+        width: 80,
+        height: 80,
+        borderRadius: theme.borderRadius.md,
+        marginRight: theme.spacing.md,
+        backgroundColor: theme.colors.background,
+    },
+    vehicleLicense: {
+        fontSize: theme.fontSize.sm,
+        color: theme.colors.primary,
+        fontWeight: '600',
+    },
+    dateLabel: {
+        fontSize: theme.fontSize.xs,
+        color: theme.colors.textTertiary,
+        marginBottom: theme.spacing.xs,
+    },
+    dateValue: {
+        fontSize: theme.fontSize.md,
+        fontWeight: '600',
+        color: theme.colors.text,
+    },
+    durationBox: {
+        backgroundColor: theme.colors.accent,
+        padding: theme.spacing.sm,
+        borderRadius: theme.borderRadius.md,
+        alignItems: 'center',
+    },
+    durationText: {
+        fontSize: theme.fontSize.sm,
+        color: theme.colors.background,
+        fontWeight: '600',
+    },
+    userName: {
+        fontSize: theme.fontSize.md,
+        fontWeight: '600',
+        color: theme.colors.text,
+        marginBottom: theme.spacing.xs,
+    },
+    userEmail: {
+        fontSize: theme.fontSize.sm,
+        color: theme.colors.textTertiary,
+        marginBottom: theme.spacing.xs,
+    },
+    userDepartment: {
+        fontSize: theme.fontSize.sm,
+        color: theme.colors.textSecondary,
+        fontStyle: 'italic',
+    },
+    input: {
+        backgroundColor: theme.colors.background,
+        padding: theme.spacing.md,
+        borderRadius: theme.borderRadius.md,
+        fontSize: theme.fontSize.md,
+        color: theme.colors.text,
+        borderWidth: 1,
+        borderColor: theme.colors.secondary,
+        minHeight: 50,
+    },
+    charCount: {
+        fontSize: theme.fontSize.xs,
+        color: theme.colors.textSecondary,
+        textAlign: 'right',
+        marginTop: theme.spacing.xs,
+    },
+    errorCard: {
+        backgroundColor: '#FF3B30',
+        padding: theme.spacing.md,
+        marginHorizontal: theme.spacing.md,
+        marginTop: theme.spacing.md,
+        borderRadius: theme.borderRadius.md,
+    },
+    errorText: {
+        color: theme.colors.background,
+        fontSize: theme.fontSize.sm,
+        fontWeight: '600',
+        textAlign: 'center',
+    },
+    validationHint: {
+        marginTop: theme.spacing.sm,
+        fontSize: theme.fontSize.xs,
+        color: theme.colors.textSecondary,
+        textAlign: 'center',
     },
 });
