@@ -34,12 +34,13 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
                 });
             });
         }, [vehicle]);
-    
+
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Your current bookings</Text>
-            {vehicle && (
+
+            {vehicle ? (
                 <View style={[styles.card, { width: width * 0.9 }]}>
                     <View style={styles.leftSection}>
                         <Image source={image} style={styles.vehicleImage} />
@@ -53,8 +54,8 @@ export function ActiveBooking({ booking}: { booking: Booking | null }) {
                         </Text>
                     </View>
                 </View>
-            )} {!vehicle && (
-                <Text style={ styles.info }>No active bookings</Text>
+            ) : (
+                <Text style={styles.info}>No active bookings</Text>
             )}
         </View>
     );
