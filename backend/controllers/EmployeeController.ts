@@ -211,6 +211,7 @@ export const getEmployeeCurrentBookings = async (req: Request, res: Response) =>
  * @swagger
  * /employees:
  *   put:
+ *     operationId: updateEmployee
  *     summary: Update an existing employee
  *     tags: [Employees]
  *     requestBody:

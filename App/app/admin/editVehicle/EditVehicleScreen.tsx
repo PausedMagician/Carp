@@ -11,6 +11,8 @@ import { client } from "@/backend/Server";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Vehicle } from "@/types/openapi";
 import FormInputText from "../components/FormInputText";
+import FormInputSwitch from "../components/FormInputSwitch";
+import FormInputPicker from "../components/FormInputPicker";
 
 type EditVehicleRouteProp = RouteProp<AdminStackParamList, 'EditVehicle'>
 type EditVehicleNavigationProp = NativeStackNavigationProp<AdminStackParamList, 'EditVehicle'>;
@@ -156,46 +158,31 @@ export default function AdminEditVehicleScreen() {
                     <FormInputText label="Horse Power:" value={horsePower} onChange={setHorsePower} onBlur={() => setHorsePower(parseFloat(horsePower).toString())} />
                     <FormInputText label="Mileage:" value={mileage} onChange={setMileage} onBlur={() => setMileage(parseFloat(mileage).toString())} />
                     <FormInputText label="Top Speed:" value={topSpeed} onChange={setTopSpeed} onBlur={() => setTopSpeed(parseFloat(topSpeed).toString())} />
-                    <View style={styles.formGroup}>
-                        <Text style={styles.formLabel}>Trailer Hitch:</Text>
-                        <Switch thumbColor={trailerHitch ? theme.colors.success : theme.colors.error} trackColor={{ false: theme.colors.error, true: theme.colors.success }} value={trailerHitch} onValueChange={setTrailerHitch} />
-                    </View>
-                    <View style={styles.formGroup}>
-                        <Text style={styles.formLabel}>Fuel Type:</Text>
-                        <Picker style={styles.formInput} selectedValue={fuelType} onValueChange={setFuelType}>
-                            <Picker.Item label="Petrol" value="Petrol" />
-                            <Picker.Item label="Diesel" value="Diesel" />
-                            <Picker.Item label="Electric" value="Electric" />
-                            <Picker.Item label="Hybrid" value="Hybrid" />
-                        </Picker>
-                    </View>
-                    <View style={styles.formGroup}>
-                        <Text style={styles.formLabel}>Tyres:</Text>
-                        <Picker style={styles.formInput} selectedValue={tyres} onValueChange={setTyres}>
-                            <Picker.Item label="Summer" value="Summer" />
-                            <Picker.Item label="Winter" value="Winter" />
-                        </Picker>
-                    </View>
-                    
+                    <FormInputSwitch label="Trailer Hitch:" value={trailerHitch} onChange={setTrailerHitch} />
+                    <FormInputPicker label="Fuel Type:" value={fuelType} onChange={setFuelType} data={[
+                        { label: 'Petrol', value: 'Petrol' },
+                        { label: 'Diesel', value: 'Diesel' },
+                        { label: 'Electric', value: 'Electric' },
+                        { label: 'Hybrid', value: 'Hybrid' },
+                    ]} />
+                    <FormInputPicker label="Tyres:" value={tyres} onChange={setTyres} data={[
+                        { label: 'Summer', value: 'Summer' },
+                        { label: 'Winter', value: 'Winter' },
+                    ]} />
+
                     <Text style={[styles.semiTitle, styles.bottomBorder]}>
                         Transmission
                     </Text>
                     
-                    <View style={styles.formGroup}>
-                        <Text style={styles.formLabel}>Type:</Text>
-                        <Picker style={styles.formInput} selectedValue={transmissionType} onValueChange={setTransmissionType}>
-                            <Picker.Item label="Manual" value="Manual" />
-                            <Picker.Item label="Automatic" value="Automatic" />
-                        </Picker>
-                    </View>
-                    <View style={styles.formGroup}>
-                        <Text style={styles.formLabel}>Drive:</Text>
-                        <Picker style={styles.formInput} selectedValue={transmissionDrive} onValueChange={setTransmissionDrive}>
-                            <Picker.Item label="FWD (Front Wheel Drive)" value="FWD" />
-                            <Picker.Item label="RWD (Rear Wheel Drive)" value="RWD" />
-                            <Picker.Item label="AWD (All Wheel Drive)" value="AWD" />
-                        </Picker>
-                    </View>
+                    <FormInputPicker label="Type:" value={transmissionType} onChange={setTransmissionType} data={[
+                        { label: 'Manual', value: 'Manual' },
+                        { label: 'Automatic', value: 'Automatic' },
+                    ]} />
+                    <FormInputPicker label="Drive:" value={transmissionDrive} onChange={setTransmissionDrive} data={[
+                        { label: 'FWD (Front Wheel Drive)', value: 'FWD' },
+                        { label: 'RWD (Rear Wheel Drive)', value: 'RWD' },
+                        { label: 'AWD (All Wheel Drive)', value: 'AWD' },
+                    ]} />
                     <View style={[styles.formGroup, { margin: 10, justifyContent: 'space-around' }]}>
                         <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={deleteHandler}>
                             <Text style={styles.buttonText}>

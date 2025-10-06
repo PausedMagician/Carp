@@ -138,7 +138,11 @@ export const createAdminStyles = (theme: Theme) => StyleSheet.create({
         // backgroundColor: theme.colors.accent,
         padding: theme.spacing.xs,
         borderBottomColor: theme.colors.text,
-        borderBottomWidth: 1,
         borderWidth: 0,
+        borderBottomWidth: 1,
+    },
+    formInputChanged: {
+        borderBottomColor: theme.colors.warning,
+        borderBottomWidth: 1,
     }
 });
