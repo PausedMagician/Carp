@@ -91,15 +91,18 @@ export default function BookingConfirmationScreen() {
         setError(null);
 
         try {
-            booking.setPurpose(purpose.trim());
-            booking.setDestination(destination.trim());
+            // for other components that might need them
             booking.setSelectedVehicle(vehicle);
             booking.setDateRange(new Date(startDate), new Date(endDate));
 
-            const newBooking = await booking.createBooking();
+            const newBooking = await booking.createBooking(
+                purpose.trim(),
+                destination.trim()
+            );
 
             navigation.navigate('BookingSuccess', { booking: newBooking });
 
+            // Clear booking state after successful navigation
             booking.clearBooking();
         } catch (err: any) {
             console.error('Booking error:', err);
