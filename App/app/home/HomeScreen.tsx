@@ -26,9 +26,14 @@ export default function HomeScreen() {
     }, []);
 
     const loadActiveBooking = async () => {
+        if (!auth.user) {
+            console.log('No user logged in');
+            return;
+        }
+
         try {
             const c = await client;
-            const response = await c.getEmployeeCurrentBookingsById(auth.user!.id);
+            const response = await c.getEmployeeCurrentBookingsById(auth.user.id);
             const bookings = response.data;
 
             if (bookings.length > 0) {

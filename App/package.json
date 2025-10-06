@@ -23,6 +23,7 @@
     "@react-navigation/stack": "^7.4.8",
     "axios": "^1.12.2",
     "expo": "54.0.12",
+    "expo-haptics": "^15.0.7",
     "expo-image": "~3.0.8",
     "expo-status-bar": "~3.0.8",
     "moment": "^2.30.1",

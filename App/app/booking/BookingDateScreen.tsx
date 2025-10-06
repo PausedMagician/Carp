@@ -69,8 +69,9 @@ export default function BookingDateScreen() {
                     marked[dateString] = {
                         disabled: true,
                         disableTouchEvent: true,
-                        color: theme.colors.textSecondary,
-                        textColor: theme.colors.textMuted,
+                        marked: true,
+                        dotColor: theme.colors.accent,
+                        textColor: theme.colors.textSecondary,
                     };
                 }
             });
@@ -81,6 +82,19 @@ export default function BookingDateScreen() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    /**
+     * Check if a date range contains any unavailable dates
+     */
+    const hasUnavailableDatesInRange = (start: Date, end: Date): boolean => {
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const dateString = d.toISOString().split('T')[0];
+            if (markedDates[dateString]?.disabled) {
+                return true;
+            }
+        }
+        return false;
     };
 
     /**
@@ -119,6 +133,11 @@ export default function BookingDateScreen() {
         const selectedDate = new Date(day.dateString);
 
         if (markedDates[day.dateString]?.disabled) {
+            Alert.alert(
+                'Date Unavailable',
+                'This date is already booked. Please select a different date.',
+                [{ text: 'OK' }]
+            );
             return;
         }
 
@@ -134,38 +153,65 @@ export default function BookingDateScreen() {
 
         if (startDate && !endDate) {
             // Only start date exists
+            let newStart: Date;
+            let newEnd: Date;
+
             if (selectedDate < startDate) {
-                // New date is before start -> make it the new start
-                setDateRange(selectedDate, startDate);
-                updateMarkedDates(selectedDate, startDate);
+                newStart = selectedDate;
+                newEnd = startDate;
             } else {
-                // New date is after start -> make it the end
-                setDateRange(startDate, selectedDate);
-                updateMarkedDates(startDate, selectedDate);
+                newStart = startDate;
+                newEnd = selectedDate;
             }
+
+            // Validate range
+            if (hasUnavailableDatesInRange(newStart, newEnd)) {
+                Alert.alert(
+                    'Invalid Date Range',
+                    'Your selected range includes unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
+            setDateRange(newStart, newEnd);
+            updateMarkedDates(newStart, newEnd);
         } else if (startDate && endDate) {
             // Both dates exist so we adjust the closer endpoint
             const distToStart = Math.abs(selectedDate.getTime() - startDate.getTime());
             const distToEnd = Math.abs(selectedDate.getTime() - endDate.getTime());
 
+            let newStart: Date;
+            let newEnd: Date;
+
             if (selectedDate < startDate) {
-                // Before range -> new start
-                setDateRange(selectedDate, endDate);
-                updateMarkedDates(selectedDate, endDate);
+                newStart = selectedDate;
+                newEnd = endDate;
             } else if (selectedDate > endDate) {
-                // After range -> new end
-                setDateRange(startDate, selectedDate);
-                updateMarkedDates(startDate, selectedDate);
+                newStart = startDate;
+                newEnd = selectedDate;
             } else {
-                // Within range -> replace closer endpoint
                 if (distToStart < distToEnd) {
-                    setDateRange(selectedDate, endDate);
-                    updateMarkedDates(selectedDate, endDate);
+                    newStart = selectedDate;
+                    newEnd = endDate;
                 } else {
-                    setDateRange(startDate, selectedDate);
-                    updateMarkedDates(startDate, selectedDate);
+                    newStart = startDate;
+                    newEnd = selectedDate;
                 }
             }
+
+            // Validate range
+            if (hasUnavailableDatesInRange(newStart, newEnd)) {
+                Alert.alert(
+                    'Invalid Date Range',
+                    'Your selected range includes unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
+            setDateRange(newStart, newEnd);
+            updateMarkedDates(newStart, newEnd);
         }
 
         setIsSelecting(false);
@@ -181,6 +227,11 @@ export default function BookingDateScreen() {
         const dateString = day.dateString;
 
         if (markedDates[dateString]?.disabled) {
+            Alert.alert(
+                'Date Unavailable',
+                'This date is already booked. Please select a different date.',
+                [{ text: 'OK' }]
+            );
             return;
         }
 
@@ -189,8 +240,6 @@ export default function BookingDateScreen() {
         const isEndDate = endDate && dateString === endDate.toISOString().split('T')[0];
 
         // The alert should only appear if tapping an already selected date
-        // It should probably be refactored into its own function
-        // This shit is so cursed
         if (isStartDate || isEndDate) {
             Alert.alert(
                 'Deselect Date',
@@ -228,13 +277,31 @@ export default function BookingDateScreen() {
 
         // Range selection mode
         if (isSelecting && selectionStart) {
+            let newStart: Date;
+            let newEnd: Date;
+
             if (selectedDate < selectionStart) {
-                setDateRange(selectedDate, selectionStart);
-                updateMarkedDates(selectedDate, selectionStart);
+                newStart = selectedDate;
+                newEnd = selectionStart;
             } else {
-                setDateRange(selectionStart, selectedDate);
-                updateMarkedDates(selectionStart, selectedDate);
+                newStart = selectionStart;
+                newEnd = selectedDate;
             }
+
+            // Validate range
+            if (hasUnavailableDatesInRange(newStart, newEnd)) {
+                Alert.alert(
+                    'Invalid Date Range',
+                    'Your selected range includes unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                setIsSelecting(false);
+                setSelectionStart(null);
+                return;
+            }
+
+            setDateRange(newStart, newEnd);
+            updateMarkedDates(newStart, newEnd);
             setIsSelecting(false);
             setSelectionStart(null);
             return;
@@ -246,8 +313,21 @@ export default function BookingDateScreen() {
                 Alert.alert('Invalid Date', 'Check-in cannot be after check-out');
                 return;
             }
-            setDateRange(selectedDate, endDate || selectedDate);
-            updateMarkedDates(selectedDate, endDate || selectedDate);
+
+            const newEnd = endDate || selectedDate;
+
+            // Validate range
+            if (hasUnavailableDatesInRange(selectedDate, newEnd)) {
+                Alert.alert(
+                    'Invalid Date Range',
+                    'Your selected range includes unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
+            setDateRange(selectedDate, newEnd);
+            updateMarkedDates(selectedDate, newEnd);
             setEditMode('none');
             return;
         }
@@ -257,6 +337,17 @@ export default function BookingDateScreen() {
                 Alert.alert('Invalid Date', 'Check-out cannot be before check-in');
                 return;
             }
+
+            // Validate range
+            if (hasUnavailableDatesInRange(startDate!, selectedDate)) {
+                Alert.alert(
+                    'Invalid Date Range',
+                    'Your selected range includes unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
             setDateRange(startDate!, selectedDate);
             updateMarkedDates(startDate!, selectedDate);
             setEditMode('none');
@@ -268,13 +359,29 @@ export default function BookingDateScreen() {
             setDateRange(selectedDate, selectedDate);
             updateMarkedDates(selectedDate, selectedDate);
         } else if (startDate && !endDate) {
+            let newStart: Date;
+            let newEnd: Date;
+
             if (selectedDate < startDate) {
-                setDateRange(selectedDate, startDate);
-                updateMarkedDates(selectedDate, startDate);
+                newStart = selectedDate;
+                newEnd = startDate;
             } else {
-                setDateRange(startDate, selectedDate);
-                updateMarkedDates(startDate, selectedDate);
+                newStart = startDate;
+                newEnd = selectedDate;
             }
+
+            // Validate range
+            if (hasUnavailableDatesInRange(newStart, newEnd)) {
+                Alert.alert(
+                    'Invalid Date Range',
+                    'Your selected range includes unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
+            setDateRange(newStart, newEnd);
+            updateMarkedDates(newStart, newEnd);
         }
     }, [isSelecting, selectionStart, startDate, endDate, markedDates, editMode]);
 
@@ -308,7 +415,7 @@ export default function BookingDateScreen() {
                     // Hack to customize the check-in and check-out dates
                     ...(isStart || isEnd ? {
                         customTextStyle: {
-                            color: theme.colors.background, // Not semantically correct
+                            color: theme.colors.background,
                             fontWeight: 'bold',
                             fontSize: 16,
                         }
@@ -325,6 +432,16 @@ export default function BookingDateScreen() {
      */
     const handleContinue = () => {
         if (startDate && endDate) {
+            // Final validation before navigation
+            if (hasUnavailableDatesInRange(startDate, endDate)) {
+                Alert.alert(
+                    'Invalid Booking',
+                    'Your selected dates include unavailable dates. Please select a different range.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
             navigation.navigate('BookingConfirmation', {
                 vehicle,
                 startDate: startDate.toISOString(),
@@ -442,6 +559,18 @@ export default function BookingDateScreen() {
                         </Text>
                     </View>
                 )}
+
+                {/* Calendar legend */}
+                <View style={styles.calendarLegend}>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendDot, { backgroundColor: theme.colors.accent }]} />
+                        <Text style={styles.legendText}>Unavailable</Text>
+                    </View>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendBar, { backgroundColor: theme.colors.primary }]} />
+                        <Text style={styles.legendText}>Your selection</Text>
+                    </View>
+                </View>
 
                 {/* Calendar */}
                 {isLoading ? (
