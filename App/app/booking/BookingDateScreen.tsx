@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {ActivityIndicator, Alert, Image, ScrollView, Text, TouchableOpacity, View,} from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {SafeAreaView} from "react-native-safe-area-context";
+import {SafeAreaView} from 'react-native-safe-area-context';
 import { Calendar, DateData } from 'react-native-calendars';
 
 import { Booking } from '@/types/openapi';
@@ -19,7 +19,7 @@ type BookingDateScreenNavigationProp = NativeStackNavigationProp<HomeStackParamL
 
 type EditMode = 'none' | 'start' | 'end';
 
-// ToDo: Implement an image for the vehicle somewhere here
+// ToDo: Implement an image for the vehicle somewhere here?
 export default function BookingDateScreen() {
     const theme = useThemedStyles();
     const styles = createBookingStyles(theme);
@@ -42,6 +42,13 @@ export default function BookingDateScreen() {
         setSelectedVehicle(vehicle);
         loadUnavailableDates();
     }, [vehicle]);
+
+    useEffect(() => {
+        // Restore dates from context when navigating back
+        if (startDate && endDate) {
+            updateMarkedDates(startDate, endDate);
+        }
+    }, []);
 
     /**
      * Load unavailable dates from existing bookings for this vehicle
@@ -77,6 +84,39 @@ export default function BookingDateScreen() {
             });
 
             setMarkedDates(marked);
+
+            if (startDate && endDate) {
+                // Merge the unavailable dates with the selected dates
+                const selectedMarked = {};
+                for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                    const dateString = d.toISOString().split('T')[0];
+
+                    // Only mark if not disabled
+                    if (!marked[dateString]?.disabled) {
+                        const isStart = d.getTime() === startDate.getTime();
+                        const isEnd = d.getTime() === endDate.getTime();
+
+                        // ToDo: Should be added to BookingStyles
+                        // @ts-ignore
+                        selectedMarked[dateString] = {
+                            selected: true,
+                            color: theme.colors.primary,
+                            textColor: theme.colors.background,
+                            startingDay: isStart,
+                            endingDay: isEnd,
+                            ...(isStart || isEnd ? {
+                                customTextStyle: {
+                                    color: theme.colors.background,
+                                    fontWeight: 'bold',
+                                    fontSize: 16,
+                                }
+                            } : {}),
+                        };
+                    }
+                }
+
+                setMarkedDates({ ...marked, ...selectedMarked });
+            }
         } catch (error) {
             console.error('Error loading unavailable dates:', error);
         } finally {
