@@ -6,8 +6,14 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         flex: 1,
         backgroundColor: theme.colors.background,
     },
+    contentWrapper: {
+        flex: 1, // This keeps the bottom bar pinned to the bottom. Seems like the most reliable method I have tried so far
+    },
     scrollView: {
         flex: 1,
+    },
+    scrollViewContent: {
+        paddingBottom: theme.spacing.md,
     },
 
     // Date selection
@@ -165,16 +171,13 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         fontSize: theme.fontSize.sm,
         color: theme.colors.textTertiary,
     },
-    bottomPadding: {
-        height: 100,
-    },
     bottomBar: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
         backgroundColor: theme.colors.background,
         padding: theme.spacing.md,
+        paddingBottom: theme.spacing.lg,
+        borderTopWidth: 0,
+        borderTopColor: theme.colors.secondary,
+        // We could add shadows, but I do not think it fits well here
     },
     continueButton: {
         backgroundColor: theme.colors.primary,
@@ -202,7 +205,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         ...theme.shadow.small,
     },
     required: {
-        color: '#FF3B30', // Should not be hardcoded :(
+        color: theme.colors.danger,
     },
     vehicleRow: {
         flexDirection: 'row',
@@ -235,6 +238,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         padding: theme.spacing.sm,
         borderRadius: theme.borderRadius.md,
         alignItems: 'center',
+        marginTop: theme.spacing.md,
     },
     durationText: {
         fontSize: theme.fontSize.sm,
@@ -274,7 +278,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         marginTop: theme.spacing.xs,
     },
     errorCard: {
-        backgroundColor: '#FF3B30',
+        backgroundColor: theme.colors.danger,
         padding: theme.spacing.md,
         marginHorizontal: theme.spacing.md,
         marginTop: theme.spacing.md,
