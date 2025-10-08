@@ -27,13 +27,18 @@ import {colors} from "@/constants/theme";
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
 
+// ToDo: We need to integrate with the browser's API to make the back/forward buttons work
+
 interface TabIconProps {
     source: any;
     color: string;
     focused: boolean;
+    // So we can override the size of icons
+    width?: number;
+    height?: number;
 }
 
-function TabIcon({ source, color, focused }: TabIconProps) {
+function TabIcon({ source, color, focused, width, height }: TabIconProps) {
     const theme = useThemedStyles();
     const styles = createAppStyles(theme);
 
@@ -42,27 +47,13 @@ function TabIcon({ source, color, focused }: TabIconProps) {
             source={source}
             style={[
                 styles.tabIcon,
+                width && { width },
+                height && { height },
                 { tintColor: color },
                 focused && styles.tabIconFocused,
             ]}
             resizeMode="contain"
         />
-    );
-}
-
-function QuickBookButton() {
-    const theme = useThemedStyles();
-    const styles = createAppStyles(theme);
-
-    return (
-        <View style={styles.quickBookContainer}>
-            <View style={styles.quickBookButton}>
-                <View style={styles.quickBookPlus}>
-                    <View style={styles.plusHorizontal} />
-                    <View style={styles.plusVertical} />
-                </View>
-            </View>
-        </View>
     );
 }
 
@@ -95,11 +86,13 @@ function MainTabs() {
                 component={HomeStack}
                 options={{
                     tabBarLabel: '',
-                    tabBarIcon: ({ color, focused }) => (
+                    tabBarIcon: ({ color, focused}) => (
                         <TabIcon
                             source={require('./assets/fish.png')}
                             color={color}
                             focused={focused}
+                            width={40}
+                            height={40}
                         />
                     ),
                 }}

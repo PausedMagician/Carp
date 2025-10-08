@@ -18,7 +18,7 @@ export default function HomeStack() {
     return (
         <Stack.Navigator
             screenOptions={{
-                headerShown: false,
+                headerShown: true,
                 animation: 'slide_from_right',
                 presentation: 'card',
                 contentStyle: {
@@ -33,6 +33,7 @@ export default function HomeStack() {
                 component={HomeScreen}
                 options={{
                     title: 'Dashboard',
+                    headerShown: false
                 }}
             />
 

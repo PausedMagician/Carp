@@ -42,7 +42,7 @@ export default function BookingSuccessScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <SafeAreaView style={styles.container} edges={['bottom']}>
             <View style={styles.contentWrapper}>
                 <ScrollView
                     style={styles.scrollView}

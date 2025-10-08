@@ -450,7 +450,7 @@ export default function BookingDateScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <SafeAreaView style={styles.container} edges={['bottom']}>
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollViewContent}
