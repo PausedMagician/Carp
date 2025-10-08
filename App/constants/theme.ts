@@ -11,9 +11,11 @@ export const colors = {
         textSecondary: '#ADA5F3',
         textTertiary: '#321FE0',
         textQuaternary: '#1E1287',
+        // These were hardcoded before so I just made these colors placeholders for now
         success: '#4CAF50',
         warning: '#FFC107',
         error: '#F44336',
+        danger: '#FF3B30',
     },
     dark: {
         background: '#010104',
@@ -25,9 +27,11 @@ export const colors = {
         textSecondary: '#100C5A',
         textTertiary: '#281FE0',
         textQuaternary: '#7E78ED',
+        // These were hardcoded before so I just made these colors placeholders for now
         success: '#4CAF50',
         warning: '#FFC107',
         error: '#F44336',
+        danger: '#FF3B30',
     },
 };
 
@@ -74,7 +78,7 @@ const baseTheme = {
 };
 
 export const getTheme = (darkMode: boolean) => ({
-   ...baseTheme,
+    ...baseTheme,
     colors: darkMode ? colors.dark : colors.light,
 });
 

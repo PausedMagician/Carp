@@ -1,18 +1,29 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {ActivityIndicator, Alert, Image, ScrollView, Text, TouchableOpacity, View,} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+    ActivityIndicator,
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, DateData } from 'react-native-calendars';
 
 import { Booking } from '@/types/openapi';
 import { client } from '@/backend/Server';
-
 import { useBooking } from '@/hooks/UseBooking';
 import { HomeStackParamList } from '@/types/Navigation';
-
 import { useThemedStyles } from '@/hooks/useThemedStyles';
 import { createBookingStyles } from './BookingStyles';
+import {
+    showDateUnavailableAlert,
+    showInvalidDateRangeAlert,
+    showDeselectDateAlert,
+    showValidationError,
+} from '@/utils/errorHandling';
 
 type BookingDateScreenRouteProp = RouteProp<HomeStackParamList, 'BookingDate'>;
 type BookingDateScreenNavigationProp = NativeStackNavigationProp<HomeStackParamList, 'BookingDate'>;
@@ -31,8 +42,8 @@ export default function BookingDateScreen() {
 
     const [markedDates, setMarkedDates] = useState<any>({});
     const [isLoading, setIsLoading] = useState(true);
-    const [showSpecModal, setShowSpecModal] = useState(false);
-    const [showServiceModal, setShowServiceModal] = useState(false);
+    const [showSpecModal, setShowSpecModal] = useState(false); // ToDo
+    const [showServiceModal, setShowServiceModal] = useState(false); // ToDo
     const [isSelecting, setIsSelecting] = useState(false);
     const [selectionStart, setSelectionStart] = useState<Date | null>(null);
     const [editMode, setEditMode] = useState<EditMode>('none');
@@ -85,18 +96,15 @@ export default function BookingDateScreen() {
             setMarkedDates(marked);
 
             if (startDate && endDate) {
-                // Merge the unavailable dates with the selected dates
                 const selectedMarked = {};
                 for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                     const dateString = d.toISOString().split('T')[0];
 
-                    // Only mark if not disabled
                     if (!marked[dateString]?.disabled) {
                         const isStart = d.getTime() === startDate.getTime();
                         const isEnd = d.getTime() === endDate.getTime();
 
                         // @ts-ignore
-                        // ToDo: Should be added to BookingStyles
                         selectedMarked[dateString] = {
                             selected: true,
                             color: theme.colors.primary,
@@ -163,20 +171,12 @@ export default function BookingDateScreen() {
 
     /**
      * Long-press for date selection
-     *
-     * Behavior:
-     * - No dates selected: Start new range selection
-     * - Start date exists: Set as start or end based on position
      */
     const onDayLongPress = useCallback((day: DateData) => {
         const selectedDate = new Date(day.dateString);
 
         if (markedDates[day.dateString]?.disabled) {
-            Alert.alert(
-                'Date Unavailable',
-                'This date is already booked. Please select a different date.',
-                [{ text: 'OK' }]
-            );
+            showDateUnavailableAlert();
             return;
         }
 
@@ -191,7 +191,6 @@ export default function BookingDateScreen() {
         }
 
         if (startDate && !endDate) {
-            // Only start date exists
             let newStart: Date;
             let newEnd: Date;
 
@@ -203,20 +202,14 @@ export default function BookingDateScreen() {
                 newEnd = selectedDate;
             }
 
-            // Validate range
             if (hasUnavailableDatesInRange(newStart, newEnd)) {
-                Alert.alert(
-                    'Invalid Date Range',
-                    'Your selected range includes unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 return;
             }
 
             setDateRange(newStart, newEnd);
             updateMarkedDates(newStart, newEnd);
         } else if (startDate && endDate) {
-            // Both dates exist so we adjust the closer endpoint
             const distToStart = Math.abs(selectedDate.getTime() - startDate.getTime());
             const distToEnd = Math.abs(selectedDate.getTime() - endDate.getTime());
 
@@ -239,13 +232,8 @@ export default function BookingDateScreen() {
                 }
             }
 
-            // Validate range
             if (hasUnavailableDatesInRange(newStart, newEnd)) {
-                Alert.alert(
-                    'Invalid Date Range',
-                    'Your selected range includes unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 return;
             }
 
@@ -266,51 +254,34 @@ export default function BookingDateScreen() {
         const dateString = day.dateString;
 
         if (markedDates[dateString]?.disabled) {
-            Alert.alert(
-                'Date Unavailable',
-                'This date is already booked. Please select a different date.',
-                [{ text: 'OK' }]
-            );
+            showDateUnavailableAlert();
             return;
         }
 
-        // Check if tapping selected date
         const isStartDate = startDate && dateString === startDate.toISOString().split('T')[0];
         const isEndDate = endDate && dateString === endDate.toISOString().split('T')[0];
 
-        // The alert should only appear if tapping an already selected date
         if (isStartDate || isEndDate) {
-            Alert.alert(
-                'Deselect Date',
-                `Clear your ${isStartDate ? 'check-in' : 'check-out'} date?`,
-                [
-                    { text: 'Cancel', style: 'cancel' },
-                    {
-                        text: 'Clear',
-                        style: 'destructive',
-                        onPress: () => {
-                            if (isStartDate && isEndDate) {
-                                clearDates();
-                            } else if (isStartDate) {
-                                if (endDate) {
-                                    setDateRange(null as any, endDate);
-                                    updateMarkedDates(endDate, endDate);
-                                } else {
-                                    clearDates();
-                                }
-                            } else {
-                                if (startDate) {
-                                    setDateRange(startDate, null as any);
-                                    updateMarkedDates(startDate, startDate);
-                                } else {
-                                    clearDates();
-                                }
-                            }
-                            setEditMode('none');
-                        }
+            showDeselectDateAlert(!!isStartDate, () => {
+                if (isStartDate && isEndDate) {
+                    clearDates();
+                } else if (isStartDate) {
+                    if (endDate) {
+                        setDateRange(null as any, endDate);
+                        updateMarkedDates(endDate, endDate);
+                    } else {
+                        clearDates();
                     }
-                ]
-            );
+                } else {
+                    if (startDate) {
+                        setDateRange(startDate, null as any);
+                        updateMarkedDates(startDate, startDate);
+                    } else {
+                        clearDates();
+                    }
+                }
+                setEditMode('none');
+            });
             return;
         }
 
@@ -327,13 +298,8 @@ export default function BookingDateScreen() {
                 newEnd = selectedDate;
             }
 
-            // Validate range
             if (hasUnavailableDatesInRange(newStart, newEnd)) {
-                Alert.alert(
-                    'Invalid Date Range',
-                    'Your selected range includes unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 setIsSelecting(false);
                 setSelectionStart(null);
                 return;
@@ -349,19 +315,14 @@ export default function BookingDateScreen() {
         // Edit mode
         if (editMode === 'start') {
             if (endDate && selectedDate > endDate) {
-                Alert.alert('Invalid Date', 'Check-in cannot be after check-out');
+                showValidationError('Check-in cannot be after check-out');
                 return;
             }
 
             const newEnd = endDate || selectedDate;
 
-            // Validate range
             if (hasUnavailableDatesInRange(selectedDate, newEnd)) {
-                Alert.alert(
-                    'Invalid Date Range',
-                    'Your selected range includes unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 return;
             }
 
@@ -373,17 +334,12 @@ export default function BookingDateScreen() {
 
         if (editMode === 'end') {
             if (startDate && selectedDate < startDate) {
-                Alert.alert('Invalid Date', 'Check-out cannot be before check-in');
+                showValidationError('Check-out cannot be before check-in');
                 return;
             }
 
-            // Validate range
             if (hasUnavailableDatesInRange(startDate!, selectedDate)) {
-                Alert.alert(
-                    'Invalid Date Range',
-                    'Your selected range includes unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 return;
             }
 
@@ -409,13 +365,8 @@ export default function BookingDateScreen() {
                 newEnd = selectedDate;
             }
 
-            // Validate range
             if (hasUnavailableDatesInRange(newStart, newEnd)) {
-                Alert.alert(
-                    'Invalid Date Range',
-                    'Your selected range includes unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 return;
             }
 
@@ -470,13 +421,8 @@ export default function BookingDateScreen() {
      */
     const handleContinue = () => {
         if (startDate && endDate) {
-            // Final validation before navigation
             if (hasUnavailableDatesInRange(startDate, endDate)) {
-                Alert.alert(
-                    'Invalid Booking',
-                    'Your selected dates include unavailable dates. Please select a different range.',
-                    [{ text: 'OK' }]
-                );
+                showInvalidDateRangeAlert();
                 return;
             }
 
@@ -559,7 +505,7 @@ export default function BookingDateScreen() {
                                 <View style={styles.datesDivider}>
                                     <Image
                                         source={require('@/assets/icons/arrow_right.png')}
-                                        style={{ width: 20, height: 20}}
+                                        style={{ width: 20, height: 20 }}
                                     />
                                 </View>
 

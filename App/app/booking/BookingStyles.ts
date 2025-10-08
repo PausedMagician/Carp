@@ -166,7 +166,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         color: theme.colors.textTertiary,
     },
     bottomPadding: {
-        height: 100,
+        height: 160,
     },
     bottomBar: {
         position: 'absolute',
@@ -175,6 +175,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         right: 0,
         backgroundColor: theme.colors.background,
         padding: theme.spacing.md,
+        paddingBottom: theme.spacing.lg,
     },
     continueButton: {
         backgroundColor: theme.colors.primary,
@@ -202,7 +203,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         ...theme.shadow.small,
     },
     required: {
-        color: '#FF3B30', // Should not be hardcoded :(
+        color: theme.colors.danger,
     },
     vehicleRow: {
         flexDirection: 'row',
@@ -235,6 +236,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         padding: theme.spacing.sm,
         borderRadius: theme.borderRadius.md,
         alignItems: 'center',
+        marginTop: theme.spacing.md,
     },
     durationText: {
         fontSize: theme.fontSize.sm,
@@ -274,7 +276,7 @@ export const createBookingStyles = (theme: Theme) => StyleSheet.create({
         marginTop: theme.spacing.xs,
     },
     errorCard: {
-        backgroundColor: '#FF3B30',
+        backgroundColor: theme.colors.danger,
         padding: theme.spacing.md,
         marginHorizontal: theme.spacing.md,
         marginTop: theme.spacing.md,
