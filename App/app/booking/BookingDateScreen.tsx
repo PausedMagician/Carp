@@ -19,7 +19,6 @@ type BookingDateScreenNavigationProp = NativeStackNavigationProp<HomeStackParamL
 
 type EditMode = 'none' | 'start' | 'end';
 
-// ToDo: Implement an image for the vehicle somewhere here?
 export default function BookingDateScreen() {
     const theme = useThemedStyles();
     const styles = createBookingStyles(theme);
@@ -96,8 +95,8 @@ export default function BookingDateScreen() {
                         const isStart = d.getTime() === startDate.getTime();
                         const isEnd = d.getTime() === endDate.getTime();
 
-                        // ToDo: Should be added to BookingStyles
                         // @ts-ignore
+                        // ToDo: Should be added to BookingStyles
                         selectedMarked[dateString] = {
                             selected: true,
                             color: theme.colors.primary,
@@ -452,7 +451,6 @@ export default function BookingDateScreen() {
                     textColor: theme.colors.background,
                     startingDay: isStart,
                     endingDay: isEnd,
-                    // Hack to customize the check-in and check-out dates
                     ...(isStart || isEnd ? {
                         customTextStyle: {
                             color: theme.colors.background,
@@ -494,7 +492,7 @@ export default function BookingDateScreen() {
     const hasSelection = startDate || endDate;
 
     /**
-     * Based on current state
+     * Get instructions based on current state
      */
     const getInstructions = () => {
         if (editMode === 'start') return 'Tap a date to set your new check-in';
@@ -506,7 +504,7 @@ export default function BookingDateScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container} edges={['bottom']}>
+        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
             <ScrollView style={styles.scrollView}>
                 {/* Vehicle info card */}
                 <View style={styles.vehicleCard}>
@@ -518,10 +516,6 @@ export default function BookingDateScreen() {
                             {vehicle.year} • {vehicle.type} • {vehicle.color}
                         </Text>
                     </View>
-
-                    {/*/!* ToDo: Implement Specification as a separate page or keep modal? *!/*/}
-
-                    {/*/!* ToDo: Implement Service Info as a separate page or keep modal? *!/*/}
 
                     <View style={styles.actionButtons}>
                         <TouchableOpacity
@@ -588,7 +582,7 @@ export default function BookingDateScreen() {
                     )}
                 </View>
 
-                {/* Status */}
+                {/* Status banner */}
                 {(isSelecting || editMode !== 'none') && (
                     <View style={styles.statusBanner}>
                         <Text style={styles.statusText}>

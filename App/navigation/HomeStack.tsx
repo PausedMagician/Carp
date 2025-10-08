@@ -4,6 +4,7 @@ import type {HomeStackParamList} from '@/types/Navigation';
 
 import {HomeScreen, BookingDateScreen, BookingConfirmationScreen} from "@/app/Screens";
 import BookingSuccessScreen from '@/app/booking/BookingSuccessScreen';
+import {colors} from "@/constants/theme";
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -19,37 +20,47 @@ export default function HomeStack() {
             screenOptions={{
                 headerShown: false,
                 animation: 'slide_from_right',
+                presentation: 'card',
+                contentStyle: {
+                    backgroundColor: colors.light.background,
+                },
+                fullScreenGestureEnabled: false,
             }}
         >
+            {/* Vehicle Dashboard */}
             <Stack.Screen
                 name="Dashboard"
                 component={HomeScreen}
-                options={{ title: 'Vehicle Dashboard' }}
+                options={{
+                    title: 'Dashboard',
+                }}
             />
+
+            {/* Date Selection */}
             <Stack.Screen
                 name="BookingDate"
                 component={BookingDateScreen}
                 options={{
                     title: 'Select Dates',
-                    headerShown: true,
-                    headerBackTitle: 'Back',
+                    // Dates persist when navigating back via BookingContext
                 }}
             />
 
+            {/* Booking Confirmation */}
             <Stack.Screen
                 name="BookingConfirmation"
                 component={BookingConfirmationScreen}
                 options={{
                     title: 'Confirm Booking',
-                    headerShown: true,
                 }}
             />
 
+            {/* Success Screen */}
             <Stack.Screen
                 name="BookingSuccess"
                 component={BookingSuccessScreen}
                 options={{
-                    headerShown: false,
+                    // No header, prevent back navigation after success
                     gestureEnabled: false,
                 }}
             />

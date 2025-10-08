@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 import { ActiveBooking } from '@/components/ActiveBooking';
 import { MyCarousel } from '@/components/CarCarousel';
@@ -18,8 +20,10 @@ export default function HomeScreen() {
     const navigation = useNavigation<HomeScreenNavigationProp>();
     const [booking, setBooking] = useState<Booking | null>(null);
     const theme = useThemedStyles();
-    const styles = createHomeStyles(theme);
     const auth = useAuth();
+
+    const tabBarHeight = useBottomTabBarHeight();
+    const styles = createHomeStyles(theme, tabBarHeight);
 
     useEffect(() => {
         loadActiveBooking();
@@ -49,9 +53,13 @@ export default function HomeScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView
+            style={styles.container}
+            edges={['top']}
+        >
             <ActiveBooking booking={booking} />
             <MyCarousel onVehiclePress={handleVehiclePress} />
+            <View style={styles.tabBarSpacer} />
         </SafeAreaView>
     );
 }

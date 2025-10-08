@@ -102,6 +102,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     },
     paginationContainer: {
         gap: 5,
-        marginTop: theme.spacing.lg,
+        marginTop: theme.spacing.sm,
+        marginBottom: theme.spacing.lg,
     },
 });

@@ -22,6 +22,7 @@ import SettingsStack from './navigation/SettingsStack';
 
 import { createAppStyles } from './AppStyles';
 import AdminStack from './navigation/AdminStack';
+import {colors} from "@/constants/theme";
 
 const Tab = createBottomTabNavigator();
 const RootStack = createNativeStackNavigator();
@@ -83,10 +84,10 @@ function MainTabs() {
             initialRouteName="Home"
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: theme.colors.primary,
-                tabBarInactiveTintColor: theme.colors.textSecondary,
                 tabBarStyle: styles.tabBar,
-                tabBarLabelStyle: styles.tabBarLabel,
+                sceneStyle: {
+                    backgroundColor: colors.light.background,
+                },
             }}
         >
             <Tab.Screen
