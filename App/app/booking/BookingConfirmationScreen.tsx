@@ -55,7 +55,6 @@ export default function BookingConfirmationScreen() {
         setError(null);
 
         try {
-            // Set context for other components that might need them
             booking.setSelectedVehicle(vehicle);
             booking.setDateRange(new Date(startDate), new Date(endDate));
 
@@ -65,42 +64,43 @@ export default function BookingConfirmationScreen() {
             );
 
             navigation.navigate('BookingSuccess', { booking: newBooking });
-
-            // Clear booking state after successful navigation
             booking.clearBooking();
         } catch (err: any) {
             console.error('Booking error:', err);
             setError(err.message || 'Failed to create booking. Please try again.');
             setIsLoading(false);
-
             sliderRef.current?.reset();
         }
     };
 
     return (
         <SafeAreaView style={styles.container} edges={['bottom']}>
-            <ScrollView style={styles.scrollView}>
-                <VehicleCard vehicle={vehicle} vehicleImage={vehicleImage} />
-                <DateRangeDisplay startDate={startDate} endDate={endDate} />
+            <View style={styles.contentWrapper}>
+                <ScrollView
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollViewContent}
+                    showsVerticalScrollIndicator={true}
+                >
+                    <VehicleCard vehicle={vehicle} vehicleImage={vehicleImage} />
+                    <DateRangeDisplay startDate={startDate} endDate={endDate} />
 
-                {auth.user && <UserInfoCard user={auth.user} />}
+                    {auth.user && <UserInfoCard user={auth.user} />}
 
-                <PurposeInput
-                    purpose={purpose}
-                    onChangePurpose={setPurpose}
-                    isLoading={isLoading}
-                />
+                    <PurposeInput
+                        purpose={purpose}
+                        onChangePurpose={setPurpose}
+                        isLoading={isLoading}
+                    />
 
-                <DestinationInput
-                    destination={destination}
-                    onChangeDestination={setDestination}
-                    isLoading={isLoading}
-                />
+                    <DestinationInput
+                        destination={destination}
+                        onChangeDestination={setDestination}
+                        isLoading={isLoading}
+                    />
 
-                {error && <ErrorCard message={error} />}
-
-                <View style={styles.bottomPadding} />
-            </ScrollView>
+                    {error && <ErrorCard message={error} />}
+                </ScrollView>
+            </View>
 
             <BottomActionBar
                 isLoading={isLoading}

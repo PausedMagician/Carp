@@ -451,7 +451,10 @@ export default function BookingDateScreen() {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-            <ScrollView style={styles.scrollView}>
+            <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollViewContent}
+            >
                 {/* Vehicle info card */}
                 <View style={styles.vehicleCard}>
                     <View style={styles.vehicleInfo}>
@@ -583,7 +586,7 @@ export default function BookingDateScreen() {
                     </View>
                 )}
 
-                <View style={styles.bottomPadding} />
+                {/* <View style={styles.bottomPadding} /> */}
             </ScrollView>
 
             {/* Bottom bar */}

@@ -43,81 +43,85 @@ export default function BookingSuccessScreen() {
 
     return (
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-            <ScrollView style={styles.scrollView}>
-                {/* Success header */}
-                <View style={styles.successHeader}>
-                    <View style={styles.successIconContainer}>
-                        <View style={styles.successIcon}>
-                            <Image
-                                source={ICONS.check}
-                                style={{ width: 48, height: 48 }}
-                            />
+            <View style={styles.contentWrapper}>
+                <ScrollView
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollViewContent}
+                    showsVerticalScrollIndicator={true}
+                >
+                    {/* Success header */}
+                    <View style={styles.successHeader}>
+                        <View style={styles.successIconContainer}>
+                            <View style={styles.successIcon}>
+                                <Image
+                                    source={ICONS.check}
+                                    style={{ width: 48, height: 48 }}
+                                />
+                            </View>
                         </View>
+                        <Text style={styles.successTitle}>Booking Confirmed!</Text>
+                        <Text style={styles.successSubtitle}>
+                            Your vehicle has been successfully reserved
+                        </Text>
                     </View>
-                    <Text style={styles.successTitle}>Booking Confirmed!</Text>
-                    <Text style={styles.successSubtitle}>
-                        Your vehicle has been successfully reserved
-                    </Text>
-                </View>
 
-                {/* Booking reference */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Booking Reference</Text>
-                    <View style={styles.referenceContainer}>
-                        <Text style={styles.referenceNumber}>#{booking.id}</Text>
+                    {/* Booking reference */}
+                    <View style={styles.card}>
+                        <Text style={styles.cardTitle}>Booking Reference</Text>
+                        <View style={styles.referenceContainer}>
+                            <Text style={styles.referenceNumber}>#{booking.id}</Text>
+                        </View>
+                        <Text style={styles.referenceNote}>
+                            Save this reference number for your records
+                        </Text>
                     </View>
-                    <Text style={styles.referenceNote}>
-                        Save this reference number for your records
-                    </Text>
-                </View>
 
-                {/* Vehicle information */}
-                {booking.vehicle && (
-                    <VehicleCard
-                        vehicle={booking.vehicle as Vehicle}
-                        vehicleImage={vehicleImage}
-                    />
-                )}
-
-                {/* Booking period */}
-                <DateRangeDisplay
-                    startDate={booking.start_date}
-                    endDate={booking.end_date}
-                    showDuration={true}
-                />
-
-                {/* Booking details */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Details</Text>
-
-                    <BookingDetailRow label="Purpose" value={booking.purpose} />
-
-                    {booking.destination && (
-                        <BookingDetailRow label="Destination" value={booking.destination} />
+                    {/* Vehicle information */}
+                    {booking.vehicle && (
+                        <VehicleCard
+                            vehicle={booking.vehicle as Vehicle}
+                            vehicleImage={vehicleImage}
+                        />
                     )}
 
-                    <BookingDetailRow
-                        label="Status"
-                        value={
-                            <View style={styles.statusBadge}>
-                                <Text style={styles.statusBadgeText}>{booking.booking_status}</Text>
-                            </View>
-                        }
+                    {/* Booking period */}
+                    <DateRangeDisplay
+                        startDate={booking.start_date}
+                        endDate={booking.end_date}
+                        showDuration={true}
                     />
-                </View>
 
-                {/* Next steps */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Next Steps</Text>
-                    <Text style={styles.nextStepsText}>
-                        • Check your email for booking confirmation{'\n'}
-                        • Pick up the vehicle on your check-in date{'\n'}
-                        • Inspect the vehicle before departing
-                    </Text>
-                </View>
+                    {/* Booking details */}
+                    <View style={styles.card}>
+                        <Text style={styles.cardTitle}>Details</Text>
 
-                <View style={styles.bottomPadding} />
-            </ScrollView>
+                        <BookingDetailRow label="Purpose" value={booking.purpose} />
+
+                        {booking.destination && (
+                            <BookingDetailRow label="Destination" value={booking.destination} />
+                        )}
+
+                        <BookingDetailRow
+                            label="Status"
+                            value={
+                                <View style={styles.statusBadge}>
+                                    <Text style={styles.statusBadgeText}>{booking.booking_status}</Text>
+                                </View>
+                            }
+                        />
+                    </View>
+
+                    {/* Next steps */}
+                    <View style={styles.card}>
+                        <Text style={styles.cardTitle}>Next Steps</Text>
+                        <Text style={styles.nextStepsText}>
+                            • Check your email for booking confirmation{'\n'}
+                            • Pick up the vehicle on your check-in date{'\n'}
+                            • Inspect the vehicle before departing
+                        </Text>
+                    </View>
+                </ScrollView>
+            </View>
 
             {/* Action buttons */}
             <View style={styles.bottomBar}>
